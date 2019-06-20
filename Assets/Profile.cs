@@ -34,4 +34,9 @@ public class Profile : MonoBehaviour
 
         Debug.Log("Next Page");
     }
+
+    public void PreviousPage()
+    {
+        Debug.Log("Previous Page");
+    }
 }
