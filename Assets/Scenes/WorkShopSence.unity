@@ -501,7 +501,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &138286266
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1140,7 +1140,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 274884309}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1093479350}
+        m_MethodName: ShowSignUpPanel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &274884309
@@ -1485,7 +1496,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 303373423}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1093479350}
+        m_MethodName: SubmitSignUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &303373423
@@ -4722,7 +4744,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1093479347
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4796,7 +4818,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d0a9107fbf5067448e9e8e2bb5bc7ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  signUpPanel: {fileID: 0}
+  signUpPanel: {fileID: 1652817945}
   loginPanel: {fileID: 125268117}
 --- !u!1 &1114337404
 GameObject:
@@ -5746,7 +5768,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1433979204}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 138286269}
+        m_MethodName: UploadButtonPressed
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1433979204
@@ -6294,7 +6327,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1530644721
 RectTransform:
   m_ObjectHideFlags: 0
