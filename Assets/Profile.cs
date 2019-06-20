@@ -16,6 +16,7 @@ public class Profile : MonoBehaviour
         
     }
 
+
     void LoadUserInfo()
     {
         // Load User Icon
@@ -38,5 +39,19 @@ public class Profile : MonoBehaviour
     public void PreviousPage()
     {
         Debug.Log("Previous Page");
+
+    public void ChangeIcon()
+    {
+        Debug.Log("you clicked change icon!");
+        //startcoror()
+        
+    }
+
+    IEnumerator ChangeIconEnum()
+    {
+        //yield Webreq.changeicon();
+        //change you icon locally
+        yield return null;
+
     }
 }
