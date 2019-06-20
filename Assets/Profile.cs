@@ -7,7 +7,7 @@ public class Profile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        LoadUserInfo();
     }
 
     // Update is called once per frame
@@ -15,6 +15,30 @@ public class Profile : MonoBehaviour
     {
         
     }
+
+
+    void LoadUserInfo()
+    {
+        // Load User Icon
+
+        // Load User Description
+    }
+
+    public void UploadButtonPressed()
+    {
+        // Go to Uploads page
+        Debug.Log("Pressed Upload Button in Profile Page");
+    }
+
+    public void NextPage()
+    {
+
+        Debug.Log("Next Page");
+    }
+
+    public void PreviousPage()
+    {
+        Debug.Log("Previous Page");
 
     public void ChangeIcon()
     {
@@ -28,5 +52,6 @@ public class Profile : MonoBehaviour
         //yield Webreq.changeicon();
         //change you icon locally
         yield return null;
+
     }
 }

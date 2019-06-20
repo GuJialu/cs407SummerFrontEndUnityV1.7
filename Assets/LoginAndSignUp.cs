@@ -22,12 +22,17 @@ public class LoginAndSignUp : MonoBehaviour
     //send the sign up requset
     public void RequestSignUp()
     {
-
+        Debug.Log("RequestSignUp");
     }
 
     //send the login request
     public void RequestLogin()
     {
+        Debug.Log("RequestLogin");
+    }
 
+    public void SubmitSignUp()
+    {
+        Debug.Log("dsgag");
     }
 }
