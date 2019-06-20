@@ -2064,7 +2064,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: User description
+  m_Text: User description will be here
 --- !u!222 &493318890
 CanvasRenderer:
   m_ObjectHideFlags: 0
