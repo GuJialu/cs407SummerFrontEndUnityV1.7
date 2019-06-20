@@ -15,4 +15,18 @@ public class Profile : MonoBehaviour
     {
         
     }
+
+    public void ChangeIcon()
+    {
+        Debug.Log("you clicked change icon!");
+        //startcoror()
+        
+    }
+
+    IEnumerator ChangeIconEnum()
+    {
+        //yield Webreq.changeicon();
+        //change you icon locally
+        yield return null;
+    }
 }
