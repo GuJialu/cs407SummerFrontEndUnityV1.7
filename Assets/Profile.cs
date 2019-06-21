@@ -40,6 +40,8 @@ public class Profile : MonoBehaviour
     {
         Debug.Log("Previous Page");
 
+    }
+
     public void ChangeIcon()
     {
         Debug.Log("you clicked change icon!");
