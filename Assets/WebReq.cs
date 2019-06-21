@@ -7,19 +7,19 @@ using UnityEngine.Networking;
 
 public static class WebReq
 {
-    static string objectFolderPath = Application.dataPath + "/StreamingAssets/LocalGameFiles/";
-    static string tempZipFolderPath = Application.dataPath + "/StreamingAssets/tempZips/";
+    public static string objectFolderPath = Application.dataPath + "/StreamingAssets/LocalGameFiles/";
+    public static string tempZipFolderPath = Application.dataPath + "/StreamingAssets/tempZips/";
     static string storageUrl;
-    static string serverUrl;
+    public static string serverUrl = "modsworkshop.herokuapp.com/modsworkshop/";
     static string bearerToken;
 
     static IEnumerator SignUp(string email, string password, string username)
     {
-        WWWForm form = new WWWForm();
-        form.AddField("myField", email);
-        form.AddField("password", password);
-        using (UnityWebRequest www = UnityWebRequest.Post("http://www.my-server.com/myform", form))
+        using (UnityWebRequest www = UnityWebRequest.Post("http://www.my-server.com/myform", new WWWForm()))
         {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new SignUpReqJson(email, password, username)));
+
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
 
             yield return www.SendWebRequest();
 

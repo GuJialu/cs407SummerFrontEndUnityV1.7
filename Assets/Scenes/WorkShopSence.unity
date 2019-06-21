@@ -501,7 +501,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &138286266
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1498,7 +1498,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1093479350}
-        m_MethodName: SubmitSignUp
+        m_MethodName: RequestSignUp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4755,7 +4755,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1093479347
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4831,6 +4831,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   signUpPanel: {fileID: 1652817945}
   loginPanel: {fileID: 125268117}
+  signUpEmailInput: {fileID: 1327157994}
+  signUpPasswordInput: {fileID: 597232315}
+  signUpRenterPasswordInput: {fileID: 1081199283}
+  signUpUserNameInput: {fileID: 2040867677}
+  loginEmailInput: {fileID: 0}
+  loginPasswordInput: {fileID: 0}
 --- !u!1 &1114337404
 GameObject:
   m_ObjectHideFlags: 0
@@ -6338,7 +6344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1530644721
 RectTransform:
   m_ObjectHideFlags: 0
