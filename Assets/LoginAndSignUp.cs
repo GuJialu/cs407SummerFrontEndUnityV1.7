@@ -160,6 +160,10 @@ public class LoginAndSignUp : MonoBehaviour
                 else
                 {
                     WebReq.bearerToken = res.token;
+                    string userName = "example";
+                    int iconNum = 0;
+                    string description = "example";
+                    WorkShopEvents.loginEvent?.Invoke(email, userName, iconNum, description);
                 }
             }
         }
