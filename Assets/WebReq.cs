@@ -11,7 +11,7 @@ public static class WebReq
     public static string tempZipFolderPath = Application.dataPath + "/StreamingAssets/tempZips/";
     static string storageUrl;
     public static string serverUrl = "modsworkshop.herokuapp.com/modsworkshop/";
-    static string bearerToken;
+    public static string bearerToken;
 
     static IEnumerator SignUp(string email, string password, string username)
     {

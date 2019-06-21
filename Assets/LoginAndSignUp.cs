@@ -20,7 +20,7 @@ struct SignUpReqJson
 }
 
 [System.Serializable]
-struct SignUpRes
+struct SignUpResJson
 {
     public int status;
     public string err_message;
@@ -39,6 +39,14 @@ struct LoginReqJson
     }
 }
 
+[System.Serializable]
+struct LoginResJson
+{
+    public int status;
+    public string token;
+    public string err_message;
+}
+
 public class LoginAndSignUp : MonoBehaviour
 {
     public GameObject signUpPanel;
@@ -52,16 +60,20 @@ public class LoginAndSignUp : MonoBehaviour
     public InputField loginEmailInput;
     public InputField loginPasswordInput;
 
+    public Text errorMessageText;
+
     //render the signUpPanel in the front
     public void ShowSignUpPanel()
     {
-        signUpPanel.transform.SetAsLastSibling();
+        signUpPanel.SetActive(true);
+        loginPanel.SetActive(false);
     }
 
     //render the loginPanel in the front
     public void ShowLoginPanel()
     {
-        loginPanel.transform.SetAsLastSibling();
+        loginPanel.SetActive(true);
+        signUpPanel.SetActive(false);
     }
 
     //send the sign up requset
@@ -77,10 +89,10 @@ public class LoginAndSignUp : MonoBehaviour
         //check input validation
         //...
 
-        StartCoroutine(RequestSignUpcoro(email, password, username));
+        StartCoroutine(RequestSignUpCoro(email, password, username));
     }
 
-    IEnumerator RequestSignUpcoro(string email, string password, string username)
+    IEnumerator RequestSignUpCoro(string email, string password, string username)
     {
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/registration", new WWWForm()))
         {
@@ -97,8 +109,15 @@ public class LoginAndSignUp : MonoBehaviour
             }
             else
             {
-                SignUpRes res = JsonUtility.FromJson<SignUpRes>(www.downloadHandler.text);
-                Debug.Log(res.err_message);
+                SignUpResJson res = JsonUtility.FromJson<SignUpResJson>(www.downloadHandler.text);
+                if (res.err_message != null)
+                {
+                    errorMessageText.text = res.err_message;
+                }
+                else
+                {
+                    errorMessageText.text = "success";
+                }
             }
         }
     }
@@ -107,5 +126,42 @@ public class LoginAndSignUp : MonoBehaviour
     public void RequestLogin()
     {
         Debug.Log("RequestLogin");
+
+        string email = loginEmailInput.text;
+        string password = loginPasswordInput.text;
+
+        StartCoroutine(RequestLoginCoro(email, password));
+    }
+
+    IEnumerator RequestLoginCoro(string email, string password)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/login", new WWWForm()))
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new LoginReqJson(email, password)));
+
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                LoginResJson res = JsonUtility.FromJson<LoginResJson>(www.downloadHandler.text);
+                
+                if (res.err_message!=null)
+                {
+                    Debug.Log(res.err_message);
+                    errorMessageText.text = res.err_message;
+                }
+                else
+                {
+                    WebReq.bearerToken = res.token;
+                }
+            }
+        }
     }
 }
