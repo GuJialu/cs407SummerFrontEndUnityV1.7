@@ -67,6 +67,7 @@ public class LoginAndSignUp : MonoBehaviour
     {
         signUpPanel.SetActive(true);
         loginPanel.SetActive(false);
+        errorMessageText.text = "";
     }
 
     //render the loginPanel in the front
@@ -74,6 +75,7 @@ public class LoginAndSignUp : MonoBehaviour
     {
         loginPanel.SetActive(true);
         signUpPanel.SetActive(false);
+        errorMessageText.text = "";
     }
 
     //send the sign up requset
@@ -160,10 +162,7 @@ public class LoginAndSignUp : MonoBehaviour
                 else
                 {
                     WebReq.bearerToken = res.token;
-                    string userName = "example";
-                    int iconNum = 0;
-                    string description = "example";
-                    WorkShopEvents.loginEvent?.Invoke(email, userName, iconNum, description);
+                    WorkShopEvents.loginEvent?.Invoke(email);
                 }
             }
         }
