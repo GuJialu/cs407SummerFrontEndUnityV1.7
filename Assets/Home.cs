@@ -32,7 +32,6 @@ public class Home : MonoBehaviour
     public void OpenLoginSignUpPanel()
     {
         Instantiate(loginSignUpPanelPrefab, transform.parent);
-        logoutButton.SetActive(true);
         loginButton.SetActive(false);
     }
 
@@ -51,6 +50,7 @@ public class Home : MonoBehaviour
     public void OnLogin(string email)
     {
         StartCoroutine(RequestProfileIconCoro(email));
+        logoutButton.SetActive(true);
     }
 
     IEnumerator RequestProfileIconCoro(string email)

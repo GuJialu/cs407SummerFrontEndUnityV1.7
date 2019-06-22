@@ -47,10 +47,50 @@ struct LoginResJson
     public string err_message;
 }
 
+[System.Serializable]
+struct EmailVeriReqJson
+{
+    public string email;
+
+    public EmailVeriReqJson(string email)
+    {
+        this.email = email;
+    }
+}
+
+[System.Serializable]
+struct EmailVeriResJson
+{
+    public int status;
+    public string err_message;
+}
+
+[System.Serializable]
+struct CodeVeriReqJson
+{
+    public string code;
+
+    public CodeVeriReqJson(string code)
+    {
+        this.code = code;
+    }
+}
+
+[System.Serializable]
+struct CodeVeriResJson
+{
+    public int status;
+    public string err_message;
+}
+
 public class LoginAndSignUp : MonoBehaviour
 {
     public GameObject signUpPanel;
     public GameObject loginPanel;
+    public GameObject emailVeriPanel;
+    public GameObject codeVeriPanel;
+    public GameObject resetPasswordPanel;
+    public GameObject deleteButton;
 
     public InputField signUpEmailInput;
     public InputField signUpPasswordInput;
@@ -60,21 +100,47 @@ public class LoginAndSignUp : MonoBehaviour
     public InputField loginEmailInput;
     public InputField loginPasswordInput;
 
+    public InputField forgetPasswordEmailInput;
+    public InputField forgetPasswordCodeInput;
+    public InputField resetPasswordNewPasswordInput;
+    public InputField resetPasswordRenterPasswordInput;
+
     public Text errorMessageText;
 
     //render the signUpPanel in the front
     public void ShowSignUpPanel()
     {
-        signUpPanel.SetActive(true);
-        loginPanel.SetActive(false);
+        signUpPanel.transform.SetAsLastSibling();
+        deleteButton.transform.SetAsLastSibling();
         errorMessageText.text = "";
     }
 
     //render the loginPanel in the front
     public void ShowLoginPanel()
     {
-        loginPanel.SetActive(true);
-        signUpPanel.SetActive(false);
+        loginPanel.transform.SetAsLastSibling();
+        deleteButton.transform.SetAsLastSibling();
+        errorMessageText.text = "";
+    }
+
+    public void ShowEmailVeriPanel()
+    {
+        emailVeriPanel.transform.SetAsLastSibling();
+        deleteButton.transform.SetAsLastSibling();
+        errorMessageText.text = "";
+    }
+
+    public void ShowCodeVeriPanel()
+    {
+        codeVeriPanel.transform.SetAsLastSibling();
+        deleteButton.transform.SetAsLastSibling();
+        errorMessageText.text = "";
+    }
+
+    public void ShowRestPasswordPanel()
+    {
+        resetPasswordPanel.transform.SetAsLastSibling();
+        deleteButton.transform.SetAsLastSibling();
         errorMessageText.text = "";
     }
 
@@ -163,6 +229,86 @@ public class LoginAndSignUp : MonoBehaviour
                 {
                     WebReq.bearerToken = res.token;
                     WorkShopEvents.loginEvent?.Invoke(email);
+                }
+            }
+        }
+    }
+
+    public void RequestEmailVeri()
+    {
+        Debug.Log("RequestEmailVeri");
+        string email = forgetPasswordEmailInput.text;
+        StartCoroutine(RequestEmailVeriCoro(email));
+    }
+
+    IEnumerator RequestEmailVeriCoro(string email)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/emailVeri", new WWWForm()))
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new EmailVeriReqJson(email)));
+
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                EmailVeriResJson res = JsonUtility.FromJson<EmailVeriResJson>(www.downloadHandler.text);
+
+                if (res.err_message != null)
+                {
+                    Debug.Log(res.err_message);
+                    errorMessageText.text = res.err_message;
+                }
+                else
+                {
+                    Debug.Log(res.status);
+
+                }
+            }
+        }
+    }
+
+    public void RequestCodeVeri()
+    {
+        Debug.Log("RequestCodeVeri");
+        string code = forgetPasswordCodeInput.text;
+        StartCoroutine(RequestCodeVeriCoro(code));
+    }
+
+    IEnumerator RequestCodeVeriCoro(string code)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/codeVeri", new WWWForm()))
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new CodeVeriReqJson(code)));
+
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                CodeVeriResJson res = JsonUtility.FromJson<CodeVeriResJson>(www.downloadHandler.text);
+
+                if (res.err_message != null)
+                {
+                    Debug.Log(res.err_message);
+                    errorMessageText.text = res.err_message;
+                }
+                else
+                {
+                    Debug.Log(res.status);
+
                 }
             }
         }
