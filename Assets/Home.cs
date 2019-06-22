@@ -10,6 +10,8 @@ public class Home : MonoBehaviour
     public GameObject loginButton;
     public GameObject logoutButton;
 
+    public GameObject loginSignUpPanelPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,7 +31,16 @@ public class Home : MonoBehaviour
 
     public void OpenLoginSignUpPanel()
     {
+        Instantiate(loginSignUpPanelPrefab, transform.parent);
+        logoutButton.SetActive(true);
+        loginButton.SetActive(false);
+    }
 
+    public void Logout()
+    {
+        WebReq.bearerToken = null;
+        logoutButton.SetActive(false);
+        loginButton.SetActive(true);
     }
 
     public void ReturnToMainSence()
