@@ -68,10 +68,12 @@ struct EmailVeriResJson
 [System.Serializable]
 struct CodeVeriReqJson
 {
+    public string email;
     public string code;
 
-    public CodeVeriReqJson(string code)
+    public CodeVeriReqJson(string email, string code)
     {
+        this.email = email;
         this.code = code;
     }
 }
@@ -112,6 +114,7 @@ public class LoginAndSignUp : MonoBehaviour
     {
         signUpPanel.transform.SetAsLastSibling();
         deleteButton.transform.SetAsLastSibling();
+        errorMessageText.transform.SetAsLastSibling();
         errorMessageText.text = "";
     }
 
@@ -120,6 +123,7 @@ public class LoginAndSignUp : MonoBehaviour
     {
         loginPanel.transform.SetAsLastSibling();
         deleteButton.transform.SetAsLastSibling();
+        errorMessageText.transform.SetAsLastSibling();
         errorMessageText.text = "";
     }
 
@@ -127,6 +131,7 @@ public class LoginAndSignUp : MonoBehaviour
     {
         emailVeriPanel.transform.SetAsLastSibling();
         deleteButton.transform.SetAsLastSibling();
+        errorMessageText.transform.SetAsLastSibling();
         errorMessageText.text = "";
     }
 
@@ -134,6 +139,7 @@ public class LoginAndSignUp : MonoBehaviour
     {
         codeVeriPanel.transform.SetAsLastSibling();
         deleteButton.transform.SetAsLastSibling();
+        errorMessageText.transform.SetAsLastSibling();
         errorMessageText.text = "";
     }
 
@@ -141,6 +147,7 @@ public class LoginAndSignUp : MonoBehaviour
     {
         resetPasswordPanel.transform.SetAsLastSibling();
         deleteButton.transform.SetAsLastSibling();
+        errorMessageText.transform.SetAsLastSibling();
         errorMessageText.text = "";
     }
 
@@ -268,7 +275,7 @@ public class LoginAndSignUp : MonoBehaviour
                 else
                 {
                     Debug.Log(res.status);
-
+                    ShowCodeVeriPanel();
                 }
             }
         }
@@ -277,15 +284,16 @@ public class LoginAndSignUp : MonoBehaviour
     public void RequestCodeVeri()
     {
         Debug.Log("RequestCodeVeri");
+        string email = forgetPasswordEmailInput.text;
         string code = forgetPasswordCodeInput.text;
-        StartCoroutine(RequestCodeVeriCoro(code));
+        StartCoroutine(RequestCodeVeriCoro(email, code));
     }
 
-    IEnumerator RequestCodeVeriCoro(string code)
+    IEnumerator RequestCodeVeriCoro(string email, string code)
     {
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/codeVeri", new WWWForm()))
         {
-            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new CodeVeriReqJson(code)));
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new CodeVeriReqJson(email, code)));
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
@@ -308,7 +316,7 @@ public class LoginAndSignUp : MonoBehaviour
                 else
                 {
                     Debug.Log(res.status);
-
+                    ShowRestPasswordPanel();
                 }
             }
         }
