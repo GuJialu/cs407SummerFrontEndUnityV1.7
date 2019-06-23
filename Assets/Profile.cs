@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.U2D;
+using UnityEngine.UI;
 
 [System.Serializable]
 struct ProfileReqJson
@@ -26,10 +28,38 @@ struct ProfileResJson
 
 public class Profile : MonoBehaviour
 {
+    private int iconNumber;
+
+    public Sprite[] icons;
+    public GameObject IconButton;
+    public GameObject DesText;
+    public SpriteAtlas spriteAtlas;
+    public InputField InputField;
+    public Transform content;
+
+    //public Button IconButton;
+
     // Start is called before the first frame update
     void Start()
     {
         //LoadUserInfo(); don't use the start(), the Info needs email which will be provided by the parent module
+        icons = new Sprite[spriteAtlas.spriteCount];
+        spriteAtlas.GetSprites(icons);
+        IconButton.GetComponentInChildren<Image>().sprite = icons[0];
+
+        for(int i = 0; i < spriteAtlas.spriteCount; i++)
+        {
+            GameObject go = new GameObject("temp");
+            Image m_Image;
+            m_Image = go.AddComponent<Image>();
+            m_Image.sprite = icons[i];
+            go.transform.parent = content;
+        }
+
+
+        DesText.GetComponentInChildren<Text>().text = "User Info";
+        InputField.enabled = false;
+        InputField.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -64,7 +94,8 @@ public class Profile : MonoBehaviour
                 ProfileResJson res = JsonUtility.FromJson<ProfileResJson>(www.downloadHandler.text);
 
                 //change the icon, username and description
-                //...
+                res.description = DesText.GetComponentInChildren<Text>().text;
+                res.icon = iconNumber;            
             }
         }
     }
@@ -89,9 +120,16 @@ public class Profile : MonoBehaviour
 
     public void ChangeIcon()
     {
-        Debug.Log("you clicked change icon!");
-        //startcoror()
-        
+        if(iconNumber < spriteAtlas.spriteCount-1)
+        {
+            iconNumber += 1;
+            IconButton.GetComponentInChildren<Image>().sprite = icons[iconNumber];
+        }
+        else if(iconNumber >= spriteAtlas.spriteCount-1)
+        {
+            iconNumber = 0;
+            IconButton.GetComponentInChildren<Image>().sprite = icons[0];
+        }
     }
 
     IEnumerator ChangeIconEnum()
@@ -99,6 +137,22 @@ public class Profile : MonoBehaviour
         //send webrequest;
         //change you icon locally
         yield return null;
+    }
 
+    public void ChangeDescription()
+    {
+        if(!InputField.enabled)
+        {
+            InputField.enabled = true;
+            InputField.gameObject.SetActive(true);
+        }
+        else
+        {
+            InputField.enabled = false;
+            InputField.gameObject.SetActive(false);
+
+            DesText.GetComponentInChildren<Text>().text = InputField.text;
+        }
+        
     }
 }
