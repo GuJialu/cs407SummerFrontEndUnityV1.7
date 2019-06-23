@@ -36,6 +36,7 @@ public class Profile : MonoBehaviour
     public SpriteAtlas spriteAtlas;
     public InputField InputField;
     public Transform content;
+    public GameObject SelectIconButtonPrefab;
 
     //public Button IconButton;
 
@@ -47,13 +48,15 @@ public class Profile : MonoBehaviour
         spriteAtlas.GetSprites(icons);
         IconButton.GetComponentInChildren<Image>().sprite = icons[0];
 
-        for(int i = 0; i < spriteAtlas.spriteCount; i++)
+        for (int i = 0; i < spriteAtlas.spriteCount; i++)
         {
-            GameObject go = new GameObject("temp");
-            Image m_Image;
-            m_Image = go.AddComponent<Image>();
-            m_Image.sprite = icons[i];
-            go.transform.parent = content;
+            SelectIconButtonPrefab.GetComponent<Image>().sprite = icons[i];
+            //GameObject go = new GameObject("temp");
+            //Image m_Image;
+            //m_Image = go.AddComponent<Image>();
+            //m_Image.sprite = icons[i];
+            //go.transform.parent = content;
+            Instantiate(SelectIconButtonPrefab, content);
         }
 
 
