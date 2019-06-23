@@ -11,9 +11,10 @@ public class Upload : MonoBehaviour
     public GameObject FileScrollViewContent;
 
     public InputField uploadTitleTextBox;
-    public InputField fileNameTextBox;
+    public InputField folderNameTextBox;
     public GameObject uploadButton;
     public GameObject cancelButton;
+    public Text errorMessage;
     // public GameObject fileName;
     // Start is called before the first frame update
     void Start()
@@ -40,12 +41,15 @@ public class Upload : MonoBehaviour
                 Debug.Log(currDirectory.Name);
                 GameObject fileButton = Instantiate(localFileButtonPrefab, FileScrollViewContent.transform);
                 fileButton.GetComponentInChildren<Text>().text = currDirectory.Name;
+                var button = fileButton.GetComponent<Button>();
+                
+                button.onClick.AddListener(delegate{FolderSelected(currDirectory.Name);});
                 // Hello Moto
             }
         }
-        catch
+        catch(Exception e)
         {
-            Debug.Log("Failed to get files in directory");
+            Debug.Log(e);
         }
 
     }
@@ -59,17 +63,24 @@ public class Upload : MonoBehaviour
     public void Uploadfiles()
     {
         string objectFolderPath = Application.dataPath + "/StreamingAssets/LocalGameFiles/";
-        Debug.Log(objectFolderPath);
+        string folderName = folderNameTextBox.text;
+        string uploadName = uploadTitleTextBox.text;
+        if (String.IsNullOrWhiteSpace(folderName) || String.IsNullOrWhiteSpace(uploadName))
+        {
+
+        }
     }
-    public void FileSelected()
+    public void FolderSelected(string name)
     {
         // given button title, get upload name from uploadtitlbox
 
         // then after that, upload the file with the corrosponding information
 
         // call a method to send data
+        folderNameTextBox.text = name;
+        Debug.Log(name);
     }
-
+    
     void SendDataToServer(string uploadName)
     {
         
