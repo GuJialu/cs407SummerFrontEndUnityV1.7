@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.IO;
+using UnityEngine.Networking;
+
+
 
 public class Upload : MonoBehaviour
 {
@@ -12,11 +15,14 @@ public class Upload : MonoBehaviour
 
     public InputField uploadTitleTextBox;
     public InputField folderNameTextBox;
+    public Toggle anonymousToggle;
     public GameObject uploadButton;
     public GameObject cancelButton;
     public Text errorMessage;
+
     // public GameObject fileName;
     // Start is called before the first frame update
+    
     void Start()
     {
 
@@ -63,10 +69,27 @@ public class Upload : MonoBehaviour
     public void Uploadfiles()
     {
         string objectFolderPath = Application.dataPath + "/StreamingAssets/LocalGameFiles/";
-        string folderName = folderNameTextBox.text;
-        string uploadName = uploadTitleTextBox.text;
-        if (String.IsNullOrWhiteSpace(folderName) || String.IsNullOrWhiteSpace(uploadName))
+        
+        if (String.IsNullOrWhiteSpace(folderNameTextBox.text) || String.IsNullOrWhiteSpace(uploadTitleTextBox.text)) // if an input is blank
         {
+            errorMessage.text = "an input field is blank or is white space. please put valid inputs";
+        }
+        else
+        {
+            // Else check if the folder specified in the folderName textbox exists
+            if(!Directory.Exists(objectFolderPath + folderNameTextBox.text)) // if it does not exist
+            {
+                // then failure
+                Debug.Log("noooooooope");
+                errorMessage.text = "Could not find the given folder. Please check your input";
+                
+            } else
+            {
+                //
+                errorMessage.text = "";
+                RequestUpload(WebReq.email, anonymousToggle.isOn, uploadTitleTextBox.text);
+                Debug.Log("HEEEEEEEEEEEEE");
+            }
 
         }
     }
@@ -89,6 +112,47 @@ public class Upload : MonoBehaviour
     {
         
     }
+    IEnumerator RequestUpload(string email, Boolean anonymous, string title)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/registration", new WWWForm())) // TODO fix this web request
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new UploadReqJson(email, anonymous, title)));
 
-    
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                SignUpResJson res = JsonUtility.FromJson<SignUpResJson>(www.downloadHandler.text);
+                if (res.err_message != null)
+                {
+                    errorMessage.text = res.err_message;
+                }
+                else
+                {
+                    errorMessage.text = "success";
+                }
+            }
+        }
+    }
+
+}
+struct UploadReqJson
+{
+
+    public string email;
+    public Boolean anonymous;
+    public string title;
+    public UploadReqJson(string email, Boolean anonymous, string title)
+    {
+        this.email = email;
+        this.anonymous = anonymous;
+        this.title = title;
+    }
 }
