@@ -344,7 +344,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &138286266
 RectTransform:
   m_ObjectHideFlags: 0
@@ -532,9 +532,9 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: -17}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &202925326
 MonoBehaviour:
@@ -1037,7 +1037,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3597,7 +3597,7 @@ GameObject:
   - component: {fileID: 1445953356}
   - component: {fileID: 1445953355}
   m_Layer: 5
-  m_Name: File Name InputField
+  m_Name: Upload Title InputField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3868,7 +3868,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1530644721
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3938,11 +3938,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06762c17de0e5d5418c42c1286d134cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iconButton: {fileID: 1881227468}
-  loginButton: {fileID: 791437682}
-  logoutButton: {fileID: 481089595}
-  loginSignUpPanelPrefab: {fileID: 7587611243401684540, guid: c2878682df8c80641acdc2baeeab99c9,
-    type: 3}
+  iconButton: {fileID: 0}
+  loginButton: {fileID: 0}
+  logoutButton: {fileID: 0}
+  loginSignUpPanelPrefab: {fileID: 0}
 --- !u!1 &1553709647
 GameObject:
   m_ObjectHideFlags: 0
@@ -3978,9 +3977,9 @@ RectTransform:
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -17, y: 20}
+  m_SizeDelta: {x: 0, y: 20}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1553709649
 MonoBehaviour:
@@ -4382,9 +4381,9 @@ RectTransform:
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 20, y: -17}
+  m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1708640860
 MonoBehaviour:
@@ -4429,7 +4428,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 429395634}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.9470863
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4506,7 +4505,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4848,7 +4847,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'File name:'
+  m_Text: 'Upload title:'
 --- !u!222 &1803139224
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5446,6 +5445,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1935073602}
+  - component: {fileID: 1935073603}
   m_Layer: 5
   m_Name: Content
   m_TagString: Untagged
@@ -5469,9 +5469,34 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000040200575}
+  m_AnchoredPosition: {x: 0, y: 0.00047059866}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &1935073603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1935073601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1297475563, guid: f70555f144d8491a825f0804e09c671c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
 --- !u!1 &1954646931
 GameObject:
   m_ObjectHideFlags: 0
@@ -5490,7 +5515,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1954646932
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5565,6 +5590,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a0af837a35e3644282e4aa2c350596e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  localFileButtonPrefab: {fileID: 5308316629554664504, guid: 9f37224177f335d4ea293f255ed10e30,
+    type: 3}
+  FileScrollViewContent: {fileID: 1935073601}
+  uploadTitleTextBox: {fileID: 1445953355}
+  fileNameTextBox: {fileID: 1445764679}
+  uploadButton: {fileID: 2008601022}
+  cancelButton: {fileID: 233107980}
 --- !u!1 &1979010465
 GameObject:
   m_ObjectHideFlags: 0
@@ -5737,7 +5769,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2008601025}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1954646935}
+        m_MethodName: Uploadfiles
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &2008601025
