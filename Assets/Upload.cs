@@ -145,7 +145,7 @@ public class Upload : MonoBehaviour
 }
 struct UploadReqJson
 {
-
+    //json structure
     public string email;
     public Boolean anonymous;
     public string title;
