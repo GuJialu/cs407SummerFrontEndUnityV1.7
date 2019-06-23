@@ -37,6 +37,7 @@ public class Profile : MonoBehaviour
     public InputField InputField;
     public Transform content;
     public GameObject SelectIconButtonPrefab;
+    public GameObject ScorllView;
 
     //public Button IconButton;
 
@@ -48,15 +49,16 @@ public class Profile : MonoBehaviour
         spriteAtlas.GetSprites(icons);
         IconButton.GetComponentInChildren<Image>().sprite = icons[0];
 
-        //GameObject[] setButton = new 
         for (int i = 0; i < spriteAtlas.spriteCount; i++)
         {
             GameObject setButton = Instantiate(SelectIconButtonPrefab, content);
             setButton.GetComponent<Image>().sprite = icons[i];
             Debug.Log("in:" + i);
-            setButton.GetComponent<Button>().onClick.AddListener(delegate { SetIcon(i); });
+            int ii = i;
+            setButton.GetComponent<Button>().onClick.AddListener(delegate { SetIcon(ii); });
         }
-
+        
+        ScorllView.gameObject.SetActive(false);
 
         DesText.GetComponentInChildren<Text>().text = "User Info";
         InputField.enabled = false;
@@ -121,24 +123,14 @@ public class Profile : MonoBehaviour
 
     public void ChangeIcon()
     {
-        if(iconNumber < spriteAtlas.spriteCount-1)
-        {
-            iconNumber += 1;
-            IconButton.GetComponentInChildren<Image>().sprite = icons[iconNumber];
-        }
-        else if(iconNumber >= spriteAtlas.spriteCount-1)
-        {
-            iconNumber = 0;
-            IconButton.GetComponentInChildren<Image>().sprite = icons[0];
-        }
+        ScorllView.gameObject.SetActive(true);
     }
 
     public void SetIcon(int index)
     {
-        Debug.Log(index);
-
         iconNumber = index;
         IconButton.GetComponentInChildren<Image>().sprite = icons[index];
+        ScorllView.gameObject.SetActive(false);
     }
 
     IEnumerator ChangeIconEnum()
