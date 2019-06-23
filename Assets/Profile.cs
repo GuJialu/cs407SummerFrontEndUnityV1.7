@@ -48,15 +48,13 @@ public class Profile : MonoBehaviour
         spriteAtlas.GetSprites(icons);
         IconButton.GetComponentInChildren<Image>().sprite = icons[0];
 
+        //GameObject[] setButton = new 
         for (int i = 0; i < spriteAtlas.spriteCount; i++)
         {
-            SelectIconButtonPrefab.GetComponent<Image>().sprite = icons[i];
-            //GameObject go = new GameObject("temp");
-            //Image m_Image;
-            //m_Image = go.AddComponent<Image>();
-            //m_Image.sprite = icons[i];
-            //go.transform.parent = content;
-            Instantiate(SelectIconButtonPrefab, content);
+            GameObject setButton = Instantiate(SelectIconButtonPrefab, content);
+            setButton.GetComponent<Image>().sprite = icons[i];
+            Debug.Log("in:" + i);
+            setButton.GetComponent<Button>().onClick.AddListener(delegate { SetIcon(i); });
         }
 
 
@@ -133,6 +131,14 @@ public class Profile : MonoBehaviour
             iconNumber = 0;
             IconButton.GetComponentInChildren<Image>().sprite = icons[0];
         }
+    }
+
+    public void SetIcon(int index)
+    {
+        Debug.Log(index);
+
+        iconNumber = index;
+        IconButton.GetComponentInChildren<Image>().sprite = icons[index];
     }
 
     IEnumerator ChangeIconEnum()
