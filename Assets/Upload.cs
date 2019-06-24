@@ -18,7 +18,7 @@ public class Upload : MonoBehaviour
     public Toggle anonymousToggle;
     public GameObject uploadButton;
     public GameObject cancelButton;
-    public Text errorMessage;
+    public Text alertMessage;
 
     // public GameObject fileName;
     // Start is called before the first frame update
@@ -72,7 +72,8 @@ public class Upload : MonoBehaviour
 
         if (String.IsNullOrWhiteSpace(folderNameTextBox.text) || String.IsNullOrWhiteSpace(uploadTitleTextBox.text)) // if an input is blank
         {
-            errorMessage.text = "an input field is blank or is white space. please put valid inputs";
+            alertMessage.text = "an input field is blank or is white space. please put valid inputs";
+            Debug.Log("Blank input debug");
         }
         else
         {
@@ -81,13 +82,13 @@ public class Upload : MonoBehaviour
             {
                 // then failure
                 Debug.Log("noooooooope");
-                errorMessage.text = "Could not find the given folder. Please check your input";
+                alertMessage.text = "Could not find the given folder. Please check your input";
 
             }
             else
             {
                 //
-                errorMessage.text = "";
+                alertMessage.text = "";
                 RequestUpload(WebReq.email, anonymousToggle.isOn, uploadTitleTextBox.text);
                 Debug.Log("HEEEEEEEEEEEEE");
             }
@@ -113,6 +114,12 @@ public class Upload : MonoBehaviour
     {
 
     }
+
+    public void ExitUploadPanel()
+    {
+        Destroy(gameObject);
+
+    }
     IEnumerator RequestUpload(string email, Boolean anonymous, string title)
     {
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/registration", new WWWForm())) // TODO fix this web request
@@ -133,11 +140,11 @@ public class Upload : MonoBehaviour
                 SignUpResJson res = JsonUtility.FromJson<SignUpResJson>(www.downloadHandler.text);
                 if (res.err_message != null)
                 {
-                    errorMessage.text = res.err_message;
+                    alertMessage.text = res.err_message;
                 }
                 else
                 {
-                    errorMessage.text = "success";
+                    alertMessage.text = "success";
                 }
             }
         }
