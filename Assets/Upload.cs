@@ -6,7 +6,25 @@ using System;
 using System.IO;
 using UnityEngine.Networking;
 
+struct UploadReqJson
+{
+    //json structure
+    public string email;
+    public bool anonymous;
+    public string title;
+    public UploadReqJson(string email, bool anonymous, string title)
+    {
+        this.email = email;
+        this.anonymous = anonymous;
+        this.title = title;
+    }
+}
 
+struct UploadResJson
+{
+    public string status;
+    public string url;
+}
 
 public class Upload : MonoBehaviour
 {
@@ -60,12 +78,6 @@ public class Upload : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public void Uploadfiles()
     {
         string objectFolderPath = Application.dataPath + "/StreamingAssets/LocalGameFiles/";
@@ -88,7 +100,7 @@ public class Upload : MonoBehaviour
             {
                 //
                 errorMessage.text = "";
-                RequestUpload(WebReq.email, anonymousToggle.isOn, uploadTitleTextBox.text);
+                StartCoroutine(RequestUploadCoro(WebReq.email, anonymousToggle.isOn, uploadTitleTextBox.text));
                 Debug.Log("HEEEEEEEEEEEEE");
             }
 
@@ -105,17 +117,9 @@ public class Upload : MonoBehaviour
         Debug.Log(name);
     }
 
-    void SendDataToServer(string uploadName)
+    IEnumerator RequestUploadCoro(string email, bool anonymous, string title)
     {
-
-    }
-    public void ShowUploadPanel()
-    {
-
-    }
-    IEnumerator RequestUpload(string email, Boolean anonymous, string title)
-    {
-        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/registration", new WWWForm())) // TODO fix this web request
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/tobeimplent", new WWWForm())) // TODO fix this web request
         {
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new UploadReqJson(email, anonymous, title)));
 
@@ -143,17 +147,10 @@ public class Upload : MonoBehaviour
         }
     }
 
-}
-struct UploadReqJson
-{
-    //json structure
-    public string email;
-    public Boolean anonymous;
-    public string title;
-    public UploadReqJson(string email, Boolean anonymous, string title)
+    IEnumerator RequestConfirmUploadCoro(string title)
     {
-        this.email = email;
-        this.anonymous = anonymous;
-        this.title = title;
+        yield return null;
     }
+
 }
+
