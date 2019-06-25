@@ -9,24 +9,29 @@ enum SortingMethod
     likes,
 }
 
+class FilePageCache
+{
+    public List<GameObject> fileOverviews;
+    public int pageNum;
+    public SortingMethod sortingMethod;
+}
+
 public class FilePage : MonoBehaviour
 {
+    public GameObject fileOverviewPanelPrefab;
+    public GameObject filePanel;
+
     int currentPageNum;
     int numFiles;
     int numFilesPerPage = 16;
 
-    // Start is called before the first frame update
-    void Start()
+    Queue<FilePageCache> filePageCacheQueue;
+
+    // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
+    void Init(string email = null)
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     
     public void ShowPage(int offset)
     {

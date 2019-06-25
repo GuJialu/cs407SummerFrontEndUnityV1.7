@@ -72,7 +72,7 @@ public class Profile : MonoBehaviour
     }
 
     //init the profile page, will be called by the parent module
-    void LoadUserInfo(string email)
+    void Init(string email)
     {
         // invoke the RequestProfileCoro below
     }
