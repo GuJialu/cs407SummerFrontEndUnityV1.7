@@ -5,25 +5,25 @@ using UnityEngine.UI;
 using System;
 using System.IO;
 using UnityEngine.Networking;
+using System.IO.Compression;
 
 struct UploadReqJson
 {
     //json structure
-    public string email;
     public bool anonymous;
-    public string title;
-    public UploadReqJson(string email, bool anonymous, string title)
+    public string fileName;
+    public UploadReqJson(bool anonymous, string fileName)
     {
-        this.email = email;
         this.anonymous = anonymous;
-        this.title = title;
+        this.fileName = fileName;
     }
 }
 
 struct UploadResJson
 {
     public string status;
-    public string url;
+    public string uploadUrl;
+    public string infoUploadUrl;
 }
 
 public class Upload : MonoBehaviour
@@ -117,11 +117,14 @@ public class Upload : MonoBehaviour
         Debug.Log(name);
     }
 
-    IEnumerator RequestUploadCoro(string email, bool anonymous, string title)
+    IEnumerator RequestUploadCoro(string email, bool anonymous, string fileName)
     {
+        string uploadUrl;
+        string infoUploadUrl;
+
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/tobeimplent", new WWWForm())) // TODO fix this web request
         {
-            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new UploadReqJson(email, anonymous, title)));
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new UploadReqJson(anonymous, fileName)));
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
@@ -131,26 +134,72 @@ public class Upload : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.Log(www.error);
+                yield break;
             }
             else
             {
-                SignUpResJson res = JsonUtility.FromJson<SignUpResJson>(www.downloadHandler.text);
-                if (res.err_message != null)
-                {
-                    errorMessage.text = res.err_message;
-                }
-                else
-                {
-                    errorMessage.text = "success";
-                }
+                UploadResJson res = JsonUtility.FromJson<UploadResJson>(www.downloadHandler.text);
+                errorMessage.text = "success";
+                uploadUrl = res.uploadUrl;
+                infoUploadUrl = res.infoUploadUrl;
+
+                Debug.Log(res.uploadUrl);
+                Debug.Log(res.infoUploadUrl);
+            }
+        }
+
+        byte[] fileData;
+        byte[] infoData;        
+
+        try
+        {
+            string filePath = WebReq.objectFolderPath + fileName;
+            string fileInfoPath = filePath + "info";
+            string tempZipPath = Application.dataPath + fileName + ".zip";
+
+            ZipFile.CreateFromDirectory(filePath, tempZipPath);
+            fileData = File.ReadAllBytes(tempZipPath);
+            File.Delete(tempZipPath);
+
+            ZipFile.CreateFromDirectory(fileInfoPath, tempZipPath);
+            infoData = File.ReadAllBytes(tempZipPath);
+            File.Delete(tempZipPath);
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log(e);
+            yield break;
+        }
+
+        using(UnityWebRequest www = UnityWebRequest.Put(uploadUrl, fileData))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+                yield break;
+            }
+            else
+            {
+                Debug.Log("file Upload complete!");
+            }
+        }
+
+        using (UnityWebRequest www = UnityWebRequest.Put(infoUploadUrl, infoData))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+                yield break;
+            }
+            else
+            {
+                Debug.Log("file info Upload complete!");
             }
         }
     }
-
-    IEnumerator RequestConfirmUploadCoro(string title)
-    {
-        yield return null;
-    }
-
 }
 
