@@ -16,6 +16,22 @@ class FilePageCache
     public SortingMethod sortingMethod;
 }
 
+[System.Serializable]
+struct FilePageReqJson
+{
+    public string email;
+    public string sortingMethod;
+    public int startRank;
+    public int range;
+}
+
+[System.Serializable]
+struct FilePageResJson
+{
+    public int status;
+    public string err_message;
+}
+
 public class FilePage : MonoBehaviour
 {
     public GameObject fileOverviewPanelPrefab;

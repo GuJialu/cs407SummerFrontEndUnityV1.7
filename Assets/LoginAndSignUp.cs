@@ -70,11 +70,13 @@ struct CodeVeriReqJson
 {
     public string email;
     public string code;
+    public string password;
 
-    public CodeVeriReqJson(string email, string code)
+    public CodeVeriReqJson(string email, string code, string password)
     {
         this.email = email;
         this.code = code;
+        this.password = password;
     }
 }
 
@@ -286,14 +288,22 @@ public class LoginAndSignUp : MonoBehaviour
         Debug.Log("RequestCodeVeri");
         string email = forgetPasswordEmailInput.text;
         string code = forgetPasswordCodeInput.text;
-        StartCoroutine(RequestCodeVeriCoro(email, code));
+        string password = resetPasswordNewPasswordInput.text;
+        string passwordRenter = resetPasswordRenterPasswordInput.text;
+        if (!password.Equals(passwordRenter))
+        {
+            errorMessageText.text = "renter password not match";
+            return;
+        }
+        StartCoroutine(RequestCodeVeriCoro(email, code, password));
     }
 
-    IEnumerator RequestCodeVeriCoro(string email, string code)
+    IEnumerator RequestCodeVeriCoro(string email, string code, string password)
     {
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/codeVeri", new WWWForm()))
         {
-            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new CodeVeriReqJson(email, code)));
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new CodeVeriReqJson(email, code, password)));
+            Debug.Log(JsonUtility.ToJson(new CodeVeriReqJson(email, code, password)));
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
