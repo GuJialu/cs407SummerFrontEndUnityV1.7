@@ -48,6 +48,7 @@ public class Upload : MonoBehaviour
         // b.GetComponentInChildren<Text>().text = "example";
         // var myButton = (GameObject)Instantiate(localFileButtonPrefab)
         // Button button = myButton.getCompo
+        // git need to be fixed
         // for each folder within the requested directory (provided in WebReq.cs) create a new button.
         // Clicking the button, will fill the two text fields in the panel.
         // https://forum.unity.com/threads/how-to-assign-onclick-for-ui-button-generated-in-runtime.358974/
