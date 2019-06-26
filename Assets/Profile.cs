@@ -68,7 +68,6 @@ public class Profile : MonoBehaviour
         {
             GameObject setButton = Instantiate(SelectIconButtonPrefab, content);
             setButton.GetComponent<Image>().sprite = icons[i];
-            Debug.Log("in:" + i);
             int ii = i;
             setButton.GetComponent<Button>().onClick.AddListener(delegate { SetIcon(ii); });
         }
@@ -77,10 +76,15 @@ public class Profile : MonoBehaviour
 
         DesText.GetComponentInChildren<Text>().text = "User Info";
         inputField.gameObject.SetActive(false);
+
+
+        //for testing only, delete after connect to home page
+        WebReq.email = "msljtacslw@gmail.com";
+        Init(WebReq.email);
     }
 
     //init the profile page, will be called by the parent module
-    void Init(string email)
+    public void Init(string email)
     {
         // start the RequestProfileCoro below
         StartCoroutine(RequestProfileCoro(email));
@@ -103,11 +107,15 @@ public class Profile : MonoBehaviour
             }
             else
             {
+                Debug.Log(www.downloadHandler.text);
+
                 ProfileResJson res = JsonUtility.FromJson<ProfileResJson>(www.downloadHandler.text);
 
                 //change the icon, username and description
                 DesText.GetComponentInChildren<Text>().text = res.description;
-                SetIcon(res.icon);            
+                usernameText.text = res.username;
+                iconNumber = res.icon;
+                IconButton.GetComponentInChildren<Image>().sprite = icons[res.icon];
             }
         }
     }
@@ -128,6 +136,7 @@ public class Profile : MonoBehaviour
         iconNumber = index;
         IconButton.GetComponentInChildren<Image>().sprite = icons[index];
         ScorllView.gameObject.SetActive(false);
+        RequestUpdateProfile();
     }
 
 
@@ -142,6 +151,7 @@ public class Profile : MonoBehaviour
         {
             inputField.gameObject.SetActive(false);
             DesText.GetComponentInChildren<Text>().text = inputField.text;
+            RequestUpdateProfile();
         }
         
     }
@@ -157,6 +167,7 @@ public class Profile : MonoBehaviour
         {
             inputField.gameObject.SetActive(false);
             usernameText.text = inputField.text;
+            RequestUpdateProfile();
         }
 
     }
@@ -168,12 +179,13 @@ public class Profile : MonoBehaviour
 
     IEnumerator RequestUpdateProfileCoro()
     {
-        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "profile/viewAll", new WWWForm()))
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "profile/editAll", new WWWForm()))
         {
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new ProfileUpdateReqJson(WebReq.email, DesText.GetComponentInChildren<Text>().text, iconNumber, usernameText.text)));
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Authorization", WebReq.bearerToken);
 
             yield return www.SendWebRequest();
 
@@ -183,7 +195,7 @@ public class Profile : MonoBehaviour
             }
             else
             {
-
+                Debug.Log(www.downloadHandler.text);
             }
         }
     }
