@@ -237,6 +237,7 @@ public class LoginAndSignUp : MonoBehaviour
                 else
                 {
                     WebReq.bearerToken = res.token;
+                    WebReq.email = email;
                     WorkShopEvents.loginEvent?.Invoke(email);
                 }
             }
