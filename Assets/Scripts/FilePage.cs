@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 enum SortingMethod
 {
@@ -46,7 +47,7 @@ public class FilePage : MonoBehaviour
     // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
     void Init(string email = null)
     {
-        
+
     }
     
     public void ShowPage(int offset)
@@ -54,5 +55,35 @@ public class FilePage : MonoBehaviour
         int pageNum = currentPageNum + offset;
         //request files sorted by selected method ranked from currentPageNum to currentPageNum+numFilesPerPage
         //Change current page
+    }
+
+    public void RequestFilePage(string email = null)
+    {
+
+    }
+
+    IEnumerator RequestProfileCoro(string email)
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "profile/viewAll", new WWWForm()))
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new ProfileReqJson(email)));
+
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+
+                ProfileResJson res = JsonUtility.FromJson<ProfileResJson>(www.downloadHandler.text);
+
+            }
+        }
     }
 }
