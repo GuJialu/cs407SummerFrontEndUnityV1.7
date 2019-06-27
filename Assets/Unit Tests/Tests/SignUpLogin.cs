@@ -14,7 +14,6 @@ namespace Tests
         public void Setup()
         {
             GameObject loginAndSignUpPanel = Object.Instantiate((GameObject)Resources.Load("Prefabs/LoginAndSignUp Panel"));
-
             loginAndSignUp = loginAndSignUpPanel.GetComponent<LoginAndSignUp>();
             Debug.Log(loginAndSignUp);
         }
