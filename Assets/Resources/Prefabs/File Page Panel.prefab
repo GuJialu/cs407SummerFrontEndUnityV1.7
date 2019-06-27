@@ -623,8 +623,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f98fb785ee56e942a6d636ee734766f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fileOverviewPanelPrefab: {fileID: 0}
-  filePanel: {fileID: 0}
+  fileOverviewPanelPrefab: {fileID: 5018875251174639455, guid: 7722f6378350f1d4da641b01f054b57c,
+    type: 3}
+  filePanel: {fileID: 1314792379379949638}
 --- !u!1 &1314792378564099110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1406,7 +1407,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 480, y: 135}
+  m_CellSize: {x: 360, y: 101.25}
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 1
   m_ConstraintCount: 2
