@@ -57,6 +57,8 @@ public class Profile : MonoBehaviour
     public GameObject ScorllView;
     public Text usernameText;
 
+    public GameObject signUpAndLoginPanelPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -124,6 +126,11 @@ public class Profile : MonoBehaviour
     {
         // Go to Uploads page
         Debug.Log("Pressed Upload Button in Profile Page");
+    }
+
+    public void ChangePassword()
+    {
+        GameObject signUpAndLoginPanel = Instantiate(signUpAndLoginPanelPrefab, transform.parent);
     }
 
     public void ChangeIcon()
