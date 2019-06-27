@@ -81,7 +81,7 @@ public class Profile : MonoBehaviour
 
 
         //for testing only, delete after connect to home page
-        WebReq.email = "msljtacslw@gmail.com";
+        //WebReq.email = "msljtacslw@gmail.com";
         Init(WebReq.email);
     }
 
