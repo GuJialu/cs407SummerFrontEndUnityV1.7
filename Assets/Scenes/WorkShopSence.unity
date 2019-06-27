@@ -150,7 +150,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 338942673}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -285,8 +285,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 1530644721}
   - {fileID: 272774578}
+  - {fileID: 1530644721}
   - {fileID: 442399745}
   - {fileID: 1228532606}
   m_Father: {fileID: 0}
@@ -753,6 +753,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Profile Panel (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6158626885423324474, guid: 2fb195d037c90f74096720ca8240ed36,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6158626885423324473, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -861,62 +866,62 @@ PrefabInstance:
     - target: {fileID: 6158626885329526696, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6158626885329526696, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6158626885329526696, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 6158626885329526696, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 6158626885836792071, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6158626885836792071, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 6158626885182881245, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6158626885182881245, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6158626885452664047, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6158626885452664047, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: -17
       objectReference: {fileID: 0}
     - target: {fileID: 6158626885095908555, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6158626885095908555, guid: 2fb195d037c90f74096720ca8240ed36,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2fb195d037c90f74096720ca8240ed36, type: 3}
@@ -1116,7 +1121,7 @@ RectTransform:
   m_Children:
   - {fileID: 1617169892}
   m_Father: {fileID: 338942673}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1176,6 +1181,8 @@ MonoBehaviour:
   loginButton: {fileID: 791437682}
   logoutButton: {fileID: 481089595}
   loginSignUpPanelPrefab: {fileID: 7587611243401684540, guid: c2878682df8c80641acdc2baeeab99c9,
+    type: 3}
+  profilePanelPrefab: {fileID: 6158626885423324474, guid: 2fb195d037c90f74096720ca8240ed36,
     type: 3}
 --- !u!1 &1617169891
 GameObject:
@@ -1336,7 +1343,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1881227471}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11500000, guid: 06762c17de0e5d5418c42c1286d134cb, type: 3}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!114 &1881227471

@@ -11,6 +11,7 @@ public class Home : MonoBehaviour
     public GameObject logoutButton;
 
     public GameObject loginSignUpPanelPrefab;
+    public GameObject profilePanelPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +27,9 @@ public class Home : MonoBehaviour
 
     public void OpenProfilePanel()
     {
-
+        Debug.Log("profile activate");
+        Instantiate(profilePanelPrefab, transform.parent);
+        //loginSignUpPanelPrefab.SetActive(false);
     }
 
     public void OpenLoginSignUpPanel()
