@@ -32,5 +32,47 @@ namespace Tests
             // Use yield to skip a frame.
             yield return null;
         }
+        [UnityTest]
+        public IEnumerator RequestUploadPasses()
+        {
+            // TODO check if request upload succeeds
+
+            yield return null;
+        }
+        [UnityTest]
+        public IEnumerator emptyFolderCheckPasses()
+        {
+            // TODO check if debug message is displayed on empty folder name
+            yield return null;
+        }
+        [UnityTest]
+        public IEnumerator emptyUploadNameCheckPasses()
+        {
+            // TODO check if debug message is displayed on empty upload name
+            yield return null;
+        }
+
+        [UnityTest]
+        public IEnumerator buttonLoadCheckPasses()
+        {
+            // TODO check if buttons for folder have loaded
+            yield return null;
+        }
+        public IEnumerator buttonListenerWorkPasses()
+        {
+            // TODO check if button listener changes the input text
+            yield return null;
+        }
+
+        public IEnumerator cancelButtonPasses()
+        {
+            // TODO check if cancel button destroys panel
+            yield return null;
+        }
+        public IEnumerator toggleAnonymousPasses()
+        {
+            // TODO check if anonymous toggle affects upload.
+            yield return null;
+        }
     }
 }
