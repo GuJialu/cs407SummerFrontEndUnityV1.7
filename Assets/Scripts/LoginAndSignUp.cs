@@ -194,6 +194,7 @@ public class LoginAndSignUp : MonoBehaviour
     {
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "account/registration", new WWWForm()))
         {
+            Debug.Log(JsonUtility.ToJson(new SignUpReqJson(email, password, username)));
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new SignUpReqJson(email, password, username)));
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
