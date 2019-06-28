@@ -21,6 +21,10 @@ public class FileOverview : MonoBehaviour
     public void Init(FileJson fileJson)
     {
         authorName.text = fileJson.username;
+        if (fileJson.anonymous)
+        {
+            authorName.text = "anonymous";
+        }
         downloads.text = fileJson.downloadNum.ToString();
         likes.text = fileJson.likes.ToString();
         date.text = fileJson.dateUpdated;

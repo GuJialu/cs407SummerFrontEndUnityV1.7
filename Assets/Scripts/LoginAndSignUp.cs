@@ -208,9 +208,11 @@ public class LoginAndSignUp : MonoBehaviour
             else
             {
                 SignUpResJson res = JsonUtility.FromJson<SignUpResJson>(www.downloadHandler.text);
+                Debug.Log(www.downloadHandler.text);
                 if (res.err_message != null)
                 {
                     errorMessageText.text = res.err_message;
+                    Debug.Log(res.err_message);
                 }
                 else
                 {
