@@ -43,12 +43,25 @@ namespace Tests
         public IEnumerator emptyFolderCheckPasses()
         {
             // TODO check if debug message is displayed on empty folder name
+            upload.folderNameTextBox.text = "";
+            upload.uploadTitleTextBox.text = "Nonempty";
+            upload.Uploadfiles();
+            yield return new WaitForSeconds(2f);
+
+            Assert.IsTrue(upload.errorMessage.Equals("an input field is blank or is white space. please put valid inputs"));
+
             yield return null;
         }
         [UnityTest]
         public IEnumerator emptyUploadNameCheckPasses()
         {
             // TODO check if debug message is displayed on empty upload name
+            upload.folderNameTextBox.text = "Nonempty";
+            upload.uploadTitleTextBox.text = "";
+            upload.Uploadfiles();
+            yield return new WaitForSeconds(2f);
+
+            Assert.IsTrue(upload.errorMessage.Equals("an input field is blank or is white space. please put valid inputs"));
             yield return null;
         }
 
