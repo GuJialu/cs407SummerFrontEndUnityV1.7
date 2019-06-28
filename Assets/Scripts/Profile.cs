@@ -58,6 +58,8 @@ public class Profile : MonoBehaviour
     public Text usernameText;
 
     public GameObject signUpAndLoginPanelPrefab;
+    public GameObject filePagePanel;
+    public GameObject uploadPanel;
 
     // Start is called before the first frame update
     void Start()
@@ -81,14 +83,15 @@ public class Profile : MonoBehaviour
 
 
         //for testing only, delete after connect to home page
-        WebReq.email = "msljtacslw@gmail.com";
-        Init(WebReq.email);
+        //WebReq.email = "msljtacslw@gmail.com";
+        //Init(WebReq.email);
     }
 
     //init the profile page, will be called by the parent module
     public void Init(string email)
     {
         // start the RequestProfileCoro below
+        filePagePanel.GetComponent<FilePage>().Init(email);
         StartCoroutine(RequestProfileCoro(email));
     }
 
@@ -126,6 +129,7 @@ public class Profile : MonoBehaviour
     {
         // Go to Uploads page
         Debug.Log("Pressed Upload Button in Profile Page");
+        Instantiate(uploadPanel, transform.parent);
     }
 
     public void ChangePassword()

@@ -71,11 +71,11 @@ public class FilePage : MonoBehaviour
 
     public void Start()
     {
-        Init("msljtacslw@gmail.com");
+        //Init("msljtacslw@gmail.com");
     }
 
     // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
-    void Init(string email = null)
+    public void Init(string email = null)
     {
         this.email = email;
         currentPageNum = 1;

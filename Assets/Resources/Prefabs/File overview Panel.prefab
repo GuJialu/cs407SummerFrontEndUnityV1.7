@@ -96,7 +96,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6794760030073111403
 RectTransform:
   m_ObjectHideFlags: 0
@@ -175,7 +175,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1626723260065698209
 RectTransform:
   m_ObjectHideFlags: 0
@@ -254,7 +254,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2346703491218117127
 RectTransform:
   m_ObjectHideFlags: 0
@@ -434,7 +434,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5018875250562324512}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7130493921405354246}
+        m_MethodName: OpenDetialedPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &5018875250574137841
@@ -697,6 +708,8 @@ MonoBehaviour:
   downloads: {fileID: 8477576690475946003}
   likes: {fileID: 1195567884258558146}
   date: {fileID: 1420427027382554368}
+  FileDetailViewPanelPrefab: {fileID: 4421815816782655537, guid: afcadf880513d074099f463b9be73b71,
+    type: 3}
 --- !u!1 &5018875251224298036
 GameObject:
   m_ObjectHideFlags: 0

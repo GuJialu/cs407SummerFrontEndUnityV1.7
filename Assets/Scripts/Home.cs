@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.U2D;
 
 public class Home : MonoBehaviour
 {
@@ -10,12 +11,19 @@ public class Home : MonoBehaviour
     public GameObject loginButton;
     public GameObject logoutButton;
 
+    public SpriteAtlas spriteAtlas;
+
     public GameObject loginSignUpPanelPrefab;
+    public GameObject profilePanelPrefab;
+
+    Sprite originalIconSprite;
 
     // Start is called before the first frame update
     void Start()
     {
         WorkShopEvents.loginEvent.AddListener(OnLogin);
+        iconButton.GetComponent<Button>().enabled = false;
+        originalIconSprite = iconButton.GetComponentInChildren<Image>().sprite;
     }
 
     // Update is called once per frame
@@ -26,20 +34,21 @@ public class Home : MonoBehaviour
 
     public void OpenProfilePanel()
     {
-
+        Instantiate(profilePanelPrefab, transform.parent).GetComponent<Profile>().Init(WebReq.email);
     }
 
     public void OpenLoginSignUpPanel()
     {
         Instantiate(loginSignUpPanelPrefab, transform.parent);
-        loginButton.SetActive(false);
     }
 
     public void Logout()
     {
         WebReq.bearerToken = null;
+        WebReq.email = null;
         logoutButton.SetActive(false);
         loginButton.SetActive(true);
+        iconButton.GetComponentInChildren<Image>().sprite = originalIconSprite;
     }
 
     public void ReturnToMainSence()
@@ -51,6 +60,7 @@ public class Home : MonoBehaviour
     {
         StartCoroutine(RequestProfileIconCoro(email));
         logoutButton.SetActive(true);
+        loginButton.SetActive(false);
     }
 
     IEnumerator RequestProfileIconCoro(string email)
@@ -71,8 +81,11 @@ public class Home : MonoBehaviour
             else
             {
                 ProfileResJson res = JsonUtility.FromJson<ProfileResJson>(www.downloadHandler.text);
-
-                iconButton.GetComponent<Image>().color = Color.red;// change the color as an example since icon is not implmented yet
+                
+                Sprite[] icons = new Sprite[spriteAtlas.spriteCount];
+                spriteAtlas.GetSprites(icons);
+                iconButton.GetComponentInChildren<Image>().sprite = icons[res.icon];
+                iconButton.GetComponent<Button>().enabled = true;
             }
         }
     }

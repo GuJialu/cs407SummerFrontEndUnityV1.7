@@ -14,6 +14,7 @@ public class FileOverview : MonoBehaviour
     public Text downloads;
     public Text likes;
     public Text date;
+    public GameObject FileDetailViewPanelPrefab;
 
     string infoDownloadUrl;
 
@@ -74,7 +75,8 @@ public class FileOverview : MonoBehaviour
 
     public void OpenDetialedPage()
     {
-
+        GameObject fileDetailViewPanel = Instantiate(FileDetailViewPanelPrefab, transform.parent.parent);
+        fileDetailViewPanel.GetComponent<FileDetailView>().init(this);
     }
 }
 
