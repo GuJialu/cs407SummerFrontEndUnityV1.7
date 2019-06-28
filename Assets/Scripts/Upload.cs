@@ -115,6 +115,11 @@ public class Upload : MonoBehaviour
             {
                 //
                 errorMessage.text = "";
+
+                if (WebReq.bearerToken == null)
+                {
+                    return;
+                }
                 StartCoroutine(RequestUploadCoro());
                 Debug.Log("HEEEEEEEEEEEEE");
             }

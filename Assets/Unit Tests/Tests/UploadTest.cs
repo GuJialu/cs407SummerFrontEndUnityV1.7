@@ -25,11 +25,42 @@ namespace Tests
 
         // A UnityTest behaves like a coroutine in Play Mode. In Edit Mode you can use
         // `yield return null;` to skip a frame.
+
         [UnityTest]
-        public IEnumerator UploadPasses()
+        public IEnumerator RequestUploadPasses()
         {
-            // Use the Assert class to test conditions.
-            // Use yield to skip a frame.
+            // TODO check if request upload succeeds
+            upload.folderNameTextBox.text = "mod1";
+            upload.uploadTitleTextBox.text = "Nonempty";
+            WebReq.bearerToken = null;
+            upload.Uploadfiles();
+
+            Assert.IsTrue(upload.errorMessage.text.Equals(""));
+
+            yield return null;
+        }
+        [UnityTest]
+        public IEnumerator EmptyFolderCheckPasses()
+        {
+            upload.folderNameTextBox.text = "";
+            upload.uploadTitleTextBox.text = "Nonempty";
+            upload.Uploadfiles();
+            yield return new WaitForSeconds(2f);
+
+            Assert.IsTrue(upload.errorMessage.text.Equals("an input field is blank or is white space. please put valid inputs"));
+
+            yield return null;
+        }
+        [UnityTest]
+        public IEnumerator EmptyUploadNameCheckPasses()
+        {
+            upload.folderNameTextBox.text = "Nonempty";
+            upload.uploadTitleTextBox.text = "";
+            upload.Uploadfiles();
+            yield return new WaitForSeconds(2f);
+
+            Assert.IsTrue(upload.errorMessage.text.Equals("an input field is blank or is white space. please put valid inputs"));
+
             yield return null;
         }
     }

@@ -89,7 +89,7 @@ namespace Tests
             // Use the Assert class to test conditions.
             // Use yield to skip a frame.
 
-            loginAndSignUp.loginEmailInput.text = "testUser4@email.com";
+            loginAndSignUp.loginEmailInput.text = "nofiletest@email.com";
             loginAndSignUp.loginPasswordInput.text = "1234";
             loginAndSignUp.RequestLogin();
 
