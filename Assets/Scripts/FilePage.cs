@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-enum SortingMethod
+public enum SortingMethod
 {
     date,
     downloads,
@@ -75,7 +75,7 @@ public class FilePage : MonoBehaviour
     }
 
     // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
-    public void Init(string email = null)
+    public void Init(string email = null, SortingMethod sortingMethod = SortingMethod.date, string keyword = null)
     {
         this.email = email;
         currentPageNum = 1;
