@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 public enum SortingMethod
 {
@@ -59,6 +60,7 @@ public class FilePage : MonoBehaviour
 {
     public GameObject fileOverviewPanelPrefab;
     public GameObject filePanel;
+    public Text[] indexs;
 
     string email;
     int currentPageNum;
@@ -87,7 +89,7 @@ public class FilePage : MonoBehaviour
         int pageNum = currentPageNum + offset;
 
 
-        if (pageNum > 0/*&&pageNum<MaxPageNum()/*/)
+        if (pageNum <= 0/*&&pageNum>MaxPageNum()/*/)
         {
             //do nothing
             return;
