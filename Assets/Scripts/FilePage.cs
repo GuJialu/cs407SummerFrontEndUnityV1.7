@@ -51,6 +51,7 @@ public struct FileJson
     public int likes;
     public bool anonymous;
     public string infoDownloadUrl;
+    public string key;
 }
 
 [System.Serializable]
@@ -72,27 +73,25 @@ public class FilePage : MonoBehaviour
     int numFilesPerPage = 16;
     int MaxPageNum() { return numFiles / numFilesPerPage + 1;}
 
-    int StartRank() { return numFilesPerPage * (currentPageNum - 1); }
+    int StartRank() { return numFilesPerPage * (currentPageNum - 1) + 1; }
     string email;
     string keyword;
     public Dropdown sortMethodDropdown;
     public Dropdown filterDropdown;
-    public Dropdown typeDropdown;
     public Dropdown timeDropdown;
 
     Queue<FilePageCache> filePageCacheQueue;
 
     public void Start()
     {
-        //Init("msljtacslw@gmail.com");
-        currentPageNum = 1;
-        ToPage(0);
+        Init();
     }
 
     // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
     public void Init(string email = null)
     {
         this.email = email;
+        keyword = null;
         currentPageNum = 1;
         ToPage(0);
         RequestFiles();
@@ -200,7 +199,8 @@ public class FilePage : MonoBehaviour
 
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/listAll", new WWWForm()))
         {
-            //Debug.Log(JsonUtility.ToJson(new FilePageReqJson(email, "timeASC", currentPageNum - 1, numFilesPerPage)));
+            Debug.Log(sortingMethod);
+            Debug.Log(JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, startRank)));
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
                 JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, startRank))
                 );
