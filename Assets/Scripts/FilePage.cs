@@ -23,15 +23,19 @@ struct FilePageReqJson
 {
     public string authorEmail;
     public string sortingMethod;
+    public string filterType;
+    public string filterTime;
+    public string searchKeyword;
     public int startRank;
-    public int range;
 
-    public FilePageReqJson(string authorEmail, string sortingMethod, int startRank, int range)
+    public FilePageReqJson(string authorEmail, string sortingMethod, string filterType, string filterTime, string searchKeyword, int startRank)
     {
         this.authorEmail = authorEmail;
         this.sortingMethod = sortingMethod;
+        this.filterType = filterType;
+        this.filterTime = filterTime;
+        this.searchKeyword = searchKeyword;
         this.startRank = startRank;
-        this.range = range;
     }
 }
 
@@ -62,32 +66,41 @@ public class FilePage : MonoBehaviour
     public GameObject filePanel;
     public Text[] indexs;
 
-    string email;
+
     int currentPageNum;
     int numFiles;
     int numFilesPerPage = 16;
     int MaxPageNum() { return numFiles / numFilesPerPage + 1;}
 
+    int StartRank() { return numFilesPerPage * (currentPageNum - 1); }
+    string email;
+    string keyword;
+    public Dropdown sortMethodDropdown;
+    public Dropdown filterDropdown;
+    public Dropdown typeDropdown;
+    public Dropdown timeDropdown;
 
     Queue<FilePageCache> filePageCacheQueue;
 
     public void Start()
     {
         //Init("msljtacslw@gmail.com");
+        currentPageNum = 1;
+        ToPage(0);
     }
 
     // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
-    public void Init(string email = null, SortingMethod sortingMethod = SortingMethod.date, string keyword = null)
+    public void Init(string email = null)
     {
         this.email = email;
         currentPageNum = 1;
+        ToPage(0);
         RequestFiles();
     }
     
     public void ToPage(int offset)
     {
         int pageNum = currentPageNum + offset;
-
 
         if (pageNum <= 0/*&&pageNum>MaxPageNum()/*/)
         {
@@ -96,23 +109,100 @@ public class FilePage : MonoBehaviour
         }
 
         currentPageNum = pageNum;
+        int i = 0;
+        foreach(Text t in indexs)
+        {
+            int indexNum = currentPageNum - 2 + i;
+            if (indexNum <= 0)
+            {
+                t.text = "-";
+            }
+            else
+            {
+                t.text = indexNum.ToString();
+            }
+            ++i;
+        }
+        //RequestFiles();
+    }
 
+    public void KeywordSearch()
+    {
+        //keyword = keywordInput and show keyword panel
+        //RequestFiles();
+    }
+
+    public void UndoKeywordSearch()
+    {
+        //keyword = null and hide keyword panel
+        //RequestFiles();
     }
 
     public void RequestFiles()
     {
+        //cache old and search new in cache
         StartCoroutine(RequestFilesCoro());
     }
 
     IEnumerator RequestFilesCoro()
     {
         //Startrank is (currentPageNum-1)*FilesPerPage, Range is files per page
+        string authorEmail = email;
+
+        string sortingMethod = null;
+        switch (sortMethodDropdown.value)
+        {
+            case 1:
+                sortingMethod = "timeASC";
+                break;
+            case 2:
+                sortingMethod = "nameASC";
+                break;
+            case 3:
+                sortingMethod = "downloads";
+                break;
+            case 4:
+                sortingMethod = "likes";
+                break;
+        }
+
+        string filterType = null;
+        switch (filterDropdown.value)
+        {
+            case 1:
+                filterType = "Visual Mods";
+                break;
+            case 2:
+                filterType = "UI Mods";
+                break;
+            case 3:
+                filterType = "Game logic Mods";
+                break;
+        }
+
+        string filterTime = null;
+        switch (timeDropdown.value)
+        {
+            case 1:
+                filterTime = "oneday";
+                break;
+            case 2:
+                filterTime = "threemonths";
+                break;
+            case 3:
+                filterTime = "oneyear";
+                break;
+        }
+
+        string searchKeyword = keyword;
+
+        int startRank = StartRank();
 
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/listAll", new WWWForm()))
         {
-            Debug.Log(JsonUtility.ToJson(new FilePageReqJson(email, "timeASC", currentPageNum - 1, numFilesPerPage)));
+            //Debug.Log(JsonUtility.ToJson(new FilePageReqJson(email, "timeASC", currentPageNum - 1, numFilesPerPage)));
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson(new FilePageReqJson(email, "timeASC", currentPageNum-1, numFilesPerPage))
+                JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, startRank))
                 );
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
