@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3914539553300438126
 RectTransform:
   m_ObjectHideFlags: 0
@@ -218,7 +218,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1576712962881621628
 RectTransform:
   m_ObjectHideFlags: 0
@@ -954,6 +954,9 @@ MonoBehaviour:
   date: {fileID: 1420427027382554368}
   FileDetailViewPanelPrefab: {fileID: 4421815816782655537, guid: afcadf880513d074099f463b9be73b71,
     type: 3}
+  key: 
+  unlikeButton: {fileID: 2855146627571195345}
+  deleteButton: {fileID: 4166221117564509664}
 --- !u!1 &5018875251224298036
 GameObject:
   m_ObjectHideFlags: 0
