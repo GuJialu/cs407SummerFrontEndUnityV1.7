@@ -13,6 +13,11 @@ public class DummyGame : MonoBehaviour
     public InputField desInput;
     public Dropdown coverDropdown;
 
+    public InputField folderNameTextBox;
+
+    public GameObject localFileButtonPrefab;
+    public GameObject FileScrollViewContent;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -64,5 +69,31 @@ public class DummyGame : MonoBehaviour
                 break;
         }
         File.WriteAllBytes(coverPath, cover.EncodeToPNG());
+    }
+
+    public void LoadMod()
+    {
+        string filePath = WebReq.objectFolderPath;
+        DirectoryInfo d = new DirectoryInfo(filePath);
+
+        foreach (var currDirectory in d.GetDirectories())
+        {
+            Debug.Log(currDirectory.Name);
+            GameObject fileButton = Instantiate(localFileButtonPrefab, FileScrollViewContent.transform);
+            fileButton.GetComponentInChildren<Text>().text = currDirectory.Name;
+            var button = fileButton.GetComponent<Button>();
+            button.onClick.AddListener(delegate { FolderSelected(currDirectory.Name); });
+        }
+    }
+
+    public void FolderSelected(string name)
+    {
+        folderNameTextBox.text = name;
+        Debug.Log(name);
+    }
+
+    public void SaveMod()
+    {
+
     }
 }

@@ -10,6 +10,7 @@ public class Home : MonoBehaviour
     public GameObject iconButton;
     public GameObject loginButton;
     public GameObject logoutButton;
+    public GameObject filePagePanel;
 
     public SpriteAtlas spriteAtlas;
 
@@ -24,12 +25,7 @@ public class Home : MonoBehaviour
         WorkShopEvents.loginEvent.AddListener(OnLogin);
         iconButton.GetComponent<Button>().enabled = false;
         originalIconSprite = iconButton.GetComponentInChildren<Image>().sprite;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        filePagePanel.GetComponent<FilePage>().Init();
     }
 
     public void OpenProfilePanel()
