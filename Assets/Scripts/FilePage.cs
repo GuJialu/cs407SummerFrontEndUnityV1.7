@@ -51,6 +51,7 @@ public struct FileJson
     public int likes;
     public bool anonymous;
     public string infoDownloadUrl;
+    public string key;
 }
 
 [System.Serializable]
