@@ -30,7 +30,8 @@ public class FileOverview : MonoBehaviour
         downloads.text = fileJson.downloadNum.ToString();
         likes.text = fileJson.likes.ToString();
         date.text = fileJson.dateUpdated;
-        infoDownloadUrl = fileJson.infoDownloadUrl;
+        infoDownloadUrl = fileJson.infoDownloadUrl.URL;
+        Debug.Log(fileJson.infoDownloadUrl.status+" "+infoDownloadUrl);
         key = fileJson.key;
         StartCoroutine(RequestDownloadInfoCoro());
     }

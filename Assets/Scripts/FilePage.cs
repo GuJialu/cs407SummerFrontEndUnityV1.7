@@ -50,8 +50,15 @@ public struct FileJson
     public int downloadNum;
     public int likes;
     public bool anonymous;
-    public string infoDownloadUrl;
+    public InfoDownloadUrl infoDownloadUrl;
     public string key;
+}
+
+[System.Serializable]
+public struct InfoDownloadUrl
+{
+    public int status;
+    public string URL;
 }
 
 [System.Serializable]
@@ -199,10 +206,9 @@ public class FilePage : MonoBehaviour
 
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/listAll", new WWWForm()))
         {
-            Debug.Log(sortingMethod);
-            Debug.Log(JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, startRank)));
+            Debug.Log(JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, startRank)).Replace("\"\"", "null"));
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, startRank))
+                JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, startRank)).Replace("\"\"", "null")
                 );
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
