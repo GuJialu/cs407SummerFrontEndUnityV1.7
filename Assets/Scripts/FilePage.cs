@@ -149,7 +149,7 @@ public class FilePage : MonoBehaviour
         //Startrank is (currentPageNum-1)*FilesPerPage, Range is files per page
         string authorEmail = email;
 
-        string sortingMethod = null;
+        string sortingMethod = null; //default is null
         switch (sortMethodDropdown.value)
         {
             case 1:
@@ -166,7 +166,7 @@ public class FilePage : MonoBehaviour
                 break;
         }
 
-        string filterType = null;
+        string filterType = null; //default is null
         switch (filterDropdown.value)
         {
             case 1:
@@ -180,7 +180,7 @@ public class FilePage : MonoBehaviour
                 break;
         }
 
-        string filterTime = null;
+        string filterTime = null; //default is null
         switch (timeDropdown.value)
         {
             case 1:
