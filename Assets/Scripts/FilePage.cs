@@ -84,15 +84,14 @@ public class FilePage : MonoBehaviour
 
     public void Start()
     {
-        //Init("msljtacslw@gmail.com");
-        currentPageNum = 1;
-        ToPage(0);
+        Init();
     }
 
     // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
     public void Init(string email = null)
     {
         this.email = email;
+        keyword = null;
         currentPageNum = 1;
         ToPage(0);
         RequestFiles();
