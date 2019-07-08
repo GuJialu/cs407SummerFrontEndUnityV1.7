@@ -15,7 +15,7 @@ public class FileOverview : MonoBehaviour
     public Text likes;
     public Text date;
     public GameObject FileDetailViewPanelPrefab;
-    string key;
+    public string key;
     public GameObject unlikeButton;
     public GameObject deleteButton;
     string infoDownloadUrl;
