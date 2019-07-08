@@ -23,7 +23,7 @@ struct FilePageReqJson
 {
     public string authorEmail;
     public string sortingMethod;
-    public string filterType;
+    public FilterTypes filterType;
     public string filterTime;
     public string searchKeyword;
     public int startRank;
@@ -32,10 +32,25 @@ struct FilePageReqJson
     {
         this.authorEmail = authorEmail;
         this.sortingMethod = sortingMethod;
-        this.filterType = filterType;
+        this.filterType = new FilterTypes(filterType);
         this.filterTime = filterTime;
         this.searchKeyword = searchKeyword;
         this.startRank = startRank;
+    }
+}
+
+[System.Serializable]
+public struct FilterTypes
+{
+    public List<string> content;
+
+    public FilterTypes(string type)
+    {
+        content = new List<string>();
+        if (!string.IsNullOrEmpty(type))
+        {
+            content.Add(type);
+        }
     }
 }
 
