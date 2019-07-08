@@ -73,6 +73,8 @@ public class FilePage : MonoBehaviour
     public GameObject fileOverviewPanelPrefab;
     public GameObject filePanel;
     public Text[] indexs;
+    public InputField keywordInput;
+    public GameObject keywordPanel;
 
 
     int currentPageNum;
@@ -91,7 +93,7 @@ public class FilePage : MonoBehaviour
 
     public void Start()
     {
-        Init();
+
     }
 
     // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
@@ -99,9 +101,9 @@ public class FilePage : MonoBehaviour
     {
         this.email = email;
         keyword = null;
-        currentPageNum = 1;
-        ToPage(0);
-        RequestFiles();
+
+        //Reload FilePanel
+        ReloadFilePanel();
     }
     
     public void ToPage(int offset)
@@ -129,24 +131,47 @@ public class FilePage : MonoBehaviour
             }
             ++i;
         }
-        //RequestFiles();
+        RequestFiles();
     }
 
     public void KeywordSearch()
     {
         //keyword = keywordInput and show keyword panel
-        //RequestFiles();
+        if (string.IsNullOrEmpty(keywordInput.text))
+        {
+            return;
+        }
+        keyword = keywordInput.text;
+        keywordPanel.SetActive(true);
+
+        //Reload FilePanel
+        ReloadFilePanel();
     }
 
     public void UndoKeywordSearch()
     {
         //keyword = null and hide keyword panel
-        //RequestFiles();
+        keyword = null;
+        keywordPanel.SetActive(false);
+
+        //Reload FilePanel
+        ReloadFilePanel();
+    }
+
+    public void ReloadFilePanel()
+    {
+        currentPageNum = 1;
+        ToPage(0);
     }
 
     public void RequestFiles()
     {
         //cache old and search new in cache
+        foreach(Transform fileOverviewTrans in filePanel.transform)
+        {
+            Destroy(fileOverviewTrans.gameObject);
+        }
+
         StartCoroutine(RequestFilesCoro());
     }
 
@@ -155,19 +180,19 @@ public class FilePage : MonoBehaviour
         //Startrank is (currentPageNum-1)*FilesPerPage, Range is files per page
         string authorEmail = email;
 
-        string sortingMethod = null; //default is null
+        string sortingMethod = null; //default is timeASC
         switch (sortMethodDropdown.value)
         {
-            case 1:
+            case 0:
                 sortingMethod = "timeASC";
                 break;
-            case 2:
+            case 1:
                 sortingMethod = "nameASC";
                 break;
-            case 3:
+            case 2:
                 sortingMethod = "downloads";
                 break;
-            case 4:
+            case 3:
                 sortingMethod = "likes";
                 break;
         }
