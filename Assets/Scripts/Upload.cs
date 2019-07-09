@@ -113,7 +113,6 @@ public class Upload : MonoBehaviour
             }
             else
             {
-                //
                 errorMessage.text = "";
 
                 if (WebReq.bearerToken == null)
