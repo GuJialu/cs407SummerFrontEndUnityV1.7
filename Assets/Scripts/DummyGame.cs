@@ -13,6 +13,7 @@ public class DummyGame : MonoBehaviour
     public Texture2D city;
     public InputField modNameInput;
     public InputField desInput;
+    public InputField modContentInput;
     public Dropdown coverDropdown;
 
     public Text errorMessage;
@@ -85,7 +86,7 @@ public class DummyGame : MonoBehaviour
         //string modPath = "Assets/StreamingAssets/LocalGameFiles/" + folderNameTextBox.text;
         string modPath = WebReq.objectFolderPath + modNameInput.text;
         string infoPath = modPath + "/info";
-        string contentPath = modPath + "/content.txt";
+        string contentPath = modPath + "/modcontent.txt";
         string desPath = infoPath + "/des.txt";
         string coverPath = infoPath + "/workingspace.PNG";
 
@@ -93,6 +94,9 @@ public class DummyGame : MonoBehaviour
         {
             StreamReader reader = new StreamReader(desPath);
             desInput.text = reader.ReadToEnd();
+            reader.Close();
+            reader = new StreamReader(contentPath);
+            modContentInput.text = reader.ReadToEnd();
             reader.Close();
         }
         else
@@ -119,7 +123,7 @@ public class DummyGame : MonoBehaviour
             Directory.CreateDirectory(infoPath);
         }
 
-        string contentPath = modPath + "/content.txt";
+        string contentPath = modPath + "/modcontent.txt";
         string desPath = infoPath + "/des.txt";
         string coverPath = infoPath + "/workingspace.PNG";
 
@@ -133,12 +137,21 @@ public class DummyGame : MonoBehaviour
             File.Delete(coverPath);
             Debug.Log("cover file delete");
         }
-        
+        if (File.Exists(contentPath))
+        {
+            File.Delete(contentPath);
+            Debug.Log("content file delete");
+        }
+
         using (StreamWriter outputFile = File.CreateText(desPath))
         {
             outputFile.Write(desInput.text);
         }
-        
+        using (StreamWriter outputFile = File.CreateText(contentPath))
+        {
+            outputFile.Write(modContentInput.text);
+        }
+
         Texture2D cover = spongeBob;
         switch (coverDropdown.value)
         {
@@ -154,6 +167,12 @@ public class DummyGame : MonoBehaviour
         }
         File.WriteAllBytes(coverPath, cover.EncodeToPNG());
 
+        
+        foreach(Transform fileButtonTrans in FileScrollViewContent.transform)
+        {
+            Destroy(fileButtonTrans.gameObject);
+        }
+        
         LoadMod();
     }
 }
