@@ -1,0 +1,4 @@
+{
+	"startStr":"Start",
+	"speed":12
+}
