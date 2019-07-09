@@ -29,6 +29,10 @@ public class GameControl : MonoBehaviour
     {
         GameConfig.LoadMods(WebReq.objectFolderPath);
         //GameConfig.LoadMods(WebReq.downloadFolderPath);
+        rectmovement = GameConfig.speed;
+
+        if (rectmovement > 10.0f)
+            rectmovement = 10.0f;
     }
 
     // Update is called once per frame
