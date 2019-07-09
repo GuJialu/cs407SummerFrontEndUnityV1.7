@@ -1206,6 +1206,7 @@ MonoBehaviour:
   - {fileID: 1314792377613138566}
   keywordInput: {fileID: 4311829819014053625}
   keywordPanel: {fileID: 6810026145395020251}
+  searchByContributorToggle: {fileID: 1281861319720952148}
   sortMethodDropdown: {fileID: 5558973671645603961}
   filterDropdown: {fileID: 5142441034360976036}
   timeDropdown: {fileID: 4520151071023567436}
@@ -6064,7 +6065,7 @@ GameObject:
   - component: {fileID: 8561372243740251621}
   - component: {fileID: 1281861319720952148}
   m_Layer: 5
-  m_Name: Toggle
+  m_Name: searchByContributorToggle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

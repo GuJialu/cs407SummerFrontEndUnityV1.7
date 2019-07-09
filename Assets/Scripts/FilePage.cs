@@ -26,15 +26,17 @@ struct FilePageReqJson
     public FilterTypes filterType;
     public string filterTime;
     public string searchKeyword;
+    public bool searchByContributor;
     public int startRank;
 
-    public FilePageReqJson(string authorEmail, string sortingMethod, string filterType, string filterTime, string searchKeyword, int startRank)
+    public FilePageReqJson(string authorEmail, string sortingMethod, string filterType, string filterTime, string searchKeyword, bool searchByContributor, int startRank)
     {
         this.authorEmail = authorEmail;
         this.sortingMethod = sortingMethod;
         this.filterType = new FilterTypes(filterType);
         this.filterTime = filterTime;
         this.searchKeyword = searchKeyword;
+        this.searchByContributor = searchByContributor;
         this.startRank = startRank;
     }
 }
@@ -90,6 +92,7 @@ public class FilePage : MonoBehaviour
     public Text[] indexs;
     public InputField keywordInput;
     public GameObject keywordPanel;
+    public Toggle searchByContributorToggle;
 
 
     int currentPageNum;
@@ -242,13 +245,15 @@ public class FilePage : MonoBehaviour
 
         string searchKeyword = keyword;
 
+        bool searchByContributor = searchByContributorToggle.isOn;
+
         int startRank = StartRank();
 
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/listAll", new WWWForm()))
         {
-            Debug.Log(JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, startRank)).Replace("\"\"", "null"));
+            Debug.Log(JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, searchByContributor, startRank)).Replace("\"\"", "null"));
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, startRank)).Replace("\"\"", "null")
+                JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, searchByContributor, startRank)).Replace("\"\"", "null")
                 );
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
