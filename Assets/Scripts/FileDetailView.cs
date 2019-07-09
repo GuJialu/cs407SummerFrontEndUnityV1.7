@@ -5,6 +5,7 @@ using System.IO.Compression;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System.Text.RegularExpressions;
 
 [System.Serializable]
 struct DownloadReqJson
@@ -115,14 +116,19 @@ public class FileDetailView : MonoBehaviour
         {
             using (ZipArchive archive = new ZipArchive(zipToOpen, ZipArchiveMode.Update))
             {
-                //ZipArchiveEntry fileEntry = archive.GetEntry("modcontent.txt");
-                string filePath = WebReq.objectFolderPath + "test";
-                Debug.Log(filePath);    
-                archive.ExtractToDirectory(filePath);
+                string filename = Regex.Replace(DownloadKey, @"[^0-9a-zA-Z]+", "");
+                string filePath = Application.dataPath + "/StreamingAssets/DownloadedGameFiles/" + filename;
+                Debug.Log(filePath);
 
-                // how to get the folder name
-                // if folder is exist, then update
-                // if foder is not exist, then download
+                if (!Directory.Exists(filePath))
+                {
+                    archive.ExtractToDirectory(filePath);
+                }
+                else
+                {
+                    Directory.Delete(filePath);
+                    archive.ExtractToDirectory(filePath);
+                }
             }
         }
     }
