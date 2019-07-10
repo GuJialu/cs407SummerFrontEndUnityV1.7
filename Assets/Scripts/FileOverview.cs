@@ -18,6 +18,7 @@ public class FileOverview : MonoBehaviour
     string key;
     public GameObject unlikeButton;
     public GameObject deleteButton;
+    public GameObject likeButton;
     string infoDownloadUrl;
 
     public void Init(FileJson fileJson)
@@ -93,10 +94,10 @@ public class FileOverview : MonoBehaviour
     }
     IEnumerator DeleteFileCoro()
     {
-        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/likeFile", new WWWForm())) // TODO change element
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/deleteFile", new WWWForm())) // TODO change element
         {
             // TODO finish HTTP request for file like
-            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new likeFavoriteReqJson(key)) // TODO find correct JSON.
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new deleteFileReqJson(key)) // TODO find correct JSON.
                 );
             yield return www.SendWebRequest();
 
@@ -164,6 +165,29 @@ public class FileOverview : MonoBehaviour
             }
         }
     }
+
+    public void favoritesView()
+    {
+        EnableUnlike();
+        DisableDelete();
+    }
+    public void publicView()
+    {
+        EnableLike();
+        DisableDelete();
+        DisableUnlike();
+    }
+    public void creatorView()
+    {
+        EnableDelete();
+        DisableUnlike();
+        DisableLike();
+    }
+    public void EnableLike()
+    {
+        likeButton.SetActive(true);
+
+    }
     public void EnableUnlike()
     {
         unlikeButton.SetActive(true);
@@ -171,6 +195,10 @@ public class FileOverview : MonoBehaviour
     public void EnableDelete()
     {
         deleteButton.SetActive(true);
+    }
+    public void DisableLike()
+    {
+        likeButton.SetActive(false);
     }
     public void DisableUnlike()
     {
@@ -194,6 +222,15 @@ struct likeFavoriteReqJson
 {
     public string key;
     public likeFavoriteReqJson(string key)
+    {
+        this.key = key;
+    }
+}
+
+struct deleteFileReqJson
+{
+    public string key;
+    public deleteFileReqJson(string key)
     {
         this.key = key;
     }
