@@ -285,4 +285,19 @@ public class FilePage : MonoBehaviour
             fileOverview.Init(fileJson);            
         }
     }
+
+    void EnableDelete()
+    {
+        foreach (FileOverview overview in filePanel.GetComponentsInChildren<FileOverview>())
+        {
+            overview.EnableDelete();
+        }
+    }
+    void DisableDelete()
+    {
+        foreach (FileOverview overview in filePanel.GetComponentsInChildren<FileOverview>())
+        {
+            overview.DisableDelete();
+        }
+    }
 }

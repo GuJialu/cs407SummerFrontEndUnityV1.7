@@ -13,13 +13,13 @@ public class Favorites : MonoBehaviour
     public GameObject FavoritesScrollViewContent;
     public GameObject fileOverviewPanelPrefab;
 
-    public GameObject exitButton;
+    // public GameObject exitButton;
     public GameObject removeFavoriteButton;
+    public GameObject stopRemovingButton;
 
+    // public Text errorMessage;
 
-    public Text errorMessage;
-
-    public string endpoint = "profile/viewfavoritefile";
+    string endpoint = "profile/viewfavoritefile";
 
     void Start()
     {
@@ -62,16 +62,31 @@ public class Favorites : MonoBehaviour
             }
         }
     }
-    public void ElementSelected(string name)
-    {
-        // TODO, call database for more info, redirect user or pop up with more information.
-    }
 
-    public void RemoveFromFavorites()
-    {
-        // TODO, call database to remove favorites from list. Reload page.
-    }
 
+    public void EnableRemoveFromFavorites()
+    {
+        // TODO check if this works
+        removeFavoriteButton.SetActive(false);
+        stopRemovingButton.SetActive(true);
+        foreach (FileOverview overview in FavoritesScrollViewContent.GetComponentsInChildren<FileOverview>())
+        {
+            overview.EnableUnlike();
+        }
+
+    }
+    public void DisableRemoveFromFavorites()
+    {
+        // TODO check if this works
+
+        removeFavoriteButton.SetActive(true);
+        stopRemovingButton.SetActive(false);
+        foreach (FileOverview overview in FavoritesScrollViewContent.GetComponentsInChildren<FileOverview>())
+        {
+            overview.DisableUnlike();
+        }
+
+    }
     public void ConfirmRemoveFromFavorites()
     {
         // TODO be called by 'RemoveFromFavorites'

@@ -60,7 +60,8 @@ public class Profile : MonoBehaviour
     public GameObject signUpAndLoginPanelPrefab;
     public GameObject filePagePanel;
     public GameObject uploadPanel;
-
+    public GameObject favoritesbutton;
+    public GameObject FavoritesPanelPrefab;
     // Start is called before the first frame update
     void Start()
     {
@@ -183,6 +184,10 @@ public class Profile : MonoBehaviour
 
     }
 
+    public void GoToFavorites()
+    {
+        GameObject favoritespage = Instantiate(FavoritesPanelPrefab);
+    }
     void RequestUpdateProfile()
     {
         StartCoroutine(RequestUpdateProfileCoro());
