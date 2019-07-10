@@ -31,6 +31,7 @@ public class FileOverview : MonoBehaviour
         likes.text = fileJson.likes.ToString();
         date.text = fileJson.dateUpdated;
         infoDownloadUrl = fileJson.infoDownloadUrl;
+        // Add information that sets the like or dislike button according to the state of favorites.
         key = fileJson.key;
         StartCoroutine(RequestDownloadInfoCoro());
     }
@@ -88,9 +89,51 @@ public class FileOverview : MonoBehaviour
 
     public void DeleteFile()
     {
-        // TODO remove element from database
+        StartCoroutine(DeleteFileCoro());
     }
+    IEnumerator DeleteFileCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/likeFile", new WWWForm())) // TODO change element
+        {
+            // TODO finish HTTP request for file like
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new likeFavoriteReqJson(key)) // TODO find correct JSON.
+                );
+            yield return www.SendWebRequest();
 
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+    public void LikeFile()
+    {
+        // Add element that disables like button.
+        StartCoroutine(LikeFileCoro());
+    }
+    IEnumerator LikeFileCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/likeFile", new WWWForm()))
+        {
+            // TODO finish HTTP request for file like
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new likeFavoriteReqJson(key))
+                );
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
     public void UnlikeFile()
     {
         // TODO remove element from user's favorites.
@@ -143,6 +186,14 @@ struct unlikeFavoriteReqJson
 {
     public string key;
     public unlikeFavoriteReqJson(string key)
+    {
+        this.key = key;
+    }
+}
+struct likeFavoriteReqJson
+{
+    public string key;
+    public likeFavoriteReqJson(string key)
     {
         this.key = key;
     }
