@@ -15,7 +15,7 @@ public class FileOverview : MonoBehaviour
     public Text likes;
     public Text date;
     public GameObject FileDetailViewPanelPrefab;
-    string key;
+    public string key;
     public GameObject unlikeButton;
     public GameObject deleteButton;
     public GameObject likeButton;
@@ -31,8 +31,10 @@ public class FileOverview : MonoBehaviour
         downloads.text = fileJson.downloadNum.ToString();
         likes.text = fileJson.likes.ToString();
         date.text = fileJson.dateUpdated;
-        infoDownloadUrl = fileJson.infoDownloadUrl;
-        // Add information that sets the like or dislike button according to the state of favorites.
+
+        infoDownloadUrl = fileJson.infoDownloadUrl.URL;
+        Debug.Log(fileJson.infoDownloadUrl.status+" "+infoDownloadUrl);
+
         key = fileJson.key;
         StartCoroutine(RequestDownloadInfoCoro());
     }
