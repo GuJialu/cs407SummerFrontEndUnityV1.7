@@ -33,6 +33,8 @@ public class FileDetailView : MonoBehaviour
     public Text downloads;
     public Text likes;
     public Text date;
+    public GameObject likeButton;
+    public GameObject unlikeButton;
 
     public string DownloadKey;
 
@@ -129,6 +131,63 @@ public class FileDetailView : MonoBehaviour
                     Directory.Delete(filePath);
                     archive.ExtractToDirectory(filePath);
                 }
+            }
+        }
+    }
+    public void LikeFile()
+    {
+        // Add element that disables like button.
+        likeButton.SetActive(false);
+        unlikeButton.SetActive(true);
+        StartCoroutine(LikeFileCoro());
+    }
+    IEnumerator LikeFileCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/likeFile", new WWWForm()))
+        {
+            // TODO finish HTTP request for file like
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new likeFavoriteReqJson(DownloadKey))
+                );
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+    public void UnlikeFile()
+    {
+        // TODO remove element from user's favorites.
+        // use KEY or EMAIL AND FILENAME
+        likeButton.SetActive(true);
+        unlikeButton.SetActive(false);
+        StartCoroutine(UnlikeFileCoro());
+    }
+    IEnumerator UnlikeFileCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/unlikeFile", new WWWForm()))
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
+                JsonUtility.ToJson(new unlikeFavoriteReqJson(DownloadKey))
+                );
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+
+                Destroy(gameObject);
             }
         }
     }
