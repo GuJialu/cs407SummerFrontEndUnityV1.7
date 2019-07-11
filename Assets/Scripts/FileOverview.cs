@@ -30,7 +30,8 @@ public class FileOverview : MonoBehaviour
         }
         downloads.text = fileJson.downloadNum.ToString();
         likes.text = fileJson.likes.ToString();
-        date.text = fileJson.dateUpdated;
+        string dateStr = System.DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(fileJson.dateUpdated)).UtcDateTime.ToString("MM/dd/yyyy");
+        date.text = dateStr;
 
         infoDownloadUrl = fileJson.infoDownloadUrl.URL;
         Debug.Log(fileJson.infoDownloadUrl.status+" "+infoDownloadUrl);
