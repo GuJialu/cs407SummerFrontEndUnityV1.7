@@ -15,11 +15,15 @@ public class FileOverview : MonoBehaviour
     public Text likes;
     public Text date;
     public GameObject FileDetailViewPanelPrefab;
+    public GameObject profilePanelPrefab;
     public string key;
+    public string email;
     public GameObject unlikeButton;
     public GameObject deleteButton;
     public GameObject likeButton;
     string infoDownloadUrl;
+
+    Transform canvasTrans;
 
     public void Init(FileJson fileJson)
     {
@@ -37,7 +41,10 @@ public class FileOverview : MonoBehaviour
         Debug.Log(fileJson.infoDownloadUrl.status+" "+infoDownloadUrl);
 
         key = fileJson.key;
+        email = fileJson.email;
         StartCoroutine(RequestDownloadInfoCoro());
+
+        canvasTrans = GetComponentInParent<Canvas>().transform;
     }
 
     IEnumerator RequestDownloadInfoCoro()
@@ -49,6 +56,7 @@ public class FileOverview : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.Log(www.error);
+                //Destroy(gameObject);
                 yield break;
             }
             else
@@ -89,6 +97,12 @@ public class FileOverview : MonoBehaviour
     {
         GameObject fileDetailViewPanel = Instantiate(FileDetailViewPanelPrefab, transform.parent.parent);
         fileDetailViewPanel.GetComponent<FileDetailView>().init(this);
+    }
+
+    public void OpenProfilePage()
+    {
+        GameObject profilePage = Instantiate(profilePanelPrefab, canvasTrans);
+        profilePage.GetComponent<Profile>().Init(email);
     }
 
     public void DeleteFile()

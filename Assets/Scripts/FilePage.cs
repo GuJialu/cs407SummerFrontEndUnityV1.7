@@ -140,14 +140,11 @@ public class FilePage : MonoBehaviour
     Queue<FilePageCache> filePageCacheQueue;
     int cacheSize = 4;
 
-    public void Start()
-    {
-        filePageCacheQueue = new Queue<FilePageCache>();
-    }
-
     // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
     public void Init(string email = null)
     {
+        filePageCacheQueue = new Queue<FilePageCache>();
+
         this.email = email;
         keyword = null;
 
@@ -322,6 +319,10 @@ public class FilePage : MonoBehaviour
     {
         foreach(FileJson fileJson in filePageResJson.file_list)
         {
+            if(email!=null && !email.Equals(WebReq.email) && fileJson.anonymous)
+            {
+                continue;
+            }
             GameObject fileOverviewPanel = Instantiate(fileOverviewPanelPrefab, filePanel.transform);
             FileOverview fileOverview = fileOverviewPanel.GetComponent<FileOverview>();
             fileOverview.Init(fileJson);            
@@ -353,6 +354,8 @@ public class FilePage : MonoBehaviour
             if (filePageCache.CacheEqualto(this))
             {
                 Debug.Log("hit");
+                filePageCache.fileOverviews.RemoveAll(x => x == null);
+
                 foreach (GameObject fileOverview in filePageCache.fileOverviews)
                 {
                     fileOverview.SetActive(true);
