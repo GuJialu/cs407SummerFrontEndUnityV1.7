@@ -15,7 +15,37 @@ class FilePageCache
 {
     public List<GameObject> fileOverviews;
     public int pageNum;
-    public SortingMethod sortingMethod;
+    public int sortingMethod;
+    public int fliterType;
+    public int filterTime;
+    public string keyword;
+
+    public FilePageCache(FilePage filePage)
+    {
+        fileOverviews = new List<GameObject>();
+        foreach(Transform fileOverviewTrans in filePage.filePanel.transform)
+        {
+            if (fileOverviewTrans.gameObject.activeSelf)
+            {
+                fileOverviews.Add(fileOverviewTrans.gameObject);
+            }
+        }
+        pageNum = filePage.currentPageNum;
+        sortingMethod = filePage.sortMethodDropdown.value;
+        fliterType = filePage.filterDropdown.value;
+        filterTime = filePage.timeDropdown.value;
+        keyword = filePage.keyword;
+    }
+
+    public bool CacheEqualto(FilePage filePage)
+    {
+        return
+            pageNum == filePage.currentPageNum &&
+            sortingMethod == filePage.sortMethodDropdown.value &&
+            fliterType == filePage.filterDropdown.value &&
+            filterTime == filePage.timeDropdown.value &&
+            keyword == filePage.keyword;
+    }
 }
 
 [System.Serializable]
@@ -95,23 +125,24 @@ public class FilePage : MonoBehaviour
     public Toggle searchByContributorToggle;
 
 
-    int currentPageNum;
+    public int currentPageNum;
     int numFiles;
     int numFilesPerPage = 16;
     int MaxPageNum() { return numFiles / numFilesPerPage + 1;}
 
     int StartRank() { return numFilesPerPage * (currentPageNum - 1) + 1; }
     string email;
-    string keyword;
+    public string keyword;
     public Dropdown sortMethodDropdown;
     public Dropdown filterDropdown;
     public Dropdown timeDropdown;
 
     Queue<FilePageCache> filePageCacheQueue;
+    int cacheSize = 4;
 
     public void Start()
     {
-
+        filePageCacheQueue = new Queue<FilePageCache>();
     }
 
     // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
@@ -184,10 +215,20 @@ public class FilePage : MonoBehaviour
 
     public void RequestFiles()
     {
-        //cache old and search new in cache
-        foreach(Transform fileOverviewTrans in filePanel.transform)
+        //clear filepage
+
+
+        foreach (Transform fileOverviewTrans in filePanel.transform)
         {
-            Destroy(fileOverviewTrans.gameObject);
+            if (fileOverviewTrans.gameObject.activeSelf)
+            {
+                fileOverviewTrans.gameObject.SetActive(false);
+            }
+        }
+
+        if (LoadCache())
+        {
+            return;
         }
 
         StartCoroutine(RequestFilesCoro());
@@ -202,16 +243,16 @@ public class FilePage : MonoBehaviour
         switch (sortMethodDropdown.value)
         {
             case 0:
-                sortingMethod = "timeASC";
+                sortingMethod = "timeDESC";
                 break;
             case 1:
-                sortingMethod = "nameASC";
+                sortingMethod = "nameDESC";
                 break;
             case 2:
-                sortingMethod = "downloads";
+                sortingMethod = "downloadsDESC";
                 break;
             case 3:
-                sortingMethod = "likes";
+                sortingMethod = "likesDESC";
                 break;
         }
 
@@ -272,6 +313,7 @@ public class FilePage : MonoBehaviour
                 FilePageResJson res = JsonUtility.FromJson<FilePageResJson>(www.downloadHandler.text);
                 Debug.Log(JsonUtility.ToJson(res));
                 CreateFileOverviews(res);
+                SaveCache();
             }
         }
     }
@@ -284,5 +326,39 @@ public class FilePage : MonoBehaviour
             FileOverview fileOverview = fileOverviewPanel.GetComponent<FileOverview>();
             fileOverview.Init(fileJson);            
         }
+    }
+
+    void SaveCache()
+    {
+        FilePageCache filePageCache = new FilePageCache(this);
+
+        if (filePageCacheQueue.Count >= 4)
+        {
+            FilePageCache cacheToDestory = filePageCacheQueue.Dequeue();
+            foreach(GameObject fileOverview in cacheToDestory.fileOverviews)
+            {
+                Destroy(fileOverview);
+            }
+        }
+
+        filePageCacheQueue.Enqueue(filePageCache);
+    }
+
+    bool LoadCache()
+    {
+        //search for hit in cache
+        foreach (FilePageCache filePageCache in filePageCacheQueue)
+        {
+            if (filePageCache.CacheEqualto(this))
+            {
+                Debug.Log("hit");
+                foreach(GameObject fileOverview in filePageCache.fileOverviews)
+                {
+                    fileOverview.SetActive(true);
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }

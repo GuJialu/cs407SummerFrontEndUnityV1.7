@@ -4102,6 +4102,8 @@ MonoBehaviour:
     m_Options:
     - m_Text: Date
       m_Image: {fileID: 0}
+    - m_Text: Name
+      m_Image: {fileID: 0}
     - m_Text: Download
       m_Image: {fileID: 0}
     - m_Text: Likes

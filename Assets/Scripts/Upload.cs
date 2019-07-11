@@ -24,7 +24,7 @@ struct UploadReqJson
 
 struct UploadResJson
 {
-    public string status;
+    public int status;
     public string uploadUrl;
     public string infoUploadUrl;
 }
@@ -41,6 +41,8 @@ public class Upload : MonoBehaviour
     public GameObject cancelButton;
     public Text errorMessage;
     public Dropdown fileTypeDropdown;
+
+    public GameObject overwriteConfirmPanel;
 
     // public GameObject fileName;
     // Start is called before the first frame update
@@ -158,6 +160,12 @@ public class Upload : MonoBehaviour
                 Debug.Log(www.downloadHandler.text);
 
                 UploadResJson res = JsonUtility.FromJson<UploadResJson>(www.downloadHandler.text);
+                if (res.status == 201)
+                {
+                    overwriteConfirmPanel.SetActive(true);
+                    yield break;
+                }
+
                 errorMessage.text = "success";
                 uploadUrl = res.uploadUrl;
                 infoUploadUrl = res.infoUploadUrl;
@@ -202,6 +210,121 @@ public class Upload : MonoBehaviour
             else
             {
                 Debug.Log("file Upload complete!");
+            }
+        }
+
+        using (UnityWebRequest www = UnityWebRequest.Put(infoUploadUrl, infoData))
+        {
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+                yield break;
+            }
+            else
+            {
+                Debug.Log("file info Upload complete!");
+            }
+        }
+    }
+
+    public void RequestOverwriteUpload()
+    {
+        StartCoroutine(RequestOverwriteUploadCoro(false));
+        overwriteConfirmPanel.SetActive(false);
+    }
+
+    public void RequestOverwriteUploadInfoOnly()
+    {
+        StartCoroutine(RequestOverwriteUploadCoro(true));
+        overwriteConfirmPanel.SetActive(false);
+    }
+
+    public void CancelOverwrite()
+    {
+        overwriteConfirmPanel.SetActive(false);
+    }
+
+    IEnumerator RequestOverwriteUploadCoro(bool overwriteInfoOnly)
+    {
+        string uploadUrl;
+        string infoUploadUrl;
+
+        string filename = uploadTitleTextBox.text;
+        string folderName = folderNameTextBox.text;
+        int anonymous = anonymousToggle.isOn ? 1 : 0; ;
+
+
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/overwriteUpload", new WWWForm())) // TODO fix this web request
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new UploadReqJson(anonymous, filename, fileTypeDropdown.captionText.text)));
+            Debug.Log(JsonUtility.ToJson(new UploadReqJson(anonymous, filename, fileTypeDropdown.captionText.text)));
+
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Authorization", WebReq.bearerToken);
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+                Debug.Log(www.downloadHandler.text);
+                yield break;
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+
+                UploadResJson res = JsonUtility.FromJson<UploadResJson>(www.downloadHandler.text);
+                errorMessage.text = "success";
+                uploadUrl = res.uploadUrl;
+                infoUploadUrl = res.infoUploadUrl;
+
+                Debug.Log(res.uploadUrl);
+                Debug.Log(res.infoUploadUrl);
+            }
+        }
+
+        byte[] fileData;
+        byte[] infoData;
+
+        try
+        {
+            string filePath = WebReq.objectFolderPath + folderName;
+            string fileInfoPath = filePath + "/info";
+            string tempZipPath = Application.dataPath + "/" + filename + ".zip";
+
+            ZipFile.CreateFromDirectory(filePath, tempZipPath);
+            fileData = File.ReadAllBytes(tempZipPath);
+            File.Delete(tempZipPath);
+
+            ZipFile.CreateFromDirectory(fileInfoPath, tempZipPath);
+            infoData = File.ReadAllBytes(tempZipPath);
+            File.Delete(tempZipPath);
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log(e);
+            yield break;
+        }
+
+        if (!overwriteInfoOnly)
+        {
+            using (UnityWebRequest www = UnityWebRequest.Put(uploadUrl, fileData))
+            {
+                yield return www.SendWebRequest();
+
+                if (www.isNetworkError || www.isHttpError)
+                {
+                    Debug.Log(www.error);
+                    yield break;
+                }
+                else
+                {
+                    Debug.Log("file Upload complete!");
+                }
             }
         }
 
