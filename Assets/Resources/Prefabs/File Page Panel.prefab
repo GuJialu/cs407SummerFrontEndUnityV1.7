@@ -1207,6 +1207,8 @@ MonoBehaviour:
   keywordInput: {fileID: 4311829819014053625}
   keywordPanel: {fileID: 6810026145395020251}
   searchByContributorToggle: {fileID: 1281861319720952148}
+  currentPageNum: 0
+  keyword: 
   sortMethodDropdown: {fileID: 5558973671645603961}
   filterDropdown: {fileID: 5142441034360976036}
   timeDropdown: {fileID: 4520151071023567436}
@@ -1328,7 +1330,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1314792378564099109}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1314792378544157036}
+        m_MethodName: ToFirstPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1314792378690927583
@@ -1915,7 +1928,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1314792379377273304}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1314792378544157036}
+        m_MethodName: ToLastPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1314792379379949638
