@@ -21,6 +21,7 @@ public class FileOverview : MonoBehaviour
     public GameObject unlikeButton;
     public GameObject deleteButton;
     public GameObject likeButton;
+    public Button authorProfileButton;
     string infoDownloadUrl;
 
     Transform canvasTrans;
@@ -31,6 +32,7 @@ public class FileOverview : MonoBehaviour
         if (fileJson.anonymous)
         {
             authorName.text = "anonymous";
+            authorProfileButton.interactable = false;
         }
         downloads.text = fileJson.downloadNum.ToString();
         likes.text = fileJson.likes.ToString();

@@ -403,6 +403,5 @@ public class FilePage : MonoBehaviour
         {
             overview.DisableDelete();
         }
-
     }
 }
