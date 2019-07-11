@@ -328,6 +328,7 @@ public class FilePage : MonoBehaviour
         }
     }
 
+
     void SaveCache()
     {
         FilePageCache filePageCache = new FilePageCache(this);
@@ -352,7 +353,7 @@ public class FilePage : MonoBehaviour
             if (filePageCache.CacheEqualto(this))
             {
                 Debug.Log("hit");
-                foreach(GameObject fileOverview in filePageCache.fileOverviews)
+                foreach (GameObject fileOverview in filePageCache.fileOverviews)
                 {
                     fileOverview.SetActive(true);
                 }
@@ -360,5 +361,21 @@ public class FilePage : MonoBehaviour
             }
         }
         return false;
+    }
+
+    void EnableDelete()
+    {
+        foreach (FileOverview overview in filePanel.GetComponentsInChildren<FileOverview>())
+        {
+            overview.EnableDelete();
+        }
+    }
+    void DisableDelete()
+    {
+        foreach (FileOverview overview in filePanel.GetComponentsInChildren<FileOverview>())
+        {
+            overview.DisableDelete();
+        }
+
     }
 }

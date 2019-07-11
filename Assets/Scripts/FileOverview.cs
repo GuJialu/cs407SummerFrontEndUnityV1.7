@@ -18,6 +18,7 @@ public class FileOverview : MonoBehaviour
     public string key;
     public GameObject unlikeButton;
     public GameObject deleteButton;
+    public GameObject likeButton;
     string infoDownloadUrl;
 
     public void Init(FileJson fileJson)
@@ -30,8 +31,10 @@ public class FileOverview : MonoBehaviour
         downloads.text = fileJson.downloadNum.ToString();
         likes.text = fileJson.likes.ToString();
         date.text = fileJson.dateUpdated;
+
         infoDownloadUrl = fileJson.infoDownloadUrl.URL;
         Debug.Log(fileJson.infoDownloadUrl.status+" "+infoDownloadUrl);
+
         key = fileJson.key;
         StartCoroutine(RequestDownloadInfoCoro());
     }
@@ -89,9 +92,51 @@ public class FileOverview : MonoBehaviour
 
     public void DeleteFile()
     {
-        // TODO remove element from database
+        StartCoroutine(DeleteFileCoro());
     }
+    IEnumerator DeleteFileCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/deleteFile", new WWWForm())) // TODO change element
+        {
+            // TODO finish HTTP request for file like
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new deleteFileReqJson(key)) // TODO find correct JSON.
+                );
+            yield return www.SendWebRequest();
 
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
+    public void LikeFile()
+    {
+        // Add element that disables like button.
+        StartCoroutine(LikeFileCoro());
+    }
+    IEnumerator LikeFileCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/likeFile", new WWWForm()))
+        {
+            // TODO finish HTTP request for file like
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new likeFavoriteReqJson(key))
+                );
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
     public void UnlikeFile()
     {
         // TODO remove element from user's favorites.
@@ -122,6 +167,29 @@ public class FileOverview : MonoBehaviour
             }
         }
     }
+
+    public void favoritesView()
+    {
+        EnableUnlike();
+        DisableDelete();
+    }
+    public void publicView()
+    {
+        EnableLike();
+        DisableDelete();
+        DisableUnlike();
+    }
+    public void creatorView()
+    {
+        EnableDelete();
+        DisableUnlike();
+        DisableLike();
+    }
+    public void EnableLike()
+    {
+        likeButton.SetActive(true);
+
+    }
     public void EnableUnlike()
     {
         unlikeButton.SetActive(true);
@@ -129,6 +197,10 @@ public class FileOverview : MonoBehaviour
     public void EnableDelete()
     {
         deleteButton.SetActive(true);
+    }
+    public void DisableLike()
+    {
+        likeButton.SetActive(false);
     }
     public void DisableUnlike()
     {
@@ -144,6 +216,23 @@ struct unlikeFavoriteReqJson
 {
     public string key;
     public unlikeFavoriteReqJson(string key)
+    {
+        this.key = key;
+    }
+}
+struct likeFavoriteReqJson
+{
+    public string key;
+    public likeFavoriteReqJson(string key)
+    {
+        this.key = key;
+    }
+}
+
+struct deleteFileReqJson
+{
+    public string key;
+    public deleteFileReqJson(string key)
     {
         this.key = key;
     }
