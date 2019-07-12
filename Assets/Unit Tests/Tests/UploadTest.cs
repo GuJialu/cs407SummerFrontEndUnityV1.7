@@ -63,5 +63,64 @@ namespace Tests
 
             yield return null;
         }
+        [UnityTest]
+        public IEnumerator UploadPass()
+        {
+            loginAndSignUp.loginEmailInput.text = "testuser4@email.com";
+            loginAndSignUp.loginPasswordInput.text = "1234";
+            loginAndSignUp.RequestLogin();
+
+            yield return new WaitForSeconds(2f);
+
+            upload.folderNameTextBox.text = "mod5";
+            upload.uploadTitleTextBox.text = "UploadTest";
+            upload.Uploadfiles();
+            yield return new WaitForSeconds(2f);
+
+            //Assert.IsTrue(upload.overwriteConfirmPanel.activeSelf);
+            yield return null;
+        }
+        [UnityTest]
+        public IEnumerator UploadOverwritePass()
+        {
+            loginAndSignUp.loginEmailInput.text = "testuser4@email.com";
+            loginAndSignUp.loginPasswordInput.text = "1234";
+            loginAndSignUp.RequestLogin();
+
+            yield return new WaitForSeconds(2f);
+
+            upload.folderNameTextBox.text = "mod5";
+            upload.uploadTitleTextBox.text = "UploadTest";
+            upload.Uploadfiles();
+            yield return new WaitForSeconds(2f);
+
+            Assert.IsTrue(upload.overwriteConfirmPanel.activeSelf);
+
+            upload.RequestOverwriteUpload();
+            yield return new WaitForSeconds(2f);
+
+            yield return null;
+        }
+        [UnityTest]
+        public IEnumerator UploadOverwriteInfoOnlyPass()
+        {
+            loginAndSignUp.loginEmailInput.text = "testuser4@email.com";
+            loginAndSignUp.loginPasswordInput.text = "1234";
+            loginAndSignUp.RequestLogin();
+
+            yield return new WaitForSeconds(2f);
+
+            upload.folderNameTextBox.text = "mod5";
+            upload.uploadTitleTextBox.text = "UploadTest";
+            upload.Uploadfiles();
+            yield return new WaitForSeconds(2f);
+
+            Assert.IsTrue(upload.overwriteConfirmPanel.activeSelf);
+
+            upload.RequestOverwriteUploadInfoOnly();
+            yield return new WaitForSeconds(2f);
+
+            yield return null;
+        }
     }
 }
