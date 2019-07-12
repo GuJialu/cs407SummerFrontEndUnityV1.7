@@ -62,6 +62,10 @@ public class Profile : MonoBehaviour
     public GameObject uploadPanel;
     public GameObject favoritesbutton;
     public GameObject FavoritesPanelPrefab;
+
+    public GameObject uploadButton;
+    public GameObject changePasswordButton;
+    public GameObject favoriteButton;
     // Start is called before the first frame update
     void Start()
     {
@@ -89,7 +93,7 @@ public class Profile : MonoBehaviour
     }
 
     //init the profile page, will be called by the parent module
-    public void Init(string email)
+    public void Init(string email, bool isUsersOwn=false)
     {
         // start the RequestProfileCoro below
         filePagePanel.GetComponent<FilePage>().Init(email);
@@ -97,6 +101,13 @@ public class Profile : MonoBehaviour
         if (email != WebReq.email)
         {
             Debug.Log("other's profile");
+        }
+
+        if (!isUsersOwn)
+        {
+            uploadButton.SetActive(false);
+            changePasswordButton.SetActive(false);
+            favoriteButton.SetActive(false);
         }
     }
 

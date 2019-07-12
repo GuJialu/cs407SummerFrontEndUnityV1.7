@@ -30,7 +30,7 @@ public class Home : MonoBehaviour
 
     public void OpenProfilePanel()
     {
-        Instantiate(profilePanelPrefab, transform.parent).GetComponent<Profile>().Init(WebReq.email);
+        Instantiate(profilePanelPrefab, transform.parent).GetComponent<Profile>().Init(WebReq.email, true);
     }
 
     public void OpenLoginSignUpPanel()
