@@ -18,7 +18,9 @@ namespace Tests
             loginAndSignUp = loginAndSignUpPanel.GetComponent<LoginAndSignUp>();
             Debug.Log(loginAndSignUp);
 
-            GameObject filePagePanel = Object.Instantiate((GameObject)Resources.Load("Prefabs/File Page Panel"));
+            GameObject o = new GameObject("cavasObj");
+            o.AddComponent<Canvas>();
+            GameObject filePagePanel = Object.Instantiate((GameObject)Resources.Load("Prefabs/File Page Panel"), o.transform);
             filePage = filePagePanel.GetComponent<FilePage>();
             Debug.Log(filePage);
         }

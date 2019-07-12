@@ -112,6 +112,7 @@ public struct InfoDownloadUrl
 struct FilePageResJson
 {
     public int status;
+    public int total_files;
     public List<FileJson> file_list;
 }
 
@@ -128,7 +129,7 @@ public class FilePage : MonoBehaviour
     public int currentPageNum;
     int numFiles;
     int numFilesPerPage = 16;
-    int MaxPageNum() { return numFiles / numFilesPerPage + 1;}
+    int MaxPageNum() { return (int)System.Math.Ceiling((double)numFiles / numFilesPerPage);}
 
     int StartRank() { return numFilesPerPage * (currentPageNum - 1) + 1; }
     string email;
@@ -140,14 +141,11 @@ public class FilePage : MonoBehaviour
     Queue<FilePageCache> filePageCacheQueue;
     int cacheSize = 4;
 
-    public void Start()
-    {
-        filePageCacheQueue = new Queue<FilePageCache>();
-    }
-
     // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
     public void Init(string email = null)
     {
+        filePageCacheQueue = new Queue<FilePageCache>();
+
         this.email = email;
         keyword = null;
 
@@ -159,18 +157,25 @@ public class FilePage : MonoBehaviour
     {
         int pageNum = currentPageNum + offset;
 
-        if (pageNum <= 0/*&&pageNum>MaxPageNum()/*/)
+        if (pageNum <= 0 || (pageNum>MaxPageNum()&&MaxPageNum()!=0))
         {
             //do nothing
             return;
         }
 
         currentPageNum = pageNum;
+        UpdateIndex();
+
+        RequestFiles();
+    }
+
+    void UpdateIndex()
+    {
         int i = 0;
-        foreach(Text t in indexs)
+        foreach (Text t in indexs)
         {
             int indexNum = currentPageNum - 2 + i;
-            if (indexNum <= 0)
+            if (indexNum <= 0 || indexNum > MaxPageNum())
             {
                 t.text = "-";
             }
@@ -180,7 +185,20 @@ public class FilePage : MonoBehaviour
             }
             ++i;
         }
-        RequestFiles();
+    }
+
+    public void ToLastPage()
+    {
+        currentPageNum = MaxPageNum();
+        Debug.Log(currentPageNum);
+        ToPage(0);
+    }
+
+    public void ToFirstPage()
+    {
+        currentPageNum = 1;
+        Debug.Log(currentPageNum);
+        ToPage(0);
     }
 
     public void KeywordSearch()
@@ -312,8 +330,11 @@ public class FilePage : MonoBehaviour
 
                 FilePageResJson res = JsonUtility.FromJson<FilePageResJson>(www.downloadHandler.text);
                 Debug.Log(JsonUtility.ToJson(res));
+                numFiles = res.total_files;
                 CreateFileOverviews(res);
                 SaveCache();
+
+                UpdateIndex();
             }
         }
     }
@@ -322,6 +343,10 @@ public class FilePage : MonoBehaviour
     {
         foreach(FileJson fileJson in filePageResJson.file_list)
         {
+            if(email!=null && !email.Equals(WebReq.email) && fileJson.anonymous)
+            {
+                continue;
+            }
             GameObject fileOverviewPanel = Instantiate(fileOverviewPanelPrefab, filePanel.transform);
             FileOverview fileOverview = fileOverviewPanel.GetComponent<FileOverview>();
             fileOverview.Init(fileJson);            
@@ -353,6 +378,8 @@ public class FilePage : MonoBehaviour
             if (filePageCache.CacheEqualto(this))
             {
                 Debug.Log("hit");
+                filePageCache.fileOverviews.RemoveAll(x => x == null);
+
                 foreach (GameObject fileOverview in filePageCache.fileOverviews)
                 {
                     fileOverview.SetActive(true);
@@ -376,6 +403,5 @@ public class FilePage : MonoBehaviour
         {
             overview.DisableDelete();
         }
-
     }
 }

@@ -94,6 +94,10 @@ public class Profile : MonoBehaviour
         // start the RequestProfileCoro below
         filePagePanel.GetComponent<FilePage>().Init(email);
         StartCoroutine(RequestProfileCoro(email));
+        if (email != WebReq.email)
+        {
+            Debug.Log("other's profile");
+        }
     }
 
     IEnumerator RequestProfileCoro(string email)
