@@ -575,7 +575,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 996636052496337137}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9995723
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -749,7 +749,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 996636053169738213}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6b5f44ce11217f04b8a761b5c74ad020, type: 3}
+  m_Script: {fileID: 11500000, guid: 82c388d3de26a624eac9891299cea1f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   FavoritesScrollViewContent: {fileID: 996636054133065343}
@@ -1221,7 +1221,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000010239302}
+  m_AnchoredPosition: {x: 0, y: 0.000017464832}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &996636053567278630
@@ -1231,6 +1231,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 996636053169738212}
     m_Modifications:
+    - target: {fileID: 8861836100877496026, guid: 45598e2b0f86ff64cbc80f257c00a770,
+        type: 3}
+      propertyPath: m_Name
+      value: Delete Button
+      objectReference: {fileID: 0}
     - target: {fileID: 5971014220403354625, guid: 45598e2b0f86ff64cbc80f257c00a770,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1335,11 +1340,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8861836100877496026, guid: 45598e2b0f86ff64cbc80f257c00a770,
-        type: 3}
-      propertyPath: m_Name
-      value: Delete Button
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45598e2b0f86ff64cbc80f257c00a770, type: 3}
