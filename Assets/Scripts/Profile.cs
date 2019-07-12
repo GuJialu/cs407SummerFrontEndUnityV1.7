@@ -190,7 +190,7 @@ public class Profile : MonoBehaviour
 
     public void GoToFavorites()
     {
-        GameObject favoritespage = Instantiate(FavoritesPanelPrefab);
+        GameObject favoritespage = Instantiate(FavoritesPanelPrefab, transform.parent);
     }
     void RequestUpdateProfile()
     {

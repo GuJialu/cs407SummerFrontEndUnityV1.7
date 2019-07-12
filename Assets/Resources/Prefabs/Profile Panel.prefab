@@ -118,7 +118,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1229814268666228600}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6158626885423324478}
+        m_MethodName: GoToFavorites
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &2427588667239242022
@@ -1276,7 +1287,7 @@ MonoBehaviour:
   uploadPanel: {fileID: 4983138756684152189, guid: ed1be6828f9e08a40b0e22aa2ac401da,
     type: 3}
   favoritesbutton: {fileID: 1312806466601705123}
-  FavoritesPanelPrefab: {fileID: 996636053169738213, guid: cda0381d155243241a213111b580e286,
+  FavoritesPanelPrefab: {fileID: 2769981755156179209, guid: cda0381d155243241a213111b580e286,
     type: 3}
 --- !u!1 &6158626885452664040
 GameObject:

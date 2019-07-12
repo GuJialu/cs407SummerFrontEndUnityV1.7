@@ -143,7 +143,7 @@ public class FileDetailView : MonoBehaviour
     }
     IEnumerator LikeFileCoro()
     {
-        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/likeFile", new WWWForm()))
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/files/likeFile", new WWWForm()))
         {
             // TODO finish HTTP request for file like
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new likeFavoriteReqJson(DownloadKey))
@@ -153,6 +153,7 @@ public class FileDetailView : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.Log(www.error);
+                description.text = "REEEEE";
             }
             else
             {
@@ -170,7 +171,7 @@ public class FileDetailView : MonoBehaviour
     }
     IEnumerator UnlikeFileCoro()
     {
-        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/unlikeFile", new WWWForm()))
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/files/unlikeFile", new WWWForm()))
         {
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
                 JsonUtility.ToJson(new unlikeFavoriteReqJson(DownloadKey))
