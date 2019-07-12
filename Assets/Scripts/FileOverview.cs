@@ -83,9 +83,9 @@ public class FileOverview : MonoBehaviour
                 using (StreamReader reader = new StreamReader(desEntry.Open()))
                 {
                     description.text = reader.ReadToEnd();
-                    if (description.text.Length > 200)
+                    if (description.text.Length > 40)
                     {
-                        description.text.Substring(0, 200);
+                        description.text.Substring(0, 40);
                     }
                 }
                 ZipArchiveEntry imageEntry = archive.GetEntry("workingspace.PNG");
