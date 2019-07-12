@@ -1,1 +1,1 @@
-{"startStr":"Start","speed":10}
+{"startStr":"START","speed":10,"barColor": [0.5, 0.8, 0.4]}
