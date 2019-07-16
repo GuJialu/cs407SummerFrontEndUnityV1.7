@@ -33,6 +33,12 @@ public class Favorites : MonoBehaviour
 
     public void RequestFavorites()
     {
+        Debug.Log("startReqFav");
+        //not logged in
+        if (WebReq.email == null)
+        {
+            return;
+        }
         StartCoroutine(RequestFavoritesCoro());
     }
     IEnumerator RequestFavoritesCoro()
@@ -45,6 +51,7 @@ public class Favorites : MonoBehaviour
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Authorization", WebReq.bearerToken);
 
             yield return www.SendWebRequest();
 
@@ -56,7 +63,7 @@ public class Favorites : MonoBehaviour
             {
                 Debug.Log(www.downloadHandler.text);
 
-                FilePageResJson res = JsonUtility.FromJson<FilePageResJson>(www.downloadHandler.text);
+                FavoritesPageResJson res = JsonUtility.FromJson<FavoritesPageResJson>(www.downloadHandler.text);
                 Debug.Log(JsonUtility.ToJson(res));
                 CreateFavoritesOverviews(res);
             }
@@ -94,20 +101,16 @@ public class Favorites : MonoBehaviour
         // TODO create pop up panel.
     }
 
-    void CreateFavoritesOverviews(FilePageResJson filePageResJson)
+    void CreateFavoritesOverviews(FavoritesPageResJson filePageResJson)
     {
-        foreach (FileJson fileJson in filePageResJson.file_list)
+        foreach (FileJson fileJson in filePageResJson.files)
         {
             GameObject fileOverviewPanel = Instantiate(fileOverviewPanelPrefab, FavoritesScrollViewContent.transform);
             FileOverview fileOverview = fileOverviewPanel.GetComponent<FileOverview>();
             fileOverview.Init(fileJson);
         }
     }
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+
 }
 struct FavoritesPageReqJson
 {
@@ -117,4 +120,10 @@ struct FavoritesPageReqJson
     {
         this.email = email;
     }
+}
+
+struct FavoritesPageResJson
+{
+    public int status;
+    public List<FileJson> files;
 }
