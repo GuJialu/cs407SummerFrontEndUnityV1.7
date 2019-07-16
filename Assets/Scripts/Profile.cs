@@ -66,6 +66,8 @@ public class Profile : MonoBehaviour
     public GameObject uploadButton;
     public GameObject changePasswordButton;
     public GameObject favoriteButton;
+    public GameObject deleteButton;
+    public GameObject hideDeleteButton;
     // Start is called before the first frame update
     void Start()
     {
@@ -108,6 +110,7 @@ public class Profile : MonoBehaviour
             uploadButton.SetActive(false);
             changePasswordButton.SetActive(false);
             favoriteButton.SetActive(false);
+            deleteButton.SetActive(false);
         }
     }
 
@@ -229,5 +232,30 @@ public class Profile : MonoBehaviour
                 Debug.Log(www.downloadHandler.text);
             }
         }
+    }
+
+    public void ShowDeleteFile()
+    {
+        foreach(Transform fileOverviewTran in filePagePanel.GetComponent<FilePage>().filePanel.transform)
+        {
+            fileOverviewTran.GetComponent<FileOverview>().EnableDelete();
+        }
+        deleteButton.SetActive(false);
+        hideDeleteButton.SetActive(true);
+    }
+
+    public void HideDeleteFile()
+    {
+        foreach (Transform fileOverviewTran in filePagePanel.GetComponent<FilePage>().filePanel.transform)
+        {
+            fileOverviewTran.GetComponent<FileOverview>().DisableDelete();
+        }
+        deleteButton.SetActive(true);
+        hideDeleteButton.SetActive(false);
+    }
+
+    public void ShowFavoriteList()
+    {
+        Instantiate(FavoritesPanelPrefab, transform.parent);
     }
 }

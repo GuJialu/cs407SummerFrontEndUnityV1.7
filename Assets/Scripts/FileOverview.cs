@@ -9,6 +9,7 @@ using UnityEngine.UI;
 public class FileOverview : MonoBehaviour
 {
     public Image fileCoverImage;
+    public Text fileName;
     public Text authorName;
     public Text description;
     public Text downloads;
@@ -34,6 +35,7 @@ public class FileOverview : MonoBehaviour
             authorName.text = "anonymous";
             authorProfileButton.interactable = false;
         }
+        fileName.text = fileJson.fileName;
         downloads.text = fileJson.downloadNum.ToString();
         likes.text = fileJson.likes.ToString();
         string dateStr = System.DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(fileJson.dateUpdated)).UtcDateTime.ToString("MM/dd/yyyy");
@@ -81,9 +83,9 @@ public class FileOverview : MonoBehaviour
                 using (StreamReader reader = new StreamReader(desEntry.Open()))
                 {
                     description.text = reader.ReadToEnd();
-                    if (description.text.Length > 200)
+                    if (description.text.Length > 40)
                     {
-                        description.text.Substring(0, 200);
+                        description.text.Substring(0, 40);
                     }
                 }
                 ZipArchiveEntry imageEntry = archive.GetEntry("workingspace.PNG");
@@ -117,11 +119,16 @@ public class FileOverview : MonoBehaviour
     }
     IEnumerator DeleteFileCoro()
     {
-        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/deleteFile", new WWWForm())) // TODO change element
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/deleteFile", new WWWForm())) // TODO change element
         {
             // TODO finish HTTP request for file like
-            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new deleteFileReqJson(key)) // TODO find correct JSON.
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new DeleteFileReqJson(key)) // TODO find correct JSON.
                 );
+
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Authorization", WebReq.bearerToken);
+
             yield return www.SendWebRequest();
 
             if (www.isNetworkError || www.isHttpError)
@@ -130,6 +137,7 @@ public class FileOverview : MonoBehaviour
             }
             else
             {
+                Debug.Log(www.downloadHandler.text);
                 Destroy(gameObject);
             }
         }
@@ -141,10 +149,10 @@ public class FileOverview : MonoBehaviour
     }
     IEnumerator LikeFileCoro()
     {
-        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "/file/likeFile", new WWWForm()))
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/likeFile", new WWWForm()))
         {
             // TODO finish HTTP request for file like
-            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new likeFavoriteReqJson(key))
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new LikeFavoriteReqJson(WebReq.email, key))
                 );
             yield return www.SendWebRequest();
 
@@ -167,10 +175,10 @@ public class FileOverview : MonoBehaviour
     }
     IEnumerator UnlikeFileCoro()
     {
-        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl+ "/file/unlikeFile", new WWWForm()))
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl+ "file/unlikeFile", new WWWForm()))
         {
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson( new unlikeFavoriteReqJson(key))
+                JsonUtility.ToJson( new UnlikeFavoriteReqJson(WebReq.email, key))
                 );
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
@@ -233,27 +241,31 @@ public class FileOverview : MonoBehaviour
     }
 }
 
-struct unlikeFavoriteReqJson
+struct UnlikeFavoriteReqJson
 {
+    public string email;
     public string key;
-    public unlikeFavoriteReqJson(string key)
+    public UnlikeFavoriteReqJson(string email, string key)
     {
+        this.email = email;
         this.key = key;
     }
 }
-struct likeFavoriteReqJson
+struct LikeFavoriteReqJson
 {
+    public string email;
     public string key;
-    public likeFavoriteReqJson(string key)
+    public LikeFavoriteReqJson(string email, string key)
     {
+        this.email = email;
         this.key = key;
     }
 }
 
-struct deleteFileReqJson
+struct DeleteFileReqJson
 {
     public string key;
-    public deleteFileReqJson(string key)
+    public DeleteFileReqJson(string key)
     {
         this.key = key;
     }

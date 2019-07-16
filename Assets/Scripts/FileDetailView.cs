@@ -36,6 +36,11 @@ public class FileDetailView : MonoBehaviour
 
     public string DownloadKey;
 
+    //public Toggle likeToggle;
+    public GameObject LikeButton;
+    public GameObject UnlikeButton;
+    public GameObject loginSignUpPanelPrefab;
+
     public void init(FileOverview fileOverview)
     {
         fileCoverImage.sprite = fileOverview.fileCoverImage.sprite;
@@ -46,6 +51,8 @@ public class FileDetailView : MonoBehaviour
         date.text = fileOverview.date.text;
 
         DownloadKey = fileOverview.key;
+
+        //likeToggle.isOn = false;
     }
 
     public void DownloadButton()
@@ -129,6 +136,79 @@ public class FileDetailView : MonoBehaviour
                     Directory.Delete(filePath);
                     archive.ExtractToDirectory(filePath);
                 }
+            }
+        }
+    }
+
+    public void Like()
+    {
+        if (WebReq.email == null)
+        {
+            Instantiate(loginSignUpPanelPrefab, transform.parent);
+            return;
+        }
+
+        StartCoroutine(LikeFileCoro());
+        LikeButton.SetActive(false);
+        UnlikeButton.SetActive(true);
+    }
+
+    public void UnLike()
+    {
+        if (WebReq.email == null)
+        {
+            Instantiate(loginSignUpPanelPrefab, transform.parent);
+            return;
+        }
+
+        StartCoroutine(LikeFileCoro());
+        LikeButton.SetActive(true);
+        UnlikeButton.SetActive(false);
+    }
+
+    IEnumerator LikeFileCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/likeFile", new WWWForm()))
+        {
+            // TODO finish HTTP request for file like
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new LikeFavoriteReqJson(WebReq.email, DownloadKey))
+                );
+
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+
+            }
+        }
+    }
+
+    IEnumerator UnlikeFileCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/unlikeFile", new WWWForm()))
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
+                JsonUtility.ToJson(new UnlikeFavoriteReqJson(WebReq.email, DownloadKey))
+                );
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+
             }
         }
     }
