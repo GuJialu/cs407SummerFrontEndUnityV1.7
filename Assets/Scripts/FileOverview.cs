@@ -49,6 +49,8 @@ public class FileOverview : MonoBehaviour
         StartCoroutine(RequestDownloadInfoCoro());
 
         canvasTrans = GetComponentInParent<Canvas>().transform;
+
+        authorProfileButton.GetComponent<AuthorButton>().email = fileJson.email;
     }
 
     IEnumerator RequestDownloadInfoCoro()

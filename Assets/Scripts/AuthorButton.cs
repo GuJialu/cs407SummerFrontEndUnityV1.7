@@ -5,6 +5,7 @@ using UnityEngine;
 public class AuthorButton : MonoBehaviour
 {
     public GameObject profilePanelPrefab;
+    public string email;
     Transform canvasTrans;
 
     public void Start()
@@ -14,6 +15,11 @@ public class AuthorButton : MonoBehaviour
 
     public void ShowAuthorProfile()
     {
-        GameObject profilePanel = Instantiate(profilePanelPrefab, canvasTrans);
+        if (string.IsNullOrEmpty(email))
+        {
+            return;
+        }
+        GameObject profilePage = Instantiate(profilePanelPrefab, canvasTrans);
+        profilePage.GetComponent<Profile>().Init(email);
     }
 }
