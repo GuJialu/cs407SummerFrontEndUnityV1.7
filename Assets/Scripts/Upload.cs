@@ -43,6 +43,7 @@ public class Upload : MonoBehaviour
     public Dropdown fileTypeDropdown;
 
     public GameObject overwriteConfirmPanel;
+    public GameObject invalidWarningPanel;
 
     // public GameObject fileName;
     // Start is called before the first frame update
@@ -105,8 +106,10 @@ public class Upload : MonoBehaviour
         }
         else
         {
+            string uploadDataPath = objectFolderPath + folderNameTextBox.text;
+
             // Else check if the folder specified in the folderName textbox exists
-            if (!Directory.Exists(objectFolderPath + folderNameTextBox.text)) // if it does not exist
+            if (!Directory.Exists(uploadDataPath)) // if it does not exist
             {
                 // then failure
                 Debug.Log("noooooooope");
@@ -121,11 +124,53 @@ public class Upload : MonoBehaviour
                 {
                     return;
                 }
+
+                int isInvalid = checkValidity(uploadDataPath);
+                if (isInvalid > 0)
+                {
+                    invalidWarningPanel.SetActive(true);
+                    Debug.Log("invalid mod");
+                    errorMessage.text = "invalid mod";
+                    return;
+                }
+
                 StartCoroutine(RequestUploadCoro());
                 Debug.Log("HEEEEEEEEEEEEE");
             }
 
         }
+    }
+
+    public int checkValidity(string uploadDataPath)
+    {
+        int validFiles = 0;
+        int invalidFiles = 0;
+        DirectoryInfo uploadDirs = new DirectoryInfo(uploadDataPath);
+
+        foreach (var tempfile in Directory.GetFiles(uploadDataPath))
+        {
+            Debug.Log(tempfile);
+
+            if (tempfile.Contains(".txt") || tempfile.Contains(".PNG") || tempfile.Contains(".JPG") || tempfile.Contains(".meta"))
+                validFiles += 1;
+            else
+                invalidFiles += 1;
+        }
+
+        foreach (var uploadDir in uploadDirs.GetDirectories())
+        {
+            foreach (var tempfile in uploadDir.GetFiles())
+            {
+                Debug.Log(tempfile.Name);
+
+                if (tempfile.Name.Contains(".txt") || tempfile.Name.Contains(".PNG") || tempfile.Name.Contains(".JPG") || tempfile.Name.Contains(".meta"))
+                    validFiles += 1;
+                else
+                    invalidFiles += 1;
+            }
+        }
+        
+        return invalidFiles;
     }
 
     IEnumerator RequestUploadCoro()
@@ -244,6 +289,11 @@ public class Upload : MonoBehaviour
     public void CancelOverwrite()
     {
         overwriteConfirmPanel.SetActive(false);
+    }
+
+    public void CancelWarning()
+    {
+        invalidWarningPanel.SetActive(false);
     }
 
     IEnumerator RequestOverwriteUploadCoro(bool overwriteInfoOnly)

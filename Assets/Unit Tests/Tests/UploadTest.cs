@@ -122,5 +122,23 @@ namespace Tests
 
             yield return null;
         }
+        [UnityTest]
+        public IEnumerator UploadInvalidFile()
+        {
+            loginAndSignUp.loginEmailInput.text = "testuser4@email.com";
+            loginAndSignUp.loginPasswordInput.text = "1234";
+            loginAndSignUp.RequestLogin();
+
+            yield return new WaitForSeconds(2f);
+
+            upload.folderNameTextBox.text = "mod1";
+            upload.uploadTitleTextBox.text = "UploadTest";
+            upload.Uploadfiles();
+            yield return new WaitForSeconds(2f);
+
+            Assert.IsTrue(upload.errorMessage.text.Equals("invalid mod"));
+
+            yield return null;
+        }
     }
 }
