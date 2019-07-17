@@ -864,7 +864,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: ?/5 Personal
+  m_Text: '?/5 Personal '
 --- !u!1 &3238345271211746724
 GameObject:
   m_ObjectHideFlags: 0
