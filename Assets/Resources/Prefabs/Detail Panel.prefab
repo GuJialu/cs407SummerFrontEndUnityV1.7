@@ -1255,6 +1255,9 @@ MonoBehaviour:
   UnlikeButton: {fileID: 3238345271211746724}
   loginSignUpPanelPrefab: {fileID: 7587611243401684540, guid: c2878682df8c80641acdc2baeeab99c9,
     type: 3}
+  commentPrefab: {fileID: 1286545884306034200, guid: 35c21675b80b3f34a9907a685c57f4d6,
+    type: 3}
+  commentScrollContentTrans: {fileID: 3196606908196613155}
 --- !u!1 &4608158028658107436
 GameObject:
   m_ObjectHideFlags: 0

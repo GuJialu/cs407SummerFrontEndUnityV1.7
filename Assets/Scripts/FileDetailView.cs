@@ -25,6 +25,35 @@ struct DownloadResJson
     public string URL;
 }
 
+[System.Serializable]
+struct CommentsReqJson
+{
+    public string key;
+
+    public CommentsReqJson(string key)
+    {
+        this.key = key;
+    }
+}
+
+[System.Serializable]
+struct CommentsResJson
+{
+    public string status;
+    public List<CommentJson> comments;
+}
+
+[System.Serializable]
+public struct CommentJson
+{
+    public int comment_id;
+    public string email;
+    public string username;
+    public string comment;
+    public int like;
+    public string dateUpdated;
+}
+
 public class FileDetailView : MonoBehaviour
 {
     public Image fileCoverImage;
@@ -41,6 +70,9 @@ public class FileDetailView : MonoBehaviour
     public GameObject UnlikeButton;
     public GameObject loginSignUpPanelPrefab;
 
+    public GameObject commentPrefab;
+    public Transform commentScrollContentTrans;
+
     public void init(FileOverview fileOverview)
     {
         fileCoverImage.sprite = fileOverview.fileCoverImage.sprite;
@@ -52,6 +84,7 @@ public class FileDetailView : MonoBehaviour
 
         DownloadKey = fileOverview.key;
 
+        RequestComments();
         //likeToggle.isOn = false;
     }
 
@@ -210,6 +243,45 @@ public class FileDetailView : MonoBehaviour
             {
 
             }
+        }
+    }
+
+    void RequestComments()
+    {
+        StartCoroutine(RequestCommentsCoro());
+    }
+
+    IEnumerator RequestCommentsCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "comment/showComment", new WWWForm()))
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
+                JsonUtility.ToJson(new CommentsReqJson(DownloadKey))
+                );
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                CommentsResJson res = JsonUtility.FromJson<CommentsResJson>(www.downloadHandler.text);
+                CreateComments(res);
+            }
+        }
+    }
+
+    void CreateComments(CommentsResJson res)
+    {
+        foreach(CommentJson commentJson in res.comments)
+        {
+            GameObject comment = Instantiate(commentPrefab, commentScrollContentTrans);
+            comment.GetComponent<Comment>().Init(commentJson);
         }
     }
 }
