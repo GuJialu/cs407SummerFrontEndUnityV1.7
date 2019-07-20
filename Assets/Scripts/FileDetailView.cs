@@ -54,6 +54,19 @@ public struct CommentJson
     public string dateUpdated;
 }
 
+[System.Serializable]
+struct AddCommentReqJson
+{
+    public string key;
+    public string comment;
+
+    public AddCommentReqJson(string key, string comment)
+    {
+        this.key = key;
+        this.comment = comment;
+    }
+}
+
 public class FileDetailView : MonoBehaviour
 {
     public Image fileCoverImage;
@@ -72,6 +85,8 @@ public class FileDetailView : MonoBehaviour
 
     public GameObject commentPrefab;
     public Transform commentScrollContentTrans;
+
+    public InputField commentInput;
 
     public void init(FileOverview fileOverview)
     {
@@ -246,7 +261,7 @@ public class FileDetailView : MonoBehaviour
         }
     }
 
-    void RequestComments()
+    public void RequestComments()
     {
         StartCoroutine(RequestCommentsCoro());
     }
@@ -260,6 +275,11 @@ public class FileDetailView : MonoBehaviour
                 );
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
+
+            if (WebReq.email != null)
+            {
+                www.SetRequestHeader("Authorization", WebReq.bearerToken);
+            }
 
             yield return www.SendWebRequest();
 
@@ -278,10 +298,56 @@ public class FileDetailView : MonoBehaviour
 
     void CreateComments(CommentsResJson res)
     {
+        foreach(Transform transform in commentScrollContentTrans)
+        {
+            if (transform.GetComponent<Comment>() != null)
+            {
+                Destroy(transform.gameObject);
+            }
+        }
+
         foreach(CommentJson commentJson in res.comments)
         {
             GameObject comment = Instantiate(commentPrefab, commentScrollContentTrans);
             comment.GetComponent<Comment>().Init(commentJson);
+        }
+    }
+
+    public void AddComment()
+    {
+        if (WebReq.email == null)
+        {
+            Instantiate(loginSignUpPanelPrefab, transform.parent);
+            return;
+        }
+
+        //submit
+        StartCoroutine(RequestAddCommentsCoro());
+    }
+
+    IEnumerator RequestAddCommentsCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "comment/addComment", new WWWForm()))
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
+                JsonUtility.ToJson(new AddCommentReqJson(DownloadKey, commentInput.text))
+                );
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Authorization", WebReq.bearerToken);
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                //refreash
+                RequestComments();
+            }
         }
     }
 }
