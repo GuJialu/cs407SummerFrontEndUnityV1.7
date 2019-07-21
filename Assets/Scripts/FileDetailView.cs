@@ -51,7 +51,10 @@ public struct CommentJson
     public string username;
     public string comment;
     public int like;
+    public int dislike;
     public string dateUpdated;
+    public bool liked;
+    public bool disliked;
 }
 
 [System.Serializable]
@@ -96,8 +99,9 @@ public class FileDetailView : MonoBehaviour
         downloads.text = fileOverview.downloads.text;
         likes.text = fileOverview.likes.text;
         date.text = fileOverview.date.text;
-
         DownloadKey = fileOverview.key;
+
+        WorkShopEvents.loginEvent.AddListener(RequestComments);
 
         RequestComments();
         //likeToggle.isOn = false;

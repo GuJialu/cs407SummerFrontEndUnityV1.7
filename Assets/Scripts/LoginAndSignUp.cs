@@ -262,7 +262,7 @@ public class LoginAndSignUp : MonoBehaviour
                 {
                     WebReq.bearerToken = res.token;
                     WebReq.email = email;
-                    WorkShopEvents.loginEvent?.Invoke(email);
+                    WorkShopEvents.loginEvent?.Invoke();
                     Destroy(gameObject);
                 }
             }

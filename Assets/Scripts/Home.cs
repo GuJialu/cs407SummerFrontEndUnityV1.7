@@ -52,9 +52,9 @@ public class Home : MonoBehaviour
 
     }
 
-    public void OnLogin(string email)
+    public void OnLogin()
     {
-        StartCoroutine(RequestProfileIconCoro(email));
+        StartCoroutine(RequestProfileIconCoro(WebReq.email));
         logoutButton.SetActive(true);
         loginButton.SetActive(false);
     }
