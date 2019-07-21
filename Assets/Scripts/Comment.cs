@@ -8,11 +8,13 @@ using UnityEngine.UI;
 [System.Serializable]
 struct LikeCommentReqJson
 {
-    public int id;
+    public int comment_id;
+    public string email;
 
-    public LikeCommentReqJson(int id)
+    public LikeCommentReqJson(int comment_id, string email)
     {
-        this.id = id;
+        this.comment_id = comment_id;
+        this.email = email;
     }
 }
 
@@ -175,9 +177,9 @@ public class Comment : MonoBehaviour
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "comment/"+likeOption.ToString(), new WWWForm()))
         {
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson(new LikeCommentReqJson(commentID))
+                JsonUtility.ToJson(new LikeCommentReqJson(commentID, WebReq.email))
                 );
-            Debug.Log(JsonUtility.ToJson(new LikeCommentReqJson(commentID)));
+            Debug.Log(JsonUtility.ToJson(new LikeCommentReqJson(commentID, WebReq.email)));
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
             www.SetRequestHeader("Authorization", WebReq.bearerToken);
