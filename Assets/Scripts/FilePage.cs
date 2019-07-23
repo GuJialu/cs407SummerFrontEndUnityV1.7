@@ -410,6 +410,21 @@ public class FilePage : MonoBehaviour
         return false;
     }
 
+    public void ClearCache()
+    {
+        while (filePageCacheQueue.Count > 0)
+        {
+            FilePageCache cacheToDestory = filePageCacheQueue.Dequeue();
+            foreach (GameObject fileOverview in cacheToDestory.fileOverviews)
+            {
+                if (fileOverview != null)
+                {
+                    Destroy(fileOverview);
+                }
+            }
+        }
+    }
+
     void EnableDelete()
     {
         foreach (FileOverview overview in filePanel.GetComponentsInChildren<FileOverview>())

@@ -112,6 +112,8 @@ public class Profile : MonoBehaviour
             favoriteButton.SetActive(false);
             deleteButton.SetActive(false);
         }
+
+        WorkShopEvents.uploadEvent.AddListener(ReloadFilePage);
     }
 
     IEnumerator RequestProfileCoro(string email)
@@ -257,5 +259,12 @@ public class Profile : MonoBehaviour
     public void ShowFavoriteList()
     {
         Instantiate(FavoritesPanelPrefab, transform.parent);
+    }
+
+    public void ReloadFilePage()
+    {
+        FilePage filePage= filePagePanel.GetComponent<FilePage>();
+        filePage.ClearCache();
+        filePage.ReloadFilePanel();
     }
 }
