@@ -272,6 +272,7 @@ public class Upload : MonoBehaviour
                 Debug.Log("file info Upload complete!");
             }
         }
+        WorkShopEvents.uploadEvent?.Invoke();
     }
 
     public void RequestOverwriteUpload()

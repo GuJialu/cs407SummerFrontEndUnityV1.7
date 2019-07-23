@@ -12,4 +12,5 @@ public static class WorkShopEvents
 {
     public static UnityEvent loginEvent = new UnityEvent();
     public static UnityEvent logoutEvent = new UnityEvent();
+    public static UnityEvent uploadEvent = new UnityEvent();
 }
