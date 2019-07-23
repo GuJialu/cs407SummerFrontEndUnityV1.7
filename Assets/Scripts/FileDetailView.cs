@@ -107,11 +107,11 @@ public class FileDetailView : MonoBehaviour
     public GameObject UnlikeButton;
     public GameObject loginSignUpPanelPrefab;
 
-    public GameObject rateOne;
-    public GameObject rateTwo;
-    public GameObject rateThree;
-    public GameObject rateFour;
-    public GameObject rateFive;
+    public GameObject rateOneButton;
+    public GameObject rateTwoButton;
+    public GameObject rateThreeButton;
+    public GameObject rateFourButton;
+    public GameObject rateFiveButton;
 
 
     public int personalRating;
