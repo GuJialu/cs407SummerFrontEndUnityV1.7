@@ -45,6 +45,7 @@ public class Home : MonoBehaviour
         logoutButton.SetActive(false);
         loginButton.SetActive(true);
         iconButton.GetComponentInChildren<Image>().sprite = originalIconSprite;
+        WorkShopEvents.logoutEvent?.Invoke();
     }
 
     public void ReturnToMainSence()

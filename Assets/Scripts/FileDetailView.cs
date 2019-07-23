@@ -102,6 +102,7 @@ public class FileDetailView : MonoBehaviour
         DownloadKey = fileOverview.key;
 
         WorkShopEvents.loginEvent.AddListener(RequestComments);
+        WorkShopEvents.logoutEvent.AddListener(RequestComments);
 
         RequestComments();
         //likeToggle.isOn = false;
