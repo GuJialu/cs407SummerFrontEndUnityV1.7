@@ -107,6 +107,12 @@ public class FileDetailView : MonoBehaviour
     public GameObject UnlikeButton;
     public GameObject loginSignUpPanelPrefab;
 
+    public GameObject rateOne;
+    public GameObject rateTwo;
+    public GameObject rateThree;
+    public GameObject rateFour;
+    public GameObject rateFive;
+
 
     public int personalRating;
     public double averageRating;
@@ -442,6 +448,32 @@ public class FileDetailView : MonoBehaviour
             }
         }
     }
+    public void rateOne()
+    {
+        personalRating = 1;
+        RateContent();
+    }
+    public void rateTwo()
+    {
+        personalRating = 2;
+        RateContent();
+    }
+    public void rateThree()
+    {
+        personalRating = 3;
+        RateContent();
+    }
+    public void rateFour()
+    {
+        personalRating = 4;
+        RateContent();
+    }
+    public void rateFive()
+    {
+        personalRating = 5;
+        RateContent();
+    }
+
 }
 
 
