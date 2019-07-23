@@ -67,6 +67,16 @@ struct AddCommentReqJson
     }
 }
 
+struct RateContentReqJson
+{
+    public int rating;
+
+    public RateContentReqJson(int rating)
+    {
+        this.rating = rating;
+    }
+}
+
 public class FileDetailView : MonoBehaviour
 {
     public Image fileCoverImage;
@@ -83,6 +93,12 @@ public class FileDetailView : MonoBehaviour
     public GameObject UnlikeButton;
     public GameObject loginSignUpPanelPrefab;
 
+
+    public int personalRating;
+    public double averageRating;
+
+    public GameObject ratingButton;
+    
     public GameObject commentPrefab;
     public Transform commentScrollContentTrans;
 
@@ -349,5 +365,38 @@ public class FileDetailView : MonoBehaviour
                 RequestComments();
             }
         }
+    }
+
+    public void RateContent()
+    {
+        // ...
+
+        StartCoroutine(RequestRateItemCoro());
+    }
+    IEnumerator RequestRateItemCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "comment/addComment", new WWWForm())) // TODO FIX ENDPOINT
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
+                JsonUtility.ToJson(new RateContentReqJson(personalRating))
+                );
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Authorization", WebReq.bearerToken);
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                //refreash
+                // TODO finish update.
+            }
+        }
+
     }
 }
