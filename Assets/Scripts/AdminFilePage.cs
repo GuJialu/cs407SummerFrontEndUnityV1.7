@@ -4,161 +4,7 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public enum SortingMethod
-{
-    date,
-    downloads,
-    likes,
-}
-
-class FilePageCache
-{
-    public List<GameObject> fileOverviews;
-    public int pageNum;
-    public int sortingMethod;
-    public int fliterType;
-    public int filterTime;
-    public string keyword;
-    public int rateFrom;
-    public int rateTo;
-
-    public FilePageCache(FilePage filePage)
-    {
-        fileOverviews = new List<GameObject>();
-        foreach(Transform fileOverviewTrans in filePage.filePanel.transform)
-        {
-            if (fileOverviewTrans.gameObject.activeSelf)
-            {
-                fileOverviews.Add(fileOverviewTrans.gameObject);
-            }
-        }
-        pageNum = filePage.currentPageNum;
-        sortingMethod = filePage.sortMethodDropdown.value;
-        fliterType = filePage.filterDropdown.value;
-        filterTime = filePage.timeDropdown.value;
-        keyword = filePage.keyword;
-        rateFrom = filePage.rateFromDropdown.value;
-        rateTo = filePage.rateToDropdown.value + 1;
-    }
-
-    public FilePageCache(AdminFilePage filePage)
-    {
-        fileOverviews = new List<GameObject>();
-        foreach (Transform fileOverviewTrans in filePage.filePanel.transform)
-        {
-            if (fileOverviewTrans.gameObject.activeSelf)
-            {
-                fileOverviews.Add(fileOverviewTrans.gameObject);
-            }
-        }
-        pageNum = filePage.currentPageNum;
-        sortingMethod = filePage.sortMethodDropdown.value;
-        fliterType = filePage.filterDropdown.value;
-        filterTime = filePage.timeDropdown.value;
-        keyword = filePage.keyword;
-        rateFrom = filePage.rateFromDropdown.value;
-        rateTo = filePage.rateToDropdown.value + 1;
-    }
-
-    public bool CacheEqualto(FilePage filePage)
-    {
-        return
-            pageNum == filePage.currentPageNum &&
-            sortingMethod == filePage.sortMethodDropdown.value &&
-            fliterType == filePage.filterDropdown.value &&
-            filterTime == filePage.timeDropdown.value &&
-            keyword == filePage.keyword &&
-            rateFrom == filePage.rateFromDropdown.value &&
-            rateTo == filePage.rateToDropdown.value + 1;
-    }
-
-    public bool CacheEqualto(AdminFilePage filePage)
-    {
-        return
-            pageNum == filePage.currentPageNum &&
-            sortingMethod == filePage.sortMethodDropdown.value &&
-            fliterType == filePage.filterDropdown.value &&
-            filterTime == filePage.timeDropdown.value &&
-            keyword == filePage.keyword &&
-            rateFrom == filePage.rateFromDropdown.value &&
-            rateTo == filePage.rateToDropdown.value + 1;
-    }
-}
-
-[System.Serializable]
-struct FilePageReqJson
-{
-    public string authorEmail;
-    public string sortingMethod;
-    public FilterTypes filterType;
-    public string filterTime;
-    public string searchKeyword;
-    public bool searchByContributor;
-    public int startRank;
-    public int filterRateFrom;
-    public int filterRateTo;
-
-    public FilePageReqJson(string authorEmail, string sortingMethod, string filterType, string filterTime, string searchKeyword, bool searchByContributor, int startRank, int filterRateFrom, int filterRateTo)
-    {
-        this.authorEmail = authorEmail;
-        this.sortingMethod = sortingMethod;
-        this.filterType = new FilterTypes(filterType);
-        this.filterTime = filterTime;
-        this.searchKeyword = searchKeyword;
-        this.searchByContributor = searchByContributor;
-        this.startRank = startRank;
-        this.filterRateFrom = filterRateFrom;
-        this.filterRateTo = filterRateTo;
-    }
-}
-
-[System.Serializable]
-public struct FilterTypes
-{
-    public List<string> content;
-
-    public FilterTypes(string type)
-    {
-        content = new List<string>();
-        if (!string.IsNullOrEmpty(type))
-        {
-            content.Add(type);
-        }
-    }
-}
-
-[System.Serializable]
-public struct FileJson
-{
-    public string email;
-    public string username;
-    public string fileName;
-    public string type;
-    public string dateUpdated;
-    public int downloadNum;
-    public int likes;
-    public bool anonymous;
-    public InfoDownloadUrl infoDownloadUrl;
-    public string key;
-    public float rate;
-}
-
-[System.Serializable]
-public struct InfoDownloadUrl
-{
-    public int status;
-    public string URL;
-}
-
-[System.Serializable]
-struct FilePageResJson
-{
-    public int status;
-    public int total_files;
-    public List<FileJson> file_list;
-}
-
-public class FilePage : MonoBehaviour
+public class AdminFilePage : MonoBehaviour
 {
     public GameObject fileOverviewPanelPrefab;
     public GameObject filePanel;
@@ -166,7 +12,10 @@ public class FilePage : MonoBehaviour
     public InputField keywordInput;
     public GameObject keywordPanel;
     public Toggle searchByContributorToggle;
-
+    public GameObject deleteButton;
+    public GameObject hideDeleteButton;
+    public GameObject loginSignUpPanelPrefab;
+    public GameObject warningPanelPrefab;
 
     public int currentPageNum;
     int numFiles;
@@ -454,5 +303,38 @@ public class FilePage : MonoBehaviour
         {
             overview.DisableDelete();
         }
+    }
+
+    public void ShowDeleteFile()
+    {
+        if (WebReq.email == null)
+        {
+            Instantiate(loginSignUpPanelPrefab, transform.parent);
+            warningPanelPrefab.SetActive(true);
+        }
+        else
+        {
+            foreach (Transform fileOverviewTran in filePanel.transform)
+            {
+                fileOverviewTran.GetComponent<FileOverview>().EnableDelete();
+            }
+            deleteButton.SetActive(false);
+            hideDeleteButton.SetActive(true);
+        }
+    }
+
+    public void HideDeleteFile()
+    {
+        foreach (Transform fileOverviewTran in filePanel.transform)
+        {
+            fileOverviewTran.GetComponent<FileOverview>().DisableDelete();
+        }
+        deleteButton.SetActive(true);
+        hideDeleteButton.SetActive(false);
+    }
+
+    public void disableWarningPanel()
+    {
+        warningPanelPrefab.SetActive(false);
     }
 }

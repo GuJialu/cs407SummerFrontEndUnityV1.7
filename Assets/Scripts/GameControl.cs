@@ -22,6 +22,8 @@ public class GameControl : MonoBehaviour
     public GameObject FileScrollViewContent;
     public GameObject FileNameText;
     public GameObject DescriptionText;
+    
+    public Image fileCoverImage;
 
     private GameObject newRect;
     private Rigidbody2D dinoBody;
@@ -129,6 +131,11 @@ public class GameControl : MonoBehaviour
     public void modInfoLoadCancel()
     {
         modInfoPanel.SetActive(false);
+
+        foreach (Transform transform in FileScrollViewContent.transform)
+        {
+            Destroy(transform.gameObject);
+        }
     }
 
     public void FolderSelected(string name)
@@ -137,6 +144,7 @@ public class GameControl : MonoBehaviour
         string path = filePath + name;
         string InfoPath = path + "/info";
         string desPath = InfoPath + "/des.txt";
+        string coverPath = InfoPath + "/workingspace.PNG";
 
         FileNameText.GetComponentInChildren<Text>().text = name;
         
@@ -149,7 +157,17 @@ public class GameControl : MonoBehaviour
                 description = description + line + "\n";
             }
         }
-
         DescriptionText.GetComponentInChildren<Text>().text = description;
+
+        byte[] filedata;
+        if (File.Exists(coverPath))
+        {
+            filedata = File.ReadAllBytes(coverPath);
+
+            Texture2D Tex2D;
+            Tex2D = new Texture2D(2, 2);
+            Tex2D.LoadImage(filedata);
+            fileCoverImage.sprite = Sprite.Create(Tex2D, new Rect(0, 0, Tex2D.width, Tex2D.height), new Vector2(0, 0));
+        }
     }
 }
