@@ -46,7 +46,7 @@ public class FileOverview : MonoBehaviour
         rateImage.fillAmount = fileJson.rate / 5;
 
         infoDownloadUrl = fileJson.infoDownloadUrl.URL;
-        Debug.Log(fileJson.infoDownloadUrl.status+" "+infoDownloadUrl);
+        Debug.Log(fileJson.infoDownloadUrl.status + " " + infoDownloadUrl);
 
         key = fileJson.key;
         email = fileJson.email;
@@ -100,7 +100,7 @@ public class FileOverview : MonoBehaviour
                 using (MemoryStream ms = new MemoryStream())
                 {
                     imageEntry.Open().CopyTo(ms);
-                    Tex2D.LoadImage(ms.ToArray()); 
+                    Tex2D.LoadImage(ms.ToArray());
                 }
                 fileCoverImage.sprite = Sprite.Create(Tex2D, new Rect(0, 0, Tex2D.width, Tex2D.height), new Vector2(0, 0));
             }
@@ -181,23 +181,23 @@ public class FileOverview : MonoBehaviour
     }
     IEnumerator UnlikeFileCoro()
     {
-        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl+ "file/unlikeFile", new WWWForm()))
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/unlikeFile", new WWWForm()))
         {
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson( new UnlikeFavoriteReqJson(WebReq.email, key))
+                JsonUtility.ToJson(new UnlikeFavoriteReqJson(WebReq.email, key))
                 );
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
 
             yield return www.SendWebRequest();
 
-            if(www.isNetworkError || www.isHttpError)
+            if (www.isNetworkError || www.isHttpError)
             {
                 Debug.Log(www.error);
             }
             else
             {
-                
+
                 Destroy(gameObject);
             }
         }
