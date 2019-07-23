@@ -15,6 +15,8 @@ public class FileOverview : MonoBehaviour
     public Text downloads;
     public Text likes;
     public Text date;
+    public Text rateText;
+    public Image rateImage;
     public GameObject FileDetailViewPanelPrefab;
     public GameObject profilePanelPrefab;
     public string key;
@@ -40,6 +42,8 @@ public class FileOverview : MonoBehaviour
         likes.text = fileJson.likes.ToString();
         string dateStr = System.DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(fileJson.dateUpdated)).UtcDateTime.ToString("MM/dd/yyyy");
         date.text = dateStr;
+        rateText.text = fileJson.rate.ToString();
+        rateImage.fillAmount = fileJson.rate / 5;
 
         infoDownloadUrl = fileJson.infoDownloadUrl.URL;
         Debug.Log(fileJson.infoDownloadUrl.status+" "+infoDownloadUrl);
@@ -49,6 +53,8 @@ public class FileOverview : MonoBehaviour
         StartCoroutine(RequestDownloadInfoCoro());
 
         canvasTrans = GetComponentInParent<Canvas>().transform;
+
+        authorProfileButton.GetComponent<AuthorButton>().email = fileJson.email;
     }
 
     IEnumerator RequestDownloadInfoCoro()

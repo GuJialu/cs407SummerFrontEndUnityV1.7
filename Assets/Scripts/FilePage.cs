@@ -19,6 +19,8 @@ class FilePageCache
     public int fliterType;
     public int filterTime;
     public string keyword;
+    public int rateFrom;
+    public int rateTo;
 
     public FilePageCache(FilePage filePage)
     {
@@ -35,6 +37,8 @@ class FilePageCache
         fliterType = filePage.filterDropdown.value;
         filterTime = filePage.timeDropdown.value;
         keyword = filePage.keyword;
+        rateFrom = filePage.rateFromDropdown.value;
+        rateTo = filePage.rateToDropdown.value + 1;
     }
 
     public bool CacheEqualto(FilePage filePage)
@@ -44,7 +48,9 @@ class FilePageCache
             sortingMethod == filePage.sortMethodDropdown.value &&
             fliterType == filePage.filterDropdown.value &&
             filterTime == filePage.timeDropdown.value &&
-            keyword == filePage.keyword;
+            keyword == filePage.keyword &&
+            rateFrom == filePage.rateFromDropdown.value &&
+            rateTo == filePage.rateToDropdown.value + 1;
     }
 }
 
@@ -58,8 +64,10 @@ struct FilePageReqJson
     public string searchKeyword;
     public bool searchByContributor;
     public int startRank;
+    public int filterRateFrom;
+    public int filterRateTo;
 
-    public FilePageReqJson(string authorEmail, string sortingMethod, string filterType, string filterTime, string searchKeyword, bool searchByContributor, int startRank)
+    public FilePageReqJson(string authorEmail, string sortingMethod, string filterType, string filterTime, string searchKeyword, bool searchByContributor, int startRank, int filterRateFrom, int filterRateTo)
     {
         this.authorEmail = authorEmail;
         this.sortingMethod = sortingMethod;
@@ -68,6 +76,8 @@ struct FilePageReqJson
         this.searchKeyword = searchKeyword;
         this.searchByContributor = searchByContributor;
         this.startRank = startRank;
+        this.filterRateFrom = filterRateFrom;
+        this.filterRateTo = filterRateTo;
     }
 }
 
@@ -99,6 +109,7 @@ public struct FileJson
     public bool anonymous;
     public InfoDownloadUrl infoDownloadUrl;
     public string key;
+    public float rate;
 }
 
 [System.Serializable]
@@ -137,6 +148,8 @@ public class FilePage : MonoBehaviour
     public Dropdown sortMethodDropdown;
     public Dropdown filterDropdown;
     public Dropdown timeDropdown;
+    public Dropdown rateFromDropdown;
+    public Dropdown rateToDropdown;
 
     Queue<FilePageCache> filePageCacheQueue;
     int cacheSize = 4;
@@ -148,6 +161,10 @@ public class FilePage : MonoBehaviour
 
         this.email = email;
         keyword = null;
+        rateFromDropdown.value = 0;
+        rateToDropdown.value = 4;
+        rateFromDropdown.onValueChanged.AddListener(delegate { ReloadFilePanel(); });
+        rateToDropdown.onValueChanged.AddListener(delegate { ReloadFilePanel(); });
 
         //Reload FilePanel
         ReloadFilePanel();
@@ -272,6 +289,9 @@ public class FilePage : MonoBehaviour
             case 3:
                 sortingMethod = "likesDESC";
                 break;
+            case 4:
+                sortingMethod = "rateDESC";
+                break;
         }
 
         string filterType = null; //default is null
@@ -310,9 +330,9 @@ public class FilePage : MonoBehaviour
 
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/listAll", new WWWForm()))
         {
-            Debug.Log(JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, searchByContributor, startRank)).Replace("\"\"", "null"));
+            Debug.Log(JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, searchByContributor, startRank, rateFromDropdown.value, rateToDropdown.value + 1)).Replace("\"\"", "null"));
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, searchByContributor, startRank)).Replace("\"\"", "null")
+                JsonUtility.ToJson(new FilePageReqJson(email, sortingMethod, filterType, filterTime, searchKeyword, searchByContributor, startRank, rateFromDropdown.value, rateToDropdown.value + 1)).Replace("\"\"", "null")
                 );
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);

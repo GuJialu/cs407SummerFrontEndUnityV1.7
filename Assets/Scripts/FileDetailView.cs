@@ -25,6 +25,51 @@ struct DownloadResJson
     public string URL;
 }
 
+[System.Serializable]
+struct CommentsReqJson
+{
+    public string key;
+
+    public CommentsReqJson(string key)
+    {
+        this.key = key;
+    }
+}
+
+[System.Serializable]
+struct CommentsResJson
+{
+    public string status;
+    public List<CommentJson> comments;
+}
+
+[System.Serializable]
+public struct CommentJson
+{
+    public int comment_id;
+    public string email;
+    public string username;
+    public string comment;
+    public int like;
+    public int dislike;
+    public string dateUpdated;
+    public bool liked;
+    public bool disliked;
+}
+
+[System.Serializable]
+struct AddCommentReqJson
+{
+    public string key;
+    public string comment;
+
+    public AddCommentReqJson(string key, string comment)
+    {
+        this.key = key;
+        this.comment = comment;
+    }
+}
+
 public class FileDetailView : MonoBehaviour
 {
     public Image fileCoverImage;
@@ -41,6 +86,11 @@ public class FileDetailView : MonoBehaviour
     public GameObject UnlikeButton;
     public GameObject loginSignUpPanelPrefab;
 
+    public GameObject commentPrefab;
+    public Transform commentScrollContentTrans;
+
+    public InputField commentInput;
+
     public void init(FileOverview fileOverview)
     {
         fileCoverImage.sprite = fileOverview.fileCoverImage.sprite;
@@ -49,9 +99,12 @@ public class FileDetailView : MonoBehaviour
         downloads.text = fileOverview.downloads.text;
         likes.text = fileOverview.likes.text;
         date.text = fileOverview.date.text;
-
         DownloadKey = fileOverview.key;
 
+        WorkShopEvents.loginEvent.AddListener(RequestComments);
+        WorkShopEvents.logoutEvent.AddListener(RequestComments);
+
+        RequestComments();
         //likeToggle.isOn = false;
     }
 
@@ -209,6 +262,96 @@ public class FileDetailView : MonoBehaviour
             else
             {
 
+            }
+        }
+    }
+
+    public void RequestComments()
+    {
+        StartCoroutine(RequestCommentsCoro());
+    }
+
+    IEnumerator RequestCommentsCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "comment/showComment", new WWWForm()))
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
+                JsonUtility.ToJson(new CommentsReqJson(DownloadKey))
+                );
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+
+            if (WebReq.email != null)
+            {
+                www.SetRequestHeader("Authorization", WebReq.bearerToken);
+            }
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                CommentsResJson res = JsonUtility.FromJson<CommentsResJson>(www.downloadHandler.text);
+                CreateComments(res);
+            }
+        }
+    }
+
+    void CreateComments(CommentsResJson res)
+    {
+        foreach(Transform transform in commentScrollContentTrans)
+        {
+            if (transform.GetComponent<Comment>() != null)
+            {
+                Destroy(transform.gameObject);
+            }
+        }
+
+        foreach(CommentJson commentJson in res.comments)
+        {
+            GameObject comment = Instantiate(commentPrefab, commentScrollContentTrans);
+            comment.GetComponent<Comment>().Init(commentJson);
+        }
+    }
+
+    public void AddComment()
+    {
+        if (WebReq.email == null)
+        {
+            Instantiate(loginSignUpPanelPrefab, transform.parent);
+            return;
+        }
+
+        //submit
+        StartCoroutine(RequestAddCommentsCoro());
+    }
+
+    IEnumerator RequestAddCommentsCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "comment/addComment", new WWWForm()))
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
+                JsonUtility.ToJson(new AddCommentReqJson(DownloadKey, commentInput.text))
+                );
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Authorization", WebReq.bearerToken);
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                //refreash
+                RequestComments();
             }
         }
     }

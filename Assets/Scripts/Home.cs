@@ -45,6 +45,7 @@ public class Home : MonoBehaviour
         logoutButton.SetActive(false);
         loginButton.SetActive(true);
         iconButton.GetComponentInChildren<Image>().sprite = originalIconSprite;
+        WorkShopEvents.logoutEvent?.Invoke();
     }
 
     public void ReturnToMainSence()
@@ -52,9 +53,9 @@ public class Home : MonoBehaviour
 
     }
 
-    public void OnLogin(string email)
+    public void OnLogin()
     {
-        StartCoroutine(RequestProfileIconCoro(email));
+        StartCoroutine(RequestProfileIconCoro(WebReq.email));
         logoutButton.SetActive(true);
         loginButton.SetActive(false);
     }
