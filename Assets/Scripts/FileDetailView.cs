@@ -51,7 +51,10 @@ public struct CommentJson
     public string username;
     public string comment;
     public int like;
+    public int dislike;
     public string dateUpdated;
+    public bool liked;
+    public bool disliked;
 }
 
 [System.Serializable]
@@ -67,6 +70,16 @@ struct AddCommentReqJson
     }
 }
 
+
+struct ReportFileReqJson
+{
+    public string key;
+    public ReportFileReqJson(string key)
+    {
+        this.key = key;
+    }
+}
+
 struct RateContentReqJson
 {
     public int rating;
@@ -74,6 +87,7 @@ struct RateContentReqJson
     public RateContentReqJson(int rating)
     {
         this.rating = rating;
+
     }
 }
 
@@ -112,8 +126,10 @@ public class FileDetailView : MonoBehaviour
         downloads.text = fileOverview.downloads.text;
         likes.text = fileOverview.likes.text;
         date.text = fileOverview.date.text;
-
         DownloadKey = fileOverview.key;
+
+        WorkShopEvents.loginEvent.AddListener(RequestComments);
+        WorkShopEvents.logoutEvent.AddListener(RequestComments);
 
         RequestComments();
         //likeToggle.isOn = false;
@@ -367,6 +383,34 @@ public class FileDetailView : MonoBehaviour
         }
     }
 
+
+    public void ReportFile()
+    {
+        StartCoroutine(ReportFileCoro());
+    }
+
+    IEnumerator ReportFileCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/reportFile", new WWWForm()))
+        {
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
+                JsonUtility.ToJson(new ReportFileReqJson(DownloadKey))
+                );
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+            }
+        }
+    }
+}
+
     public void RateContent()
     {
         // ...
@@ -384,6 +428,7 @@ public class FileDetailView : MonoBehaviour
             www.SetRequestHeader("Content-Type", "application/json");
             www.SetRequestHeader("Authorization", WebReq.bearerToken);
 
+
             yield return www.SendWebRequest();
 
             if (www.isNetworkError || www.isHttpError)
@@ -392,11 +437,12 @@ public class FileDetailView : MonoBehaviour
             }
             else
             {
+
                 Debug.Log(www.downloadHandler.text);
                 //refreash
                 // TODO finish update.
             }
         }
-
     }
 }
+

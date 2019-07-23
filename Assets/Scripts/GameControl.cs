@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.IO;
 using System.Collections;
+using System.IO.Compression;
 using UnityEngine.SceneManagement;
 
 public class GameControl : MonoBehaviour
@@ -14,6 +17,11 @@ public class GameControl : MonoBehaviour
     public GameObject ReStartButton;
     public GameObject ExitButton;
     public GameObject ScoreText;
+
+    public GameObject localFileButtonPrefab;
+    public GameObject FileScrollViewContent;
+    public GameObject FileNameText;
+    public GameObject DescriptionText;
 
     private GameObject newRect;
     private Rigidbody2D dinoBody;
@@ -28,6 +36,10 @@ public class GameControl : MonoBehaviour
 
     private AssetBundle myLoadedAssetBundle;
     private string[] scenePaths;
+
+    private string filePath;
+
+    public GameObject modInfoPanel;
 
 
     void Awake()
@@ -94,5 +106,50 @@ public class GameControl : MonoBehaviour
     public void Exit()
     {
         SceneManager.LoadScene("WorkShopSence");
+    }
+
+    public void modInfoLoad()
+    {
+        modInfoPanel.SetActive(true);
+
+        filePath = Application.dataPath + "/StreamingAssets/DownloadedGameFiles/";
+        DirectoryInfo d = new DirectoryInfo(filePath);
+
+        foreach (var currDirectory in d.GetDirectories())
+        {
+            Debug.Log(currDirectory.Name);
+            GameObject fileButton = Instantiate(localFileButtonPrefab, FileScrollViewContent.transform);
+            fileButton.GetComponentInChildren<Text>().text = currDirectory.Name;
+            var button = fileButton.GetComponent<Button>();
+
+            button.onClick.AddListener(delegate { FolderSelected(currDirectory.Name); });
+        }
+    }
+
+    public void modInfoLoadCancel()
+    {
+        modInfoPanel.SetActive(false);
+    }
+
+    public void FolderSelected(string name)
+    {
+        Debug.Log(name);
+        string path = filePath + name;
+        string InfoPath = path + "/info";
+        string desPath = InfoPath + "/des.txt";
+
+        FileNameText.GetComponentInChildren<Text>().text = name;
+        
+        string description = "";
+        using (StreamReader sr = new StreamReader(desPath))
+        {
+            string line;
+            while ((line = sr.ReadLine()) != null)
+            {
+                description = description + line + "\n";
+            }
+        }
+
+        DescriptionText.GetComponentInChildren<Text>().text = description;
     }
 }

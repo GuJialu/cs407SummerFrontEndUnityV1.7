@@ -1651,6 +1651,8 @@ MonoBehaviour:
   sortMethodDropdown: {fileID: 5558973671645603961}
   filterDropdown: {fileID: 5142441034360976036}
   timeDropdown: {fileID: 4520151071023567436}
+  rateFromDropdown: {fileID: 6577462072288141161}
+  rateToDropdown: {fileID: 8046483403177104208}
 --- !u!1 &1314792378564099110
 GameObject:
   m_ObjectHideFlags: 0
@@ -5773,6 +5775,8 @@ MonoBehaviour:
     - m_Text: Download
       m_Image: {fileID: 0}
     - m_Text: Likes
+      m_Image: {fileID: 0}
+    - m_Text: Rate
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:
