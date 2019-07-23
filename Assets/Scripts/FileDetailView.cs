@@ -409,8 +409,6 @@ public class FileDetailView : MonoBehaviour
             }
         }
     }
-}
-
     public void RateContent()
     {
         // ...
@@ -445,4 +443,7 @@ public class FileDetailView : MonoBehaviour
         }
     }
 }
+
+
+
 
