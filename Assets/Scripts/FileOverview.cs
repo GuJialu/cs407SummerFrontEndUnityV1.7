@@ -109,7 +109,7 @@ public class FileOverview : MonoBehaviour
 
     public void OpenDetialedPage()
     {
-        GameObject fileDetailViewPanel = Instantiate(FileDetailViewPanelPrefab, transform.parent.parent);
+        GameObject fileDetailViewPanel = Instantiate(FileDetailViewPanelPrefab, canvasTrans);
         fileDetailViewPanel.GetComponent<FileDetailView>().init(this);
     }
 
