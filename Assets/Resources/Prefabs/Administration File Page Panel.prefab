@@ -1405,8 +1405,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314792378544157036, guid: c1867c64673e7484080e7d007d2cc790,
-          type: 3}
+      - m_Target: {fileID: 1827359802891852837}
         m_MethodName: ToPage
         m_Mode: 3
         m_Arguments:
@@ -1716,8 +1715,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314792378544157036, guid: c1867c64673e7484080e7d007d2cc790,
-          type: 3}
+      - m_Target: {fileID: 1827359802891852837}
         m_MethodName: ToLastPage
         m_Mode: 1
         m_Arguments:
@@ -1930,8 +1928,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314792378544157036, guid: c1867c64673e7484080e7d007d2cc790,
-          type: 3}
+      - m_Target: {fileID: 1827359802891852837}
         m_MethodName: ToPage
         m_Mode: 3
         m_Arguments:
@@ -2063,8 +2060,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314792378544157036, guid: c1867c64673e7484080e7d007d2cc790,
-          type: 3}
+      - m_Target: {fileID: 1827359802891852837}
         m_MethodName: ToPage
         m_Mode: 3
         m_Arguments:
@@ -2196,8 +2192,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314792378544157036, guid: c1867c64673e7484080e7d007d2cc790,
-          type: 3}
+      - m_Target: {fileID: 1827359802891852837}
         m_MethodName: ToPage
         m_Mode: 3
         m_Arguments:
@@ -2341,6 +2336,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1175973903830148384}
   - component: {fileID: 1175973903830148386}
+  - component: {fileID: 1827359802891852837}
   m_Layer: 5
   m_Name: Administration File Page Panel
   m_TagString: Untagged
@@ -2378,6 +2374,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1175973903830148385}
   m_CullTransparentMesh: 0
+--- !u!114 &1827359802891852837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1175973903830148385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 777620bc65301e248b0fb6d4b5ed8c6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fileOverviewPanelPrefab: {fileID: 5018875251174639455, guid: 7722f6378350f1d4da641b01f054b57c,
+    type: 3}
+  filePanel: {fileID: 1175973902979576841}
+  indexs:
+  - {fileID: 1175973903968530322}
+  - {fileID: 1175973902672918544}
+  - {fileID: 1175973901969508562}
+  - {fileID: 1175973903006094914}
+  - {fileID: 1175973902898867913}
+  keywordInput: {fileID: 4159145565758417590}
+  keywordPanel: {fileID: 6695973077618754964}
+  searchByContributorToggle: {fileID: 1415507623493039387}
+  deleteButton: {fileID: 0}
+  hideDeleteButton: {fileID: 0}
+  loginSignUpPanelPrefab: {fileID: 7587611243401684540, guid: c2878682df8c80641acdc2baeeab99c9,
+    type: 3}
+  warningPanelPrefab: {fileID: 0}
+  currentPageNum: 0
+  keyword: 
+  sortMethodDropdown: {fileID: 5713805280572111926}
+  filterDropdown: {fileID: 4986448392622532331}
+  timeDropdown: {fileID: 4383198467461809667}
+  rateFromDropdown: {fileID: 6424706324469762854}
+  rateToDropdown: {fileID: 7909491645821585183}
 --- !u!1 &1175973903845763177
 GameObject:
   m_ObjectHideFlags: 0
@@ -2497,8 +2529,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314792378544157036, guid: c1867c64673e7484080e7d007d2cc790,
-          type: 3}
+      - m_Target: {fileID: 1827359802891852837}
         m_MethodName: ToFirstPage
         m_Mode: 1
         m_Arguments:
