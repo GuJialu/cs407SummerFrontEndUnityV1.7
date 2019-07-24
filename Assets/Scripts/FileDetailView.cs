@@ -112,6 +112,7 @@ public class FileDetailView : MonoBehaviour
     public GameObject rateThreeButton;
     public GameObject rateFourButton;
     public GameObject rateFiveButton;
+    // YOLO
 
 
     public int personalRating;
