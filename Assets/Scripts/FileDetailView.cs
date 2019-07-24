@@ -107,7 +107,6 @@ public class FileDetailView : MonoBehaviour
     public GameObject UnlikeButton;
     public GameObject loginSignUpPanelPrefab;
 
-
     public int personalRating;
     public double averageRating;
 
@@ -342,6 +341,11 @@ public class FileDetailView : MonoBehaviour
         {
             GameObject comment = Instantiate(commentPrefab, commentScrollContentTrans);
             comment.GetComponent<Comment>().Init(commentJson);
+
+            if (WebReq.isAdmin && WebReq.email != null)
+            {
+                comment.GetComponent<Comment>().EnableDelete();
+            }
         }
     }
 

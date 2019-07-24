@@ -1731,6 +1731,9 @@ MonoBehaviour:
     type: 3}
   commentScrollContentTrans: {fileID: 3196606908196613155}
   commentInput: {fileID: 3594090053959186732}
+  deleteButton: {fileID: 0}
+  hideDeleteButton: {fileID: 0}
+  warningPanelPrefab: {fileID: 0}
 --- !u!1 &4597914083316121444
 GameObject:
   m_ObjectHideFlags: 0
@@ -3014,8 +3017,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6243579876676804921}
   m_HandleRect: {fileID: 7608512141600222127}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 1
+  m_Value: 1
+  m_Size: 0.9174757
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3166,7 +3169,18 @@ MonoBehaviour:
   m_VerticalScrollbarSpacing: -3
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4421815816782655537}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.ScrollRect+ScrollRectEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!222 &4401430864564408363
@@ -3719,6 +3733,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3196606908196613155}
     m_Modifications:
+    - target: {fileID: 1286545884306034200, guid: 0f7750d412003a245a9f168e3cc87f77,
+        type: 3}
+      propertyPath: m_Name
+      value: New Comment Panel
+      objectReference: {fileID: 0}
     - target: {fileID: 1286545884306034201, guid: 0f7750d412003a245a9f168e3cc87f77,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3823,11 +3842,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1286545884306034200, guid: 0f7750d412003a245a9f168e3cc87f77,
-        type: 3}
-      propertyPath: m_Name
-      value: New Comment Panel
       objectReference: {fileID: 0}
     - target: {fileID: 7583978327546722018, guid: 0f7750d412003a245a9f168e3cc87f77,
         type: 3}
@@ -3936,6 +3950,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4421815816782655538}
     m_Modifications:
+    - target: {fileID: 8861836100877496026, guid: 45598e2b0f86ff64cbc80f257c00a770,
+        type: 3}
+      propertyPath: m_Name
+      value: Delete Button
+      objectReference: {fileID: 0}
     - target: {fileID: 5971014220403354625, guid: 45598e2b0f86ff64cbc80f257c00a770,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4040,11 +4059,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8861836100877496026, guid: 45598e2b0f86ff64cbc80f257c00a770,
-        type: 3}
-      propertyPath: m_Name
-      value: Delete Button
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45598e2b0f86ff64cbc80f257c00a770, type: 3}

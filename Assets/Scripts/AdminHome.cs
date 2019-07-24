@@ -26,6 +26,7 @@ public class AdminHome : MonoBehaviour
         iconButton.GetComponent<Button>().enabled = false;
         originalIconSprite = iconButton.GetComponentInChildren<Image>().sprite;
         filePagePanel.GetComponent<AdminFilePage>().Init();
+        WebReq.isAdmin = true;
     }
 
     public void OpenProfilePanel()
