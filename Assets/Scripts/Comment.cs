@@ -47,6 +47,7 @@ public class Comment : MonoBehaviour
     public SpriteAtlas spriteAtlas;
     public AuthorButton authorButton;
     public int commentID;
+    public string authorEmail;
 
     public GameObject likeButton;
     public GameObject dislikeButton;
@@ -68,6 +69,7 @@ public class Comment : MonoBehaviour
         authorNameAndTimeText.text = authorName + "        " + dateStr;
         commentText.text = commentJson.comment;
         authorButton.email = commentJson.email;
+        authorEmail = commentJson.email;
         commentID = commentJson.comment_id;
         likeNumText.text = commentJson.like.ToString();
         dislikeNumText.text = commentJson.dislike.ToString();
@@ -249,7 +251,7 @@ public class Comment : MonoBehaviour
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "comment/deleteComment", new WWWForm())) // TODO change element
         {
             // TODO finish HTTP request for file like
-            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new DeleteCommentReqJson(commentID, WebReq.email)) // TODO find correct JSON.
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new DeleteCommentReqJson(commentID, authorEmail)) // TODO find correct JSON.
                 );
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
