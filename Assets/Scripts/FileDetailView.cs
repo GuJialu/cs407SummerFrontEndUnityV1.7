@@ -113,7 +113,7 @@ public class FileDetailView : MonoBehaviour
     public GameObject rateFourButton;
     public GameObject rateFiveButton;
     // YOLO
-
+    public Text visibleUserRating;
 
     public int personalRating;
     public double averageRating;
@@ -419,7 +419,39 @@ public class FileDetailView : MonoBehaviour
     public void RateContent()
     {
         // ...
-
+        // description.text = "HERRO" + personalRating;
+        // This switch statement was supposed to be so much better.
+        rateOneButton.GetComponent<Renderer>().GetComponent<Material>().color = Color.yellow;
+        rateOneButton.GetComponent<Image>().color = Color.yellow;
+        visibleUserRating.text = personalRating + "";
+        switch (personalRating)
+        {
+            case 5:
+                rateFiveButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255,255,0);
+                rateFourButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                rateThreeButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                rateTwoButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                rateOneButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                break;
+            case 4:
+                rateFourButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                rateThreeButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                rateTwoButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                rateOneButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                break;
+            case 3:
+                rateThreeButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                rateTwoButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                rateOneButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                break;
+            case 2:
+                rateTwoButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                rateOneButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                break;
+            default:
+                rateOneButton.GetComponent<Renderer>().GetComponent<Material>().color = new Color(255, 255, 0);
+                break;
+        }
         StartCoroutine(RequestRateItemCoro());
     }
     IEnumerator RequestRateItemCoro()
@@ -439,6 +471,7 @@ public class FileDetailView : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.Log(www.error);
+                description.text = "ERROR";
             }
             else
             {
