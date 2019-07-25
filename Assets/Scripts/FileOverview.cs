@@ -128,8 +128,9 @@ public class FileOverview : MonoBehaviour
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/deleteFile", new WWWForm())) // TODO change element
         {
             // TODO finish HTTP request for file like
-            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new DeleteFileReqJson(key)) // TODO find correct JSON.
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new DeleteFileAdminReqJson(key, email)) // TODO find correct JSON.
                 );
+            Debug.Log(JsonUtility.ToJson(new DeleteFileAdminReqJson(key, email)));
 
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
@@ -274,5 +275,16 @@ struct DeleteFileReqJson
     public DeleteFileReqJson(string key)
     {
         this.key = key;
+    }
+}
+
+struct DeleteFileAdminReqJson
+{
+    public string key;
+    public string email;
+    public DeleteFileAdminReqJson(string key, string email)
+    {
+        this.key = key;
+        this.email = email;
     }
 }

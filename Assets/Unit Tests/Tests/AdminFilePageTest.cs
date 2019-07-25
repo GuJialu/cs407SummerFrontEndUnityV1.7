@@ -79,7 +79,7 @@ namespace Tests
             adminFilePage.Init(WebReq.email);
             yield return new WaitForSeconds(5f);
 
-            FileOverview fileOverview = adminFilePage.filePanel.transform.GetChild(5).GetComponent<FileOverview>();
+            FileOverview fileOverview = adminFilePage.filePanel.transform.GetChild(2).GetComponent<FileOverview>();
             Assert.IsTrue(fileOverview.authorName.text.Equals("anonymous"));
 
             yield return null;
