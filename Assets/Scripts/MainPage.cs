@@ -19,12 +19,12 @@ public class MainPage : MonoBehaviour
 
     public void ToGame()
     {
-
+        SceneManager.LoadScene("game");
     }
 
     public void ToModEditor()
     {
-
+        SceneManager.LoadScene("DummyGame");
     }
 
     public void ToWorkShop()
