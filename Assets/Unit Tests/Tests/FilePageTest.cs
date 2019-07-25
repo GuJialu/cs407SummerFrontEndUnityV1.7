@@ -132,7 +132,6 @@ namespace Tests
             Assert.IsTrue(filePage.filePanel.transform.childCount > 0);
 
             filePage.sortMethodDropdown.value = 0;
-            filePage.ReloadFilePanel();
 
             yield return null;
         }
@@ -149,7 +148,6 @@ namespace Tests
             Assert.IsTrue(filePage.filePanel.transform.childCount > 0);
 
             filePage.sortMethodDropdown.value = 1;
-            filePage.ReloadFilePanel();
 
             yield return null;
         }
@@ -166,7 +164,6 @@ namespace Tests
             Assert.IsTrue(filePage.filePanel.transform.childCount > 0);
 
             filePage.sortMethodDropdown.value = 2;
-            filePage.ReloadFilePanel();
             yield return new WaitForSeconds(2f);
 
             yield return null;
@@ -183,7 +180,6 @@ namespace Tests
 
             Assert.IsTrue(filePage.filePanel.transform.childCount > 0);
             filePage.filterDropdown.value = 1;
-            filePage.ReloadFilePanel();
             yield return new WaitForSeconds(2f);
 
             yield return null;
@@ -200,7 +196,6 @@ namespace Tests
 
             Assert.IsTrue(filePage.filePanel.transform.childCount > 0);
             filePage.filterDropdown.value = 2;
-            filePage.ReloadFilePanel();
             yield return new WaitForSeconds(2f);
 
             yield return null;
@@ -217,7 +212,6 @@ namespace Tests
 
             Assert.IsTrue(filePage.filePanel.transform.childCount > 0);
             filePage.filterDropdown.value = 3;
-            filePage.ReloadFilePanel();
             yield return new WaitForSeconds(2f);
 
             yield return null;
@@ -234,15 +228,12 @@ namespace Tests
 
             Assert.IsTrue(filePage.filePanel.transform.childCount > 0);
             filePage.timeDropdown.value= 1;
-            filePage.ReloadFilePanel();
             yield return new WaitForSeconds(2f);
 
             filePage.timeDropdown.value = 2;
-            filePage.ReloadFilePanel();
             yield return new WaitForSeconds(2f);
 
             filePage.timeDropdown.value = 3;
-            filePage.ReloadFilePanel();
             yield return new WaitForSeconds(2f);
 
             yield return null;
