@@ -41,38 +41,7 @@ class FilePageCache
         rateTo = filePage.rateToDropdown.value + 1;
     }
 
-    public FilePageCache(AdminFilePage filePage)
-    {
-        fileOverviews = new List<GameObject>();
-        foreach (Transform fileOverviewTrans in filePage.filePanel.transform)
-        {
-            if (fileOverviewTrans.gameObject.activeSelf)
-            {
-                fileOverviews.Add(fileOverviewTrans.gameObject);
-            }
-        }
-        pageNum = filePage.currentPageNum;
-        sortingMethod = filePage.sortMethodDropdown.value;
-        fliterType = filePage.filterDropdown.value;
-        filterTime = filePage.timeDropdown.value;
-        keyword = filePage.keyword;
-        rateFrom = filePage.rateFromDropdown.value;
-        rateTo = filePage.rateToDropdown.value + 1;
-    }
-
     public bool CacheEqualto(FilePage filePage)
-    {
-        return
-            pageNum == filePage.currentPageNum &&
-            sortingMethod == filePage.sortMethodDropdown.value &&
-            fliterType == filePage.filterDropdown.value &&
-            filterTime == filePage.timeDropdown.value &&
-            keyword == filePage.keyword &&
-            rateFrom == filePage.rateFromDropdown.value &&
-            rateTo == filePage.rateToDropdown.value + 1;
-    }
-
-    public bool CacheEqualto(AdminFilePage filePage)
     {
         return
             pageNum == filePage.currentPageNum &&

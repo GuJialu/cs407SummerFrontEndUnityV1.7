@@ -119,8 +119,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314792378544157036, guid: c1867c64673e7484080e7d007d2cc790,
-          type: 3}
+      - m_Target: {fileID: 1827359802891852837}
         m_MethodName: UndoKeywordSearch
         m_Mode: 1
         m_Arguments:
@@ -708,8 +707,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314792378544157036, guid: c1867c64673e7484080e7d007d2cc790,
-          type: 3}
+      - m_Target: {fileID: 1827359802891852837}
         m_MethodName: ReloadFilePanel
         m_Mode: 1
         m_Arguments:
@@ -2918,8 +2916,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314792378544157036, guid: c1867c64673e7484080e7d007d2cc790,
-          type: 3}
+      - m_Target: {fileID: 1827359802891852837}
         m_MethodName: ReloadFilePanel
         m_Mode: 1
         m_Arguments:
@@ -5701,8 +5698,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314792378544157036, guid: c1867c64673e7484080e7d007d2cc790,
-          type: 3}
+      - m_Target: {fileID: 1827359802891852837}
         m_MethodName: ReloadFilePanel
         m_Mode: 1
         m_Arguments:
@@ -6536,8 +6532,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1314792378544157036, guid: c1867c64673e7484080e7d007d2cc790,
-          type: 3}
+      - m_Target: {fileID: 1827359802891852837}
         m_MethodName: KeywordSearch
         m_Mode: 1
         m_Arguments:

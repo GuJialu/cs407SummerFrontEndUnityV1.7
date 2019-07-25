@@ -4,6 +4,49 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+class AdminFilePageCache
+{
+    public List<GameObject> fileOverviews;
+    public int pageNum;
+    public int sortingMethod;
+    public int fliterType;
+    public int filterTime;
+    public string keyword;
+    public int rateFrom;
+    public int rateTo;
+
+    public AdminFilePageCache(AdminFilePage filePage)
+    {
+        fileOverviews = new List<GameObject>();
+        foreach (Transform fileOverviewTrans in filePage.filePanel.transform)
+        {
+            if (fileOverviewTrans.gameObject.activeSelf)
+            {
+                fileOverviews.Add(fileOverviewTrans.gameObject);
+            }
+        }
+        pageNum = filePage.currentPageNum;
+        sortingMethod = filePage.sortMethodDropdown.value;
+        fliterType = filePage.filterDropdown.value;
+        filterTime = filePage.timeDropdown.value;
+        keyword = filePage.keyword;
+        rateFrom = filePage.rateFromDropdown.value;
+        rateTo = filePage.rateToDropdown.value + 1;
+    }
+
+    public bool CacheEqualto(AdminFilePage filePage)
+    {
+        return
+            pageNum == filePage.currentPageNum &&
+            sortingMethod == filePage.sortMethodDropdown.value &&
+            fliterType == filePage.filterDropdown.value &&
+            filterTime == filePage.timeDropdown.value &&
+            keyword == filePage.keyword &&
+            rateFrom == filePage.rateFromDropdown.value &&
+            rateTo == filePage.rateToDropdown.value + 1;
+    }
+}
+
 public class AdminFilePage : MonoBehaviour
 {
     public GameObject fileOverviewPanelPrefab;
@@ -31,13 +74,13 @@ public class AdminFilePage : MonoBehaviour
     public Dropdown rateFromDropdown;
     public Dropdown rateToDropdown;
 
-    Queue<FilePageCache> filePageCacheQueue;
+    Queue<AdminFilePageCache> adminFilePageCacheQueue;
     int cacheSize = 4;
 
     // init the file page, will be called by the parent module(profile, homepage) after instansate a file page
     public void Init(string email = null)
     {
-        filePageCacheQueue = new Queue<FilePageCache>();
+        adminFilePageCacheQueue = new Queue<AdminFilePageCache>();
 
         this.email = email;
         keyword = null;
@@ -45,6 +88,8 @@ public class AdminFilePage : MonoBehaviour
         rateToDropdown.value = 4;
         rateFromDropdown.onValueChanged.AddListener(delegate { ReloadFilePanel(); });
         rateToDropdown.onValueChanged.AddListener(delegate { ReloadFilePanel(); });
+
+        WebReq.isAdmin = true;
 
         //Reload FilePanel
         ReloadFilePanel();
@@ -124,6 +169,7 @@ public class AdminFilePage : MonoBehaviour
 
     public void ReloadFilePanel()
     {
+        Debug.Log(adminFilePageCacheQueue);
         currentPageNum = 1;
         ToPage(0);
     }
@@ -132,7 +178,7 @@ public class AdminFilePage : MonoBehaviour
     {
         //clear filepage
 
-
+        Debug.Log(adminFilePageCacheQueue);
         foreach (Transform fileOverviewTrans in filePanel.transform)
         {
             if (fileOverviewTrans.gameObject.activeSelf)
@@ -140,16 +186,16 @@ public class AdminFilePage : MonoBehaviour
                 fileOverviewTrans.gameObject.SetActive(false);
             }
         }
-
+        
         if (LoadCache())
         {
             return;
         }
-
-        StartCoroutine(RequestFilesCoro());
+        
+        StartCoroutine(AdminRequestFilesCoro());
     }
 
-    IEnumerator RequestFilesCoro()
+    IEnumerator AdminRequestFilesCoro()
     {
         //Startrank is (currentPageNum-1)*FilesPerPage, Range is files per page
         string authorEmail = email;
@@ -256,24 +302,27 @@ public class AdminFilePage : MonoBehaviour
 
     void SaveCache()
     {
-        FilePageCache filePageCache = new FilePageCache(this);
+        AdminFilePageCache filePageCache = new AdminFilePageCache(this);
+        Debug.Log(filePageCache);
 
-        if (filePageCacheQueue.Count >= 4)
+        if (adminFilePageCacheQueue.Count >= 4)
         {
-            FilePageCache cacheToDestory = filePageCacheQueue.Dequeue();
+            AdminFilePageCache cacheToDestory = adminFilePageCacheQueue.Dequeue();
             foreach(GameObject fileOverview in cacheToDestory.fileOverviews)
             {
                 Destroy(fileOverview);
             }
         }
 
-        filePageCacheQueue.Enqueue(filePageCache);
+        adminFilePageCacheQueue.Enqueue(filePageCache);
+        Debug.Log(adminFilePageCacheQueue);
     }
 
     bool LoadCache()
     {
         //search for hit in cache
-        foreach (FilePageCache filePageCache in filePageCacheQueue)
+        Debug.Log(adminFilePageCacheQueue);
+        foreach (AdminFilePageCache filePageCache in adminFilePageCacheQueue)
         {
             if (filePageCache.CacheEqualto(this))
             {
@@ -288,6 +337,21 @@ public class AdminFilePage : MonoBehaviour
             }
         }
         return false;
+    }
+
+    public void ClearCache()
+    {
+        while (adminFilePageCacheQueue.Count > 0)
+        {
+            AdminFilePageCache cacheToDestory = adminFilePageCacheQueue.Dequeue();
+            foreach (GameObject fileOverview in cacheToDestory.fileOverviews)
+            {
+                if (fileOverview != null)
+                {
+                    Destroy(fileOverview);
+                }
+            }
+        }
     }
 
     void EnableDelete()
