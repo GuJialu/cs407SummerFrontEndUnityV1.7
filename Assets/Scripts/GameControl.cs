@@ -107,7 +107,7 @@ public class GameControl : MonoBehaviour
 
     public void Exit()
     {
-        SceneManager.LoadScene("WorkShopSence");
+        SceneManager.LoadScene("MainScene");
     }
 
     public void modInfoLoad()

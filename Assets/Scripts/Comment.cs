@@ -18,6 +18,19 @@ struct LikeCommentReqJson
     }
 }
 
+[System.Serializable]
+struct DeleteCommentReqJson
+{
+    public int comment_id;
+    public string email;
+
+    public DeleteCommentReqJson(int comment_id, string email)
+    {
+        this.comment_id = comment_id;
+        this.email = email;
+    }
+}
+
 enum LikeOption
 {
     likeComment,
@@ -34,11 +47,13 @@ public class Comment : MonoBehaviour
     public SpriteAtlas spriteAtlas;
     public AuthorButton authorButton;
     public int commentID;
+    public string authorEmail;
 
     public GameObject likeButton;
     public GameObject dislikeButton;
     public GameObject unlikeButton;
     public GameObject undislikeButton;
+    public GameObject deleteButton;
 
     public Text likeNumText;
     public Text dislikeNumText;
@@ -54,6 +69,7 @@ public class Comment : MonoBehaviour
         authorNameAndTimeText.text = authorName + "        " + dateStr;
         commentText.text = commentJson.comment;
         authorButton.email = commentJson.email;
+        authorEmail = commentJson.email;
         commentID = commentJson.comment_id;
         likeNumText.text = commentJson.like.ToString();
         dislikeNumText.text = commentJson.dislike.ToString();
@@ -213,4 +229,46 @@ public class Comment : MonoBehaviour
         }
     }
     */
+
+    public void EnableDelete()
+    {
+        deleteButton.SetActive(true);
+    }
+
+    public void DisableDelete()
+    {
+        deleteButton.SetActive(false);
+    }
+
+    public void DeleteComment()
+    {
+        StartCoroutine(DeleteCommentCoro());
+        Debug.Log("comment delete");
+    }
+
+    IEnumerator DeleteCommentCoro()
+    {
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "comment/deleteComment", new WWWForm())) // TODO change element
+        {
+            // TODO finish HTTP request for file like
+            byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(JsonUtility.ToJson(new DeleteCommentReqJson(commentID, authorEmail)) // TODO find correct JSON.
+                );
+
+            www.uploadHandler = new UploadHandlerRaw(ReqJson);
+            www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Authorization", WebReq.bearerToken);
+
+            yield return www.SendWebRequest();
+
+            if (www.isNetworkError || www.isHttpError)
+            {
+                Debug.Log(www.error);
+            }
+            else
+            {
+                Debug.Log(www.downloadHandler.text);
+                Destroy(gameObject);
+            }
+        }
+    }
 }

@@ -110,6 +110,7 @@ public class FileDetailView : MonoBehaviour
     public GameObject loginSignUpPanelPrefab;
 
 
+
     public GameObject rateOneButton;
     public GameObject rateTwoButton;
     public GameObject rateThreeButton;
@@ -352,6 +353,11 @@ public class FileDetailView : MonoBehaviour
         {
             GameObject comment = Instantiate(commentPrefab, commentScrollContentTrans);
             comment.GetComponent<Comment>().Init(commentJson);
+
+            if (WebReq.isAdmin && WebReq.email != null)
+            {
+                comment.GetComponent<Comment>().EnableDelete();
+            }
         }
     }
 

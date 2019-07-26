@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using UnityEngine.U2D;
+using UnityEngine.SceneManagement;
 
 public class Home : MonoBehaviour
 {
@@ -50,7 +51,7 @@ public class Home : MonoBehaviour
 
     public void ReturnToMainSence()
     {
-
+        SceneManager.LoadScene("MainScene");
     }
 
     public void OnLogin()

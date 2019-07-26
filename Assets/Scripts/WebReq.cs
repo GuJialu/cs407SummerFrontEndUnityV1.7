@@ -13,6 +13,8 @@ public static class WebReq
     public static string serverUrl = "modsworkshop.herokuapp.com/modsworkshop/";
     public static string bearerToken;
     public static string email;
+    public static bool isAdmin = false;
+
     static IEnumerator SignUp(string email, string password, string username)
     {
         using (UnityWebRequest www = UnityWebRequest.Post("http://www.my-server.com/myform", new WWWForm()))
