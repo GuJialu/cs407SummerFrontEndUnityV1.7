@@ -4490,11 +4490,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 3196606908196613155}
     m_Modifications:
-    - target: {fileID: 1286545884306034200, guid: 0f7750d412003a245a9f168e3cc87f77,
-        type: 3}
-      propertyPath: m_Name
-      value: New Comment Panel
-      objectReference: {fileID: 0}
     - target: {fileID: 1286545884306034201, guid: 0f7750d412003a245a9f168e3cc87f77,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4599,6 +4594,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1286545884306034200, guid: 0f7750d412003a245a9f168e3cc87f77,
+        type: 3}
+      propertyPath: m_Name
+      value: New Comment Panel
       objectReference: {fileID: 0}
     - target: {fileID: 7583978327546722018, guid: 0f7750d412003a245a9f168e3cc87f77,
         type: 3}
@@ -4707,11 +4707,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4421815816782655538}
     m_Modifications:
-    - target: {fileID: 8861836100877496026, guid: 45598e2b0f86ff64cbc80f257c00a770,
-        type: 3}
-      propertyPath: m_Name
-      value: Delete Button
-      objectReference: {fileID: 0}
     - target: {fileID: 5971014220403354625, guid: 45598e2b0f86ff64cbc80f257c00a770,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4816,6 +4811,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8861836100877496026, guid: 45598e2b0f86ff64cbc80f257c00a770,
+        type: 3}
+      propertyPath: m_Name
+      value: Delete Button
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 45598e2b0f86ff64cbc80f257c00a770, type: 3}
