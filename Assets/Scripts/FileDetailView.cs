@@ -82,11 +82,13 @@ struct ReportFileReqJson
 
 struct RateContentReqJson
 {
-    public int rating;
+    public string key;
+    public int rate;
 
-    public RateContentReqJson(int rating)
+    public RateContentReqJson(string key, int rating)
     {
-        this.rating = rating;
+        this.key = key;
+        this.rate = rating;
 
     }
 }
@@ -106,6 +108,16 @@ public class FileDetailView : MonoBehaviour
     public GameObject LikeButton;
     public GameObject UnlikeButton;
     public GameObject loginSignUpPanelPrefab;
+
+
+
+    public GameObject rateOneButton;
+    public GameObject rateTwoButton;
+    public GameObject rateThreeButton;
+    public GameObject rateFourButton;
+    public GameObject rateFiveButton;
+    // YOLO
+    public Text visibleUserRating;
 
     public int personalRating;
     public double averageRating;
@@ -416,16 +428,69 @@ public class FileDetailView : MonoBehaviour
     public void RateContent()
     {
         // ...
+        // description.text = "HERRO" + personalRating;
+        // This switch statement was supposed to be so much better.
+        //rateOneButton.GetComponent<Renderer>().GetComponent<Material>().color = Color.yellow;
+        // rateOneButton.GetComponent<Image>().color = Color.yellow;
+        if (WebReq.email == null)
+        {
+            Instantiate(loginSignUpPanelPrefab, transform.parent);
+            return;
+        }
+        visibleUserRating.text = personalRating + "";
+        
+        switch (personalRating)
+        {
+            case 5:
+                rateFiveButton.GetComponent<Image>().color = Color.yellow;
+                rateFourButton.GetComponent<Image>().color = Color.yellow;
+                rateThreeButton.GetComponent<Image>().color = Color.yellow;
+                rateTwoButton.GetComponent<Image>().color = Color.yellow;
+                rateOneButton.GetComponent<Image>().color = Color.yellow;
+                
+                break;
+            case 4:
 
+                rateFiveButton.GetComponent<Image>().color = Color.white;
+                rateFourButton.GetComponent<Image>().color = Color.yellow;
+                rateThreeButton.GetComponent<Image>().color = Color.yellow;
+                rateTwoButton.GetComponent<Image>().color = Color.yellow;
+                rateOneButton.GetComponent<Image>().color = Color.yellow;
+                break;
+            case 3:
+                rateFiveButton.GetComponent<Image>().color = Color.white;
+                rateFourButton.GetComponent<Image>().color = Color.white;
+                rateThreeButton.GetComponent<Image>().color = Color.yellow;
+                rateTwoButton.GetComponent<Image>().color = Color.yellow;
+                rateOneButton.GetComponent<Image>().color = Color.yellow;
+                break;
+            case 2:
+                rateFiveButton.GetComponent<Image>().color = Color.white;
+                rateFourButton.GetComponent<Image>().color = Color.white;
+                rateThreeButton.GetComponent<Image>().color = Color.white;
+                rateTwoButton.GetComponent<Image>().color = Color.yellow;
+                rateOneButton.GetComponent<Image>().color = Color.yellow;
+
+                break;
+            default:
+                rateFiveButton.GetComponent<Image>().color = Color.white;
+                rateFourButton.GetComponent<Image>().color = Color.white;
+                rateThreeButton.GetComponent<Image>().color = Color.white;
+                rateTwoButton.GetComponent<Image>().color = Color.white;
+                rateOneButton.GetComponent<Image>().color = Color.yellow;
+                break;
+        }
+        
         StartCoroutine(RequestRateItemCoro());
     }
     IEnumerator RequestRateItemCoro()
     {
-        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "comment/addComment", new WWWForm())) // TODO FIX ENDPOINT
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "rates/rateFile", new WWWForm()))
         {
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson(new RateContentReqJson(personalRating))
+                JsonUtility.ToJson(new RateContentReqJson(DownloadKey, personalRating))
                 );
+            Debug.Log(JsonUtility.ToJson(new RateContentReqJson(DownloadKey, personalRating)));
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
             www.SetRequestHeader("Authorization", WebReq.bearerToken);
@@ -436,6 +501,7 @@ public class FileDetailView : MonoBehaviour
             if (www.isNetworkError || www.isHttpError)
             {
                 Debug.Log(www.error);
+                description.text = www.error;
             }
             else
             {
@@ -446,6 +512,32 @@ public class FileDetailView : MonoBehaviour
             }
         }
     }
+    public void rateOne()
+    {
+        personalRating = 1;
+        RateContent();
+    }
+    public void rateTwo()
+    {
+        personalRating = 2;
+        RateContent();
+    }
+    public void rateThree()
+    {
+        personalRating = 3;
+        RateContent();
+    }
+    public void rateFour()
+    {
+        personalRating = 4;
+        RateContent();
+    }
+    public void rateFive()
+    {
+        personalRating = 5;
+        RateContent();
+    }
+
 }
 
 
