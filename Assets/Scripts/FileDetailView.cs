@@ -74,9 +74,12 @@ struct AddCommentReqJson
 struct ReportFileReqJson
 {
     public string key;
-    public ReportFileReqJson(string key)
+    public string reason;
+
+    public ReportFileReqJson(string key, string reason)
     {
         this.key = key;
+        this.reason = reason;
     }
 }
 
@@ -133,6 +136,9 @@ public class FileDetailView : MonoBehaviour
     public Transform commentScrollContentTrans;
 
     public InputField commentInput;
+
+    public InputField reportReasonInput;
+    public GameObject reportPanel;
 
     public void init(FileOverview fileOverview)
     {
@@ -439,6 +445,21 @@ public class FileDetailView : MonoBehaviour
     }
 
 
+    public void OpenReportPanel()
+    {
+        if (WebReq.email == null)
+        {
+            Instantiate(loginSignUpPanelPrefab, transform.parent);
+            return;
+        }
+        reportPanel.SetActive(true);
+    }
+
+    public void CloseReportPanel()
+    {
+        reportPanel.SetActive(false);
+    }
+
     public void ReportFile()
     {
         if (WebReq.email == null)
@@ -454,7 +475,7 @@ public class FileDetailView : MonoBehaviour
         using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/report", new WWWForm()))
         {
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
-                JsonUtility.ToJson(new ReportFileReqJson(DownloadKey))
+                JsonUtility.ToJson(new ReportFileReqJson(DownloadKey, reportReasonInput.text))
                 );
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
