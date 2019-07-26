@@ -101,6 +101,9 @@ public class FileDetailView : MonoBehaviour
     public Text downloads;
     public Text likes;
     public Text date;
+    public Text rateText;
+    public Image rateImage;
+    public Text fileName;
 
     public string DownloadKey;
 
@@ -140,12 +143,15 @@ public class FileDetailView : MonoBehaviour
         likes.text = fileOverview.likes.text;
         date.text = fileOverview.date.text;
         DownloadKey = fileOverview.key;
+        rateText.text = fileOverview.rateText.text;
+        rateImage.fillAmount = fileOverview.rateImage.fillAmount;
+        fileName.text = fileOverview.fileName.text;
 
         WorkShopEvents.loginEvent.AddListener(RequestComments);
         WorkShopEvents.logoutEvent.AddListener(RequestComments);
         string filePath = Application.dataPath + "/StreamingAssets/DownloadedGameFiles";
         DirectoryInfo d = new DirectoryInfo(filePath);
-        if (DownloadKey.Contains(WebReq.email))
+        if (WebReq.email!=null && DownloadKey.Contains(WebReq.email))
         {
             // NOTHING
         }
@@ -435,18 +441,24 @@ public class FileDetailView : MonoBehaviour
 
     public void ReportFile()
     {
+        if (WebReq.email == null)
+        {
+            Instantiate(loginSignUpPanelPrefab, transform.parent);
+            return;
+        }
         StartCoroutine(ReportFileCoro());
     }
 
     IEnumerator ReportFileCoro()
     {
-        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/reportFile", new WWWForm()))
+        using (UnityWebRequest www = UnityWebRequest.Post(WebReq.serverUrl + "file/report", new WWWForm()))
         {
             byte[] ReqJson = System.Text.Encoding.UTF8.GetBytes(
                 JsonUtility.ToJson(new ReportFileReqJson(DownloadKey))
                 );
             www.uploadHandler = new UploadHandlerRaw(ReqJson);
             www.SetRequestHeader("Content-Type", "application/json");
+            www.SetRequestHeader("Authorization", WebReq.bearerToken);
             yield return www.SendWebRequest();
 
             if (www.isNetworkError || www.isHttpError)
@@ -455,6 +467,7 @@ public class FileDetailView : MonoBehaviour
             }
             else
             {
+                Debug.Log(www.downloadHandler.text);
             }
         }
     }
