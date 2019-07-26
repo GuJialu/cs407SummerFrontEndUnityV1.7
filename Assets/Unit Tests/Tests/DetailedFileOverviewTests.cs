@@ -53,5 +53,14 @@ namespace Tests
 
             yield return null;
         }
+
+        [UnityTest]
+        public IEnumerator AddCommentPasses()
+        {
+            
+            yield return new WaitForSeconds(2f);
+
+            yield return null;
+        }
     }
 }
