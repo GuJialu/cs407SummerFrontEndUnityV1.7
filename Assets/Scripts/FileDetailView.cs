@@ -118,6 +118,8 @@ public class FileDetailView : MonoBehaviour
     public GameObject rateFiveButton;
     // YOLO
     public Text visibleUserRating;
+    public Text denominator;
+    public Text personalRatingText;
 
     public int personalRating;
     public double averageRating;
@@ -141,6 +143,37 @@ public class FileDetailView : MonoBehaviour
 
         WorkShopEvents.loginEvent.AddListener(RequestComments);
         WorkShopEvents.logoutEvent.AddListener(RequestComments);
+        string filePath = Application.dataPath + "/StreamingAssets/DownloadedGameFiles";
+        DirectoryInfo d = new DirectoryInfo(filePath);
+        if (DownloadKey.Contains(WebReq.email))
+        {
+            // NOTHING
+        }
+        else
+        {
+            foreach (var currDirectory in d.GetDirectories())
+            {
+                Debug.Log(currDirectory.Name);
+                string filename = Regex.Replace(DownloadKey, @"[^0-9a-zA-Z]+", "");
+                if (currDirectory.Name.Equals(filename))
+                {
+                    // Then there's a match
+                    denominator.gameObject.SetActive(true) ;
+                    personalRatingText.gameObject.SetActive(true);
+                    visibleUserRating.gameObject.SetActive(true);
+                    rateOneButton.SetActive(true);
+                    rateTwoButton.SetActive(true);
+                    rateThreeButton.SetActive(true);
+                    rateFourButton.SetActive(true);
+                    rateFiveButton.SetActive(true);
+
+                    break;
+                }
+
+                // Hello Moto
+            }
+        }
+
 
         RequestComments();
         //likeToggle.isOn = false;
